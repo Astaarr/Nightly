@@ -1,0 +1,43 @@
+# 📦 Dependencias
+node_modules/
+
+# 🚀 Archivos de producción
+dist/
+dist-ssr/
+
+# 🔐 Variables de entorno
+.env
+.env.*.local
+*.local
+
+# ⚙️ Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ⏳ Cache
+.cache/
+.next/
+out/
+
+# 💻 Configuración de editores
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 🧠 Archivos de desarrollo de Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 🖥️ Archivos del sistema
+.DS_Store
+Thumbs.db
