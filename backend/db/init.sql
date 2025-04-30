@@ -37,17 +37,18 @@ CREATE TABLE IF NOT EXISTS clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre_cliente VARCHAR(100) NOT NULL,
     email_cliente VARCHAR(100) NOT NULL UNIQUE,
+    password_hash_cliente VARCHAR(255) NOT NULL,
     telefono_cliente VARCHAR(16),
     direccion_cliente TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insertar clientes de prueba si no existen
-INSERT IGNORE INTO clientes (nombre_cliente, email_cliente, telefono_cliente, direccion_cliente)
+INSERT IGNORE INTO clientes (nombre_cliente, email_cliente, password_hash_cliente, telefono_cliente, direccion_cliente)
 VALUES 
-    ('Discoteca Eclipse', 'eclipse@discoteca.com', '600123456', 'Calle Mayor 123, Madrid'),
-    ('Discoteca Vortex', 'vortex@discoteca.com', '611987654', 'Avenida del Sol 456, Madrid'),
-    ('Discoteca Neon', 'neon@discoteca.com', '622345678', 'Calle Luna 789, Barcelona');
+    ('Discoteca Eclipse', 'eclipse@discoteca.com','$2b$12$UD2IPb0AmjUnNcOb8bpdw.AgABOzZqPFGmB9azyMumAHcs623CgWS', '600123456', 'Calle Mayor 123, Madrid'), -- contraseña: cliente123
+    ('Discoteca Vortex', 'vortex@discoteca.com','$2b$12$x2XNpMOgubsjQLEA/JNYDedTPvwd1mJeV9nsGk2ZyK2ok7Q.MbmjO', '611987654', 'Avenida del Sol 456, Madrid'), -- contraseña: cliente456
+    ('Discoteca Neon', 'neon@discoteca.com','$2b$12$iDYVB5YE4.91u6/dDGzRHuqgmI6Xx8F8axxVp7D9f6q0Vf7Q.qJv6', '622345678', 'Calle Luna 789, Barcelona'); -- contraseña: cliente789
 
 -- Crear la tabla 'discotecas' si no existe
 CREATE TABLE IF NOT EXISTS discotecas (

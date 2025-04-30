@@ -1,35 +1,44 @@
-import bcrypt from 'bcryptjs';
 import { db } from '../db/connection.js';
+import bcrypt from 'bcrypt';
 
-export const loginUser = async (req, res) => {
+// Función para iniciar sesións
+export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Buscar usuario por email
-    const [user] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+    const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
 
-    // Si el usuario no existe
-    if (!user) {
-      console.log('Usuario no encontrado:', email);
-      return res.status(400).json({ error: 'Credenciales incorrectas' });
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'Correo o contraseña no válidos' });
     }
 
-    // Verifica los valores antes de continuar
-    console.log('Usuario encontrado:', user);
-    console.log('Contraseña recibida:', password);
-    console.log('Contraseña hasheada en la base de datos:', user.password_hash);
+    // Verificar la contraseñas
+    const user = rows[0];
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
-    // Verificar la contraseña hasheada
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Credenciales incorrectas' });
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Correo o contraseña no válidos' });
     }
 
-    // Si la contraseña es correcta, responder con el mensaje de éxito
-    res.status(200).json({ message: 'Login exitoso', user });
+    // Posiblemente generemos un token JWT para enviarlo al cliente (Veremos si lo implementamos)ss
+    res.json({ message: 'Inicio de sesión correcto', user: { id: user.id, nombre: user.nombre } });
   } catch (error) {
-    console.error('Error en el login:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
+    console.error('Error en login:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+};
+
+// Función para registrar un nuevo usuarios
+export const register = async (req, res) => {
+  const { nombre, email, password, fecha_nacimiento } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db.query('INSERT INTO usuarios (nombre, email, password_hash, fecha_nacimiento) VALUES (?, ?, ?, ?)', [nombre, email, hashedPassword, fecha_nacimiento]);
+
+    res.json({ message: 'Registro exitoso' });
+  } catch (error) {
+    console.error('Error en registro:', error);
+    res.status(500).json({ message: 'Error al registrar usuario' });
   }
 };

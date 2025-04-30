@@ -5,7 +5,8 @@ dotenv.config();
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
-// Crear un pool de conexiones (mejor que una sola)
+// Crear un pool de conexiones a la base de datos
+// Esto es más eficiente que crear una conexión cada vez
 const db = await mysql.createPool({
   host: DB_HOST,
   user: DB_USER,
