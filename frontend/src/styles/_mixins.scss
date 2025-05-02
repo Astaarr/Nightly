@@ -1,0 +1,26 @@
+@mixin flexbox($justify: flex-start, $align: stretch, $direction: row, $wrap: nowrap) {
+    display: flex;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin grid($columns: repeat(auto-fit, minmax(250px, 1fr)), $rows: auto, $gap: 20px) {
+    display: grid;
+    grid-template-columns: $columns;
+    grid-template-rows: $rows;
+    gap: $gap;
+}
+
+@mixin responsive($breakpoint) {
+    @media (max-width: $breakpoint) {
+      @content;
+    }
+}
+
+@mixin hide-mobile {
+    @include responsive(768px) {
+      display: none;
+    }
+}
