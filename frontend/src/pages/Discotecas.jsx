@@ -1,6 +1,5 @@
 // frontend/src/pages/Discotecas.jsx
 import { useEffect, useState } from "react";
-import "./Discotecas.css"; // Asegúrate de tener el CSS aquí
 
 function Discotecas() {
   const [discotecas, setDiscotecas] = useState([]);

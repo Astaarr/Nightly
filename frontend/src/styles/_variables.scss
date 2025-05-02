@@ -1,0 +1,27 @@
+// TIPOGRAFIAS
+@font-face {
+    font-family: 'Raleway';
+    src: url("../assets/fonts/Raleway/Raleway-VariableFont_wght.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mulish';
+    src: url("../assets/fonts/Mulish/Mulish-VariableFont_wght.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+// VARIABLES
+$font-main: 'Raleway', sans-serif;
+$font-secondary: 'Mulish', sans-serif;
+
+// ff33bb
+$color-main: #e72fa9;
+$color-secondary: #f02f6e;
+$color-white: #fafafa;
+$color-black: #09090b;
+
+$max-width: 1368px;
