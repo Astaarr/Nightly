@@ -1,27 +1,20 @@
-// TIPOGRAFIAS
-@font-face {
-    font-family: 'Raleway';
-    src: url("../assets/fonts/Raleway/Raleway-VariableFont_wght.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Mulish';
-    src: url("../assets/fonts/Mulish/Mulish-VariableFont_wght.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-
-// VARIABLES
+// Fonts
 $font-main: 'Raleway', sans-serif;
 $font-secondary: 'Mulish', sans-serif;
 
-// ff33bb
-$color-main: #e72fa9;
+// Colors
+$color-main: #e72fa9; // ff33bb
 $color-secondary: #f02f6e;
 $color-white: #fafafa;
 $color-black: #09090b;
 
-$max-width: 1368px;
+// Responsive
+$width-lg: 1368px;
+$width-md: 768px;
+$width-sm: 320px;
+
+// Transitions
+$transition-time: 0.3s;
+
+// Header
+$header-height: 80px;

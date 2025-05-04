@@ -1,29 +1,85 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .header {
+  width: 100%;
+  margin: 0 auto;
+  position: fixed;
+  background: rgba($color: #000000, $alpha: 0.6);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+
+  &__navbar {
+    margin: 0 auto;
+    height: $header-height;
+    @include max-width();
+    @include flex(row, wrap, space-between, center);
+  }
+
+  &__logo{
+    padding: 1.75em 0;
+    height: 100%;
+  }
+
+  &__img{
+    height: 100%;
+  }
+
+  &__nav {
+    @include flex;
+    gap: 1.5rem;
+  }
+
+  &__link {
+    color: $color-white;
+  }
+
+  &__action{
+    @include hide-desktop();
+    color: $color-white;
+    font-size: 1em;
+  }
+
+  @include responsive($width-md) {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: $color-main;
-  
-    &__logo {
-      font-size: 1.5rem;
-      font-weight: bold;
+    transition: background-color $transition-time;
+
+    &--black {
+      background-color: $color-black; 
     }
-  
-    &__nav {
-      display: flex;
-      gap: 1.5rem;
+
+    &__nav{
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      top: $header-height;
+      right: -($width-md);
+      max-width: 65vw;
+      background-color: $color-black;
+      
+      @include flex(column, wrap, flex-start, center);
+      padding-top: 3rem;
+
+      transition: right $transition-time;
+
+      &--open {
+        right: 0; 
+      }
     }
-  
-    &__link {
-      color: white;
-      text-decoration: none;
-  
-      &:hover {
-        text-decoration: underline;
+
+    &__img{
+      height: 20px;
+    }
+
+    &__action{
+      &--visible{
+        display: block;
+      }
+
+      &--hidden{
+        display: none;
       }
     }
   }
+
+}

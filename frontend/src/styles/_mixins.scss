@@ -1,4 +1,6 @@
-@mixin flexbox($justify: flex-start, $align: stretch, $direction: row, $wrap: nowrap) {
+@use 'variables' as *;
+
+@mixin flex($direction: row, $wrap: nowrap, $justify: flex-start, $align: stretch) {
     display: flex;
     flex-direction: $direction;
     flex-wrap: $wrap;
@@ -14,15 +16,37 @@
 }
 
 @mixin responsive($breakpoint) {
-    @media (max-width: $breakpoint) {
+    @media screen and (max-width: $breakpoint) {
       @content;
     }
 }
 
+@mixin max-width {
+  max-width: $width-lg;
+  padding: 0 4rem;
+
+
+  @include responsive($width-md){
+    max-width: 100%;
+    padding: 0 2rem;
+  }
+
+  @include responsive($width-sm){
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
 @mixin hide-mobile {
-    @include responsive(768px) {
+    @include responsive($width-md) {
       display: none;
     }
+}
+
+@mixin hide-desktop {
+  @media screen and (min-width: $width-md) {
+    display: none;
+  }
 }
 
 

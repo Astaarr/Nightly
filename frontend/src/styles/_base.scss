@@ -13,6 +13,25 @@ body{
     font-family: $font-secondary;
 }
 
+a{
+    transition: color $transition-time;
+    text-decoration: none;
+
+    &:hover{
+        color: $color-main;
+    }
+}
+
+button{
+    background: none;
+    border: none;
+}
+
+#root{
+    margin: 0 auto;
+    width: 100%;
+}
+
 
 
 
