@@ -14,8 +14,7 @@ const Header = () => {
         <nav className={`header__nav ${menuOpen ? "header__nav--open" : ""}`}>
           <a href="/" className="header__link">Inicio</a>
           <a href="/discotecas" className="header__link">Eventos</a>
-          <a href="/login" className="header__link">Iniciar sesión</a>
-          <a href="/register" className="header__link">Registrarse</a>
+          <a href="/login" className="header__link"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</a>
         </nav>
 
         <div className="header__actions">

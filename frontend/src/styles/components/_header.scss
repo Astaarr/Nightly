@@ -34,6 +34,10 @@
     color: $color-white;
   }
 
+  &__actions{
+    @include hide-desktop();
+  }
+
   &__action{
     @include hide-desktop();
     background: none;
