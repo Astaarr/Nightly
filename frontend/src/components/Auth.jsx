@@ -7,29 +7,59 @@ function AuthForm({ type = "login" }) {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [fecha_nacimiento, setFechaNacimiento] = useState(""); 
   const [message, setMessage] = useState("");
+  const [errorField, setErrorField] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async () => {
+    setErrorField(""); 
+    setIsSuccess(false);
+
     if (!validateEmail(email)) {
       setMessage("Correo no válido");
+      setErrorField("email");
       return;
     }
 
     if (password.trim() === "") {
       setMessage("La contraseña no puede estar vacía");
+      setErrorField("password");
       return;
     }
 
     if (!isLogin) {
       if (nombre.trim() === "") {
         setMessage("El nombre es obligatorio");
+        setErrorField("nombre");
         return;
       }
-      if (!fechaNacimiento) {
+      if (!fecha_nacimiento) {
         setMessage("La fecha de nacimiento es obligatoria");
+        setErrorField("fecha_nacimiento");
+        return;
+      }
+
+      // Validar que la fecha es válida
+      const fecha = new Date(fecha_nacimiento);
+      if (isNaN(fecha.getTime())) {
+        setMessage("Fecha de nacimiento no válida");
+        setErrorField("fecha_nacimiento");
+        return;
+      }
+
+      // Validar que el usuario tiene al menos 18 años
+      const hoy = new Date();
+      const edadMinima = new Date(
+        hoy.getFullYear() - 18,
+        hoy.getMonth(),
+        hoy.getDate()
+      );
+      if (fecha > edadMinima) {
+        setMessage("Debes tener al menos 18 años");
+        setErrorField("fecha_nacimiento");
         return;
       }
     }
@@ -38,16 +68,36 @@ function AuthForm({ type = "login" }) {
       const endpoint = isLogin ? "/login" : "/register";
       const payload = isLogin
         ? { email, password }
-        : { nombre, email, password, fechaNacimiento };
+        : {
+            nombre,
+            email,
+            password,
+            fecha_nacimiento, 
+          };
 
       const response = await axios.post(
         `http://localhost:4000/api/auth${endpoint}`,
         payload
       );
       setMessage(response.data.message);
+      setErrorField("");
+      setIsSuccess(true);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error en la operación");
+      setIsSuccess(false);
     }
+  };
+
+  const getInputClassName = (fieldName) => {
+    return `auth-form__input ${
+      errorField === fieldName ? "auth-form__input--error" : ""
+    }`;
+  };
+
+  const getMessageClassName = () => {
+    return `auth-form__message ${
+      isSuccess ? "auth-form__message--success" : ""
+    }`;
   };
 
   return (
@@ -67,7 +117,7 @@ function AuthForm({ type = "login" }) {
             </label>
             <input
               id="nombre"
-              className="auth-form__input"
+              className={getInputClassName("nombre")}
               type="text"
               placeholder="Nombre"
               value={nombre}
@@ -83,7 +133,7 @@ function AuthForm({ type = "login" }) {
         </label>
         <input
           id="email"
-          className="auth-form__input"
+          className={getInputClassName("email")}
           type="email"
           placeholder="Correo"
           value={email}
@@ -97,7 +147,7 @@ function AuthForm({ type = "login" }) {
         </label>
         <input
           id="password"
-          className="auth-form__input"
+          className={getInputClassName("password")}
           type="password"
           placeholder="Contraseña"
           value={password}
@@ -108,18 +158,24 @@ function AuthForm({ type = "login" }) {
       {!isLogin && (
         <>
           <div className="auth-form__input-container">
-            <label htmlFor="fechaNacimiento" className="auth-form__label">
+            <label htmlFor="fecha_nacimiento" className="auth-form__label">
               Fecha de nacimiento
             </label>
             <input
-              id="fechaNacimiento"
-              className="auth-form__input"
+              id="fecha_nacimiento"
+              className={getInputClassName("fecha_nacimiento")}
               type="date"
-              value={fechaNacimiento}
+              value={fecha_nacimiento}
               onChange={(e) => setFechaNacimiento(e.target.value)}
             />
           </div>
         </>
+      )}
+
+      {message && (
+        <p className={getMessageClassName()}>
+          <i className={isSuccess ? "fa-solid fa-check" : "fa-solid fa-circle-exclamation"}></i> {message}
+        </p>
       )}
 
       <button className="auth-form__button" onClick={handleSubmit}>
@@ -143,8 +199,6 @@ function AuthForm({ type = "login" }) {
           </p>
         )}
       </div>
-
-      {message && <p className="auth-form__message">{message}</p>}
     </div>
   );
 }

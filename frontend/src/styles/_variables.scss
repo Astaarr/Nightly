@@ -5,10 +5,15 @@ $font-secondary: 'Mulish', sans-serif;
 // Colors
 $color-main: #e72fa9; // ff33bb
 $color-secondary: #f02f6e;
+$color-translucent: rgba($color: #000000, $alpha: 0.6);
+
 $color-white: #fafafa;
 $color-black: #09090b;
 $color-grey: #a1a1aa;
-$color-translucent: rgba($color: #000000, $alpha: 0.6);
+
+$color-error: #ee4242;
+$color-success: #5ccb5f;
+
 
 // Radius
 $radius-border: 15px;

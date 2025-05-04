@@ -30,6 +30,18 @@
         width: 100%;
         background: transparent;
         border: 1px solid $color-grey;
+
+        &--error{
+            border: 1px solid $color-error;
+        }
+    }
+
+    &__message{
+        color: $color-error;
+
+        &--success{
+            color: $color-success;
+        }
     }
 
     &__button{
