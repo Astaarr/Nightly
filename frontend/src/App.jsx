@@ -10,10 +10,10 @@ import Register from './pages/Register';
 
 function App() {
   return (
-    <>
-    <Header />
 
     <Router>
+      <Header />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/discotecas" element={<Discotecas />} />
@@ -21,9 +21,6 @@ function App() {
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
-
-    </>
-
 
 
   );
