@@ -2,9 +2,8 @@
 @use '../mixins' as *;
 
 .auth-form{
-    margin: 0 auto;
-    width: 50vh;
-    height: 100vh;
+    max-width: 50vh;
+    width: 100%;
 
     @include flex(column, wrap, center, center);
     gap: 1rem;
@@ -27,9 +26,6 @@
     }
 
     &__input{
-        width: 100%;
-        background: transparent;
-        border: 1px solid $color-grey;
 
         &--error{
             border: 1px solid $color-error;
@@ -46,6 +42,7 @@
 
     &__button{
         color: $color-white;
+        width: 100%;
     }
 
     &__link{

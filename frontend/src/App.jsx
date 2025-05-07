@@ -1,27 +1,15 @@
-// frontend/src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from "./components/Header";
+import { BrowserRouter } from 'react-router-dom';
+import Header from './layouts/Header';
+import AppRoutes from './routes';
 
-import Home from './pages/Home';
-import Discotecas from './pages/Discotecas';
-import Login from './pages/Login';
-import Register from './pages/Register';
 
 
 function App() {
   return (
-
-    <Router>
+    <BrowserRouter>
       <Header />
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/discotecas" element={<Discotecas />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
-
+      <AppRoutes />
+    </BrowserRouter>
 
   );
 }

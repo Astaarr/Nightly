@@ -26,24 +26,33 @@ function Discotecas() {
   }
 
   return (
-    <div className="discotecas-grid">
+    <div className="events">
       {discotecas.map((disco) => (
-        <div key={disco.id_discoteca} className="discoteca-card">
+        <div key={disco.id_discoteca} className="events__card">
           <img
             src={`http://localhost:4000/images/${disco.foto_portada}`}
             alt={disco.nombre}
-            className="discoteca-image"
+            className="events__image"
             onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = "https://placehold.co/300x200?text=Sin+Imagen";
             }}              
           />
-          <h2 className="discoteca-title">{disco.nombre}</h2>
-          <p className="discoteca-city">{disco.ciudad}</p>
-          <p className="discoteca-description">{disco.descripcion}</p>
-          <div className="discoteca-tags">
-            <span className="tag tag-music">{disco.tipo_musica}</span>
-            <span className="tag tag-price">{disco.rango_precio}</span>
+
+          <div className="events__header">
+            <span className="events__rating"><i class="events__rating-icon fa-solid fa-star"></i> 4.5{disco.valoracion}</span>
+            <button className="events__fav"><i class="fa-regular fa-heart"></i></button>
+          </div>
+
+          <div className="events__info">
+            <h2 className="events__title">{disco.nombre}</h2>
+            <p className="events__location"><i class="fa-solid fa-location-dot"></i> {disco.ciudad}</p>
+            <p className="events__description">{disco.descripcion}</p>
+          </div>
+    
+          <div className="events__tags">
+            <span className="events__tag events__tag--music">{disco.tipo_musica}</span>
+            <span className="events__tag events__tag--price">{disco.rango_precio}</span>
           </div>
         </div>
       ))}

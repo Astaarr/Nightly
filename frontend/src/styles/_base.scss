@@ -9,36 +9,53 @@
     box-sizing: border-box;
 }
 
-body{
+#root{
+    width: 100%;
+    @include max-width;
+    @include flex(column, wrap, center, center);
+}
+
+// PREDETERIMNADO
+html{
     font-family: $font-secondary;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color: $color-white;
+    background-color: $color-black;
+    scroll-behavior: smooth;
 }
 
 h1,h2,h3,h4,h5,h6{
     font-family: $font-main;
     font-weight: 800;
 }
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+  }
 
 a{
-    transition: color $transition-time;
+    color: $color-white;
     text-decoration: none;
+    transition: color $transition-time;
 
     &:hover{
         color: $color-main;
     }
 }
 
-%form-item{
-    width: 100%;
+%field{
     font-family: $font-secondary;
     font-size: 1em;
-    border: none;
     padding: 0.75em 1em;
+    color: inherit;
+    border: none;
     border-radius: $radius-border;
-    color: inherit
 }
 
 button{
-    @extend %form-item;
+    @extend %field;
     font-weight: 700;
     background: $color-main;
     transition: background $transition-time;
@@ -49,13 +66,13 @@ button{
 }
 
 input{
-    @extend %form-item;
+    @extend %field;
+    width: 100%;
+    background: transparent;
+    border: 1px solid $color-grey;
 }
 
-#root{
-    margin: 0 auto;
-    width: 100%;
-}
+
 
 
 

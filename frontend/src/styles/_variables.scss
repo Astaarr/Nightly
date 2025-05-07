@@ -6,6 +6,7 @@ $font-secondary: 'Mulish', sans-serif;
 $color-main: #e72fa9; // ff33bb
 $color-secondary: #f02f6e;
 $color-translucent: rgba($color: #000000, $alpha: 0.6);
+$color-border: #2e2e2f;
 
 $color-white: #fafafa;
 $color-black: #09090b;
@@ -13,18 +14,17 @@ $color-grey: #a1a1aa;
 
 $color-error: #ee4242;
 $color-success: #5ccb5f;
+$color-rating: #facc15;
 
 
 // Radius
 $radius-border: 15px;
 
 // Responsive
-$width-lg: 1368px;
+$width-lg: 1360px;
 $width-md: 768px;
 $width-sm: 320px;
 
 // Transitions
 $transition-time: 0.3s;
 
-// Header
-$header-height: 80px;

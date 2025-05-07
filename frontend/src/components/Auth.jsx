@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 function AuthForm({ type = "login" }) {
@@ -186,16 +187,16 @@ function AuthForm({ type = "login" }) {
         {isLogin ? (
           <p>
             ¿No tienes una cuenta?{" "}
-            <a href="/register" className="auth-form__link">
+            <Link to="/register" className="auth-form__link">
               Regístrate
-            </a>
+            </Link>
           </p>
         ) : (
           <p>
             ¿Ya tienes una cuenta?{" "}
-            <a href="/login" className="auth-form__link">
+            <Link to="/login" className="auth-form__link">
               Inicia sesión
-            </a>
+            </Link>
           </p>
         )}
       </div>

@@ -1,18 +1,19 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
+// Header
+$header-height: 80px;
+
 .header {
   width: 100%;
-  margin: 0 auto;
-  position: fixed;
+  position: sticky;
+  top: 0;
   background: $color-translucent;
   backdrop-filter: blur(10px);
   z-index: 1000;
 
   &__navbar {
-    margin: 0 auto;
     height: $header-height;
-    @include max-width();
     @include flex(row, wrap, space-between, center);
   }
 
@@ -28,10 +29,6 @@
   &__nav {
     @include flex;
     gap: 1.5rem;
-  }
-
-  &__link {
-    color: $color-white;
   }
 
   &__actions{
@@ -69,7 +66,7 @@
       transition: right $transition-time;
 
       &--open {
-        right: 0; 
+        right: -2em; 
       }
     }
 

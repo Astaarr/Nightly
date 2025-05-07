@@ -1,5 +1,6 @@
+import { NavLink } from 'react-router-dom';
 import { useState } from "react";
-import "../../public/logo/logoW.svg"; 
+
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -7,14 +8,15 @@ const Header = () => {
   return (
     <header className={`header ${menuOpen ? "header--black" : ""}`}>
       <div className="header__navbar">
-        <a href="/" title="Home" className="header__logo">
-          <img className='header__img' src="../../public/logo/logoW.svg" alt="Logo" />
-        </a>
+        <NavLink to="/" end className="header__logo">
+          <img className='header__img' src="/logo/logoW.svg" alt="Logo" />
+        </NavLink>
 
         <nav className={`header__nav ${menuOpen ? "header__nav--open" : ""}`}>
-          <a href="/" className="header__link">Inicio</a>
-          <a href="/discotecas" className="header__link">Eventos</a>
-          <a href="/login" className="header__link"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</a>
+          <NavLink to="/" end className="header__link">Inicio</NavLink>
+          <NavLink to="/eventos" className="header__link">Lugares</NavLink>
+          <NavLink to="/eventos" className="header__link">Eventos</NavLink>
+          <NavLink to="/login" className="header__link"><i class="fa-solid fa-right-to-bracket"></i> Acceder</NavLink>
         </nav>
 
         <div className="header__actions">

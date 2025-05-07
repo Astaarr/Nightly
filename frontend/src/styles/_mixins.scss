@@ -1,5 +1,7 @@
 @use 'variables' as *;
 
+
+// DISPLAY
 @mixin flex($direction: row, $wrap: nowrap, $justify: flex-start, $align: stretch) {
     display: flex;
     flex-direction: $direction;
@@ -13,8 +15,18 @@
     grid-template-columns: $columns;
     grid-template-rows: $rows;
     gap: $gap;
+
+    @include responsive($width-lg){
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include responsive($width-md){
+      grid-template-columns: 1fr;
+    }
 }
 
+
+// RESPONSIVE
 @mixin responsive($breakpoint) {
     @media screen and (max-width: $breakpoint) {
       @content;
@@ -23,8 +35,12 @@
 
 @mixin max-width {
   max-width: $width-lg;
-  padding: 0 4rem;
+  margin: 0 auto;
 
+  @include responsive($width-lg){
+    max-width: 100%;
+    padding: 0 4rem;
+  }
 
   @include responsive($width-md){
     max-width: 100%;
@@ -49,4 +65,17 @@
   }
 }
 
+// COMPONENTS
+@mixin tag($background: $color-translucent){
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.25em 1em;
+  background-color: $background;
+  border-radius: 999px;
+  transition: background-color $transition-time;
+  
+  &:hover{
+    background-color: darken($color-black, 50%);
+  }
+}
 
