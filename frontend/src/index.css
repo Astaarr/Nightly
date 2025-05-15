@@ -83,6 +83,41 @@ input {
   width: 100%;
   background: transparent;
   border: 1px solid #a1a1aa;
+  position: relative;
+}
+
+.input {
+  padding-left: 2.5em;
+}
+.input__container {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+.input__container::before {
+  font-family: "Font Awesome 6 Free";
+  font-size: 1em;
+  font-weight: 900;
+  color: #a1a1aa;
+  position: absolute;
+  left: 1em;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.input__container--user::before {
+  content: "\f007";
+}
+.input__container--password::before {
+  content: "\f023";
+}
+.input__container--email::before {
+  content: "\f0e0";
+}
+.input__container--date::before {
+  content: "\f133";
+}
+.input__container--search::before {
+  content: "\f002";
 }
 
 .header {
@@ -174,6 +209,7 @@ input {
 .auth-form {
   max-width: 50vh;
   width: 100%;
+  height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -234,6 +270,18 @@ input {
   margin-bottom: 2000px;
 }
 
+.places {
+  width: 100%;
+  padding: 2rem 0;
+}
+.places__title {
+  font-size: 2.5em;
+  text-align: center;
+}
+.places__description {
+  text-align: center;
+}
+
 .events {
   width: 100%;
   display: grid;
@@ -251,9 +299,28 @@ input {
     grid-template-columns: 1fr;
   }
 }
+.events__search-bar {
+  margin: 2em 0;
+  position: relative;
+}
+.events__filtrer-button {
+  position: absolute;
+  right: 1em;
+  top: calc(50% - 0.65em);
+  padding: 0;
+  margin: 0;
+  color: #a1a1aa;
+  background: none;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+.events__filtrer-button:hover {
+  color: #fafafa;
+  background: none;
+}
 .events__card {
   width: 100%;
-  height: 14rem;
+  height: 12rem;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -274,7 +341,7 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8));
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9));
   pointer-events: none;
   z-index: -1;
 }
@@ -309,11 +376,15 @@ input {
   color: #facc15;
 }
 .events__fav {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
 }
 .events__title {
-  font-size: 1.2em;
+  font-size: 1.3em;
   transition: color 0.3s;
+}
+.events__location, .events__description {
+  font-size: 0.9em;
 }
 .events__tags {
   width: 100%;

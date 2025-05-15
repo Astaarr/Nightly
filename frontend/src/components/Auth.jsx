@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function AuthForm({ type = "login" }) {
@@ -8,7 +8,7 @@ function AuthForm({ type = "login" }) {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fecha_nacimiento, setFechaNacimiento] = useState(""); 
+  const [fecha_nacimiento, setFechaNacimiento] = useState("");
   const [message, setMessage] = useState("");
   const [errorField, setErrorField] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -16,7 +16,7 @@ function AuthForm({ type = "login" }) {
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async () => {
-    setErrorField(""); 
+    setErrorField("");
     setIsSuccess(false);
 
     if (!validateEmail(email)) {
@@ -73,7 +73,7 @@ function AuthForm({ type = "login" }) {
             nombre,
             email,
             password,
-            fecha_nacimiento, 
+            fecha_nacimiento,
           };
 
       const response = await axios.post(
@@ -116,14 +116,16 @@ function AuthForm({ type = "login" }) {
             <label htmlFor="nombre" className="auth-form__label">
               Nombre
             </label>
-            <input
-              id="nombre"
-              className={getInputClassName("nombre")}
-              type="text"
-              placeholder="Nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-            />
+            <div className="input__container input__container--user">
+              <input
+                id="nombre"
+                className={`${getInputClassName("nombre")} input`}
+                type="text"
+                placeholder="Nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+              />
+            </div>
           </div>
         </>
       )}
@@ -132,28 +134,32 @@ function AuthForm({ type = "login" }) {
         <label htmlFor="email" className="auth-form__label">
           Correo
         </label>
-        <input
-          id="email"
-          className={getInputClassName("email")}
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <div className="input__container input__container--email">
+          <input
+            id="email"
+            className={`${getInputClassName("email")} input`}
+            type="email"
+            placeholder="Correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="auth-form__input-container">
         <label htmlFor="password" className="auth-form__label">
           Contraseña
         </label>
-        <input
-          id="password"
-          className={getInputClassName("password")}
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="input__container input__container--password">
+          <input
+            id="password"
+            className={`${getInputClassName("password")} input`}
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
       </div>
 
       {!isLogin && (
@@ -162,20 +168,27 @@ function AuthForm({ type = "login" }) {
             <label htmlFor="fecha_nacimiento" className="auth-form__label">
               Fecha de nacimiento
             </label>
-            <input
-              id="fecha_nacimiento"
-              className={getInputClassName("fecha_nacimiento")}
-              type="date"
-              value={fecha_nacimiento}
-              onChange={(e) => setFechaNacimiento(e.target.value)}
-            />
+            <div className="input__container input__container--date">
+              <input
+                id="fecha_nacimiento"
+                className={`${getInputClassName("password")} input`}
+                type="date"
+                value={fecha_nacimiento}
+                onChange={(e) => setFechaNacimiento(e.target.value)}
+              />
+            </div>
           </div>
         </>
       )}
 
       {message && (
         <p className={getMessageClassName()}>
-          <i className={isSuccess ? "fa-solid fa-check" : "fa-solid fa-circle-exclamation"}></i> {message}
+          <i
+            className={
+              isSuccess ? "fa-solid fa-check" : "fa-solid fa-circle-exclamation"
+            }
+          ></i>{" "}
+          {message}
         </p>
       )}
 

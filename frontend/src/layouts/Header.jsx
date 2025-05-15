@@ -12,11 +12,11 @@ const Header = () => {
           <img className='header__img' src="/logo/logoW.svg" alt="Logo" />
         </NavLink>
 
-        <nav className={`header__nav ${menuOpen ? "header__nav--open" : ""}`}>
+        <nav className={`header__nav ${menuOpen ? "header__nav--open" : ""}`} onClick={() => setMenuOpen(false)}>
           <NavLink to="/" end className="header__link">Inicio</NavLink>
-          <NavLink to="/eventos" className="header__link">Lugares</NavLink>
-          <NavLink to="/eventos" className="header__link">Eventos</NavLink>
-          <NavLink to="/login" className="header__link"><i class="fa-solid fa-right-to-bracket"></i> Acceder</NavLink>
+          <NavLink to="/places" className="header__link">Lugares</NavLink>
+          <NavLink to="/events" className="header__link">Eventos</NavLink>
+          <NavLink to="/login" className="header__link header__link--login"><i className="fa-solid fa-right-to-bracket"></i> Acceder</NavLink>
         </nav>
 
         <div className="header__actions">

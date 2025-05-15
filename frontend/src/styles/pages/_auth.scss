@@ -4,6 +4,7 @@
 .auth-form{
     max-width: 50vh;
     width: 100%;
+    height: calc(100vh - $header-height);
 
     @include flex(column, wrap, center, center);
     gap: 1rem;

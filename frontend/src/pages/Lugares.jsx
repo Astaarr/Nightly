@@ -40,13 +40,13 @@ function Discotecas() {
           />
 
           <div className="events__header">
-            <span className="events__rating"><i class="events__rating-icon fa-solid fa-star"></i> 4.5{disco.valoracion}</span>
-            <button className="events__fav"><i class="fa-regular fa-heart"></i></button>
+            <span className="events__rating"><i className="events__rating-icon fa-solid fa-star"></i> 4.5{disco.valoracion}</span>
+            <button className="events__fav"><i className="fa-regular fa-heart"></i></button>
           </div>
 
           <div className="events__info">
             <h2 className="events__title">{disco.nombre}</h2>
-            <p className="events__location"><i class="fa-solid fa-location-dot"></i> {disco.ciudad}</p>
+            <p className="events__location"><i className="fa-solid fa-location-dot"></i> {disco.ciudad}</p>
             <p className="events__description">{disco.descripcion}</p>
           </div>
     

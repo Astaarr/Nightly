@@ -1,9 +1,6 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
-// Header
-$header-height: 80px;
-
 .header {
   width: 100%;
   position: sticky;

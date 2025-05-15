@@ -33,7 +33,7 @@ h1,h2,h3,h4,h5,h6{
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
-  }
+}
 
 a{
     color: $color-white;
@@ -65,12 +65,58 @@ button{
     }
 }
 
+
 input{
     @extend %field;
     width: 100%;
     background: transparent;
     border: 1px solid $color-grey;
+    position: relative;
 }
+
+.input{
+    padding-left: 2.5em;
+
+    &__container{
+        width: 100%;
+        position: relative;
+        display: inline-block;
+
+        &::before{
+            font-family: "Font Awesome 6 Free";
+            font-size: 1em;
+            font-weight: 900;
+            color: $color-grey;
+            position: absolute;
+            left: 1em;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &--user::before{
+            content: "\f007"; 
+        }
+
+        &--password::before{
+            content: "\f023"; 
+        }
+
+        &--email::before{
+            content: "\f0e0"; 
+        }
+
+        &--date::before{
+            content: "\f133"; 
+        }
+
+        &--search::before{
+            content: "\f002"; 
+        }
+    }
+}
+
+
+
 
 
 
