@@ -6,7 +6,7 @@
     width: 100%;
     height: calc(100vh - $header-height);
 
-    @include flex(column, wrap, center, center);
+    @include flex(column, nowrap, center, center);
     gap: 1rem;
 
     &__title{

@@ -36,12 +36,11 @@ function Events() {
   return (
     <div className="places">
       <h1 className="places__title">Eventos</h1>
-      <p className="places__description">No te pierdas los mejores eventos de la noche. Encuentra fiestas, conciertos y espectáculos únicos para vivir momentos inolvidables.</p>
 
       <SearchBar
         value={busqueda}
         onChange={setBusqueda}
-        placeholder="Buscar lugar..."
+        placeholder="Buscar eventos..."
       />
 
       <PlaceGrid>

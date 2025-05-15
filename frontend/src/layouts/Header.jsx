@@ -16,10 +16,11 @@ const Header = () => {
           <NavLink to="/" end className="header__link">Inicio</NavLink>
           <NavLink to="/places" className="header__link">Lugares</NavLink>
           <NavLink to="/events" className="header__link">Eventos</NavLink>
-          <NavLink to="/login" className="header__link header__link--login"><i className="fa-solid fa-right-to-bracket"></i> Acceder</NavLink>
         </nav>
 
         <div className="header__actions">
+          <NavLink to="/login" className="header__auth"><i className="fa-solid fa-right-to-bracket"></i> <span className='header__auth-text'>Iniciar Sesión</span></NavLink>
+
           <button
             className={`header__action ${menuOpen ? "header__action--visible" : "header__action--hidden"}`}
             onClick={() => setMenuOpen(false)}

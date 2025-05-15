@@ -36,8 +36,7 @@ function Places() {
   return (
     <div className="places">
       <h1 className="places__title">Lugares</h1>
-      <p className="places__description">Explora los mejores lugares para disfrutar la noche. Encuentra bares, discotecas y rincones únicos para vivir experiencias inolvidables.</p>
-
+      
       <SearchBar
         value={busqueda}
         onChange={setBusqueda}
