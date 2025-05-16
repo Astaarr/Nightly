@@ -1,36 +1,35 @@
 import { useEffect, useState } from "react";
-import PlaceCard from "../components/PlaceCard";
+import EventCard from "../components/EventCard";
 import PlaceGrid from "../components/PlaceGrid";
 import SearchBar from "../components/SearchBar";
 
 function Events() {
-  const [discotecas, setDiscotecas] = useState([]);
+  const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [busqueda, setBusqueda] = useState(""); // Estado para la búsqueda
+  const [busqueda, setBusqueda] = useState("");
 
   useEffect(() => {
-    async function fetchDiscotecas() {
+    async function fetchEventos() {
       try {
-        const response = await fetch("http://localhost:4000/api/discotecas");
+        const response = await fetch("http://localhost:4000/api/eventos");
         const data = await response.json();
-        setDiscotecas(data);
+        setEventos(data);
       } catch (error) {
-        console.error("Error al cargar discotecas:", error);
+        console.error("Error al cargar eventos:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchDiscotecas();
+    fetchEventos();
   }, []);
 
-  // Filtrar discotecas según el texto de búsqueda
-  const discotecasFiltradas = discotecas.filter((place) =>
-    place.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const eventosFiltrados = eventos.filter((event) =>
+    event.nombre_evento.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   if (loading) {
-    return <div className="loading">Cargando discotecas...</div>;
+    return <div className="loading">Cargando eventos...</div>;
   }
 
   return (
@@ -44,8 +43,8 @@ function Events() {
       />
 
       <PlaceGrid>
-        {discotecasFiltradas.map((place) => (
-          <PlaceCard key={place.id} place={place} />
+        {eventosFiltrados.map((event) => (
+          <EventCard key={event.id_evento} event={event} />
         ))}
       </PlaceGrid>
     </div>

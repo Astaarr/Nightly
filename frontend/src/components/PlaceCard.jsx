@@ -1,8 +1,11 @@
 function PlaceCard({ place }) {
+  const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
+  const valoracionNumerica = Number(place.valoracion);
+
   return (
     <div className="events__card">
       <img
-        src={`http://localhost:4000/images/${place.foto_portada}`}
+        src={imagenUrl}
         alt={place.nombre}
         className="events__image"
         onError={(e) => {
@@ -13,8 +16,10 @@ function PlaceCard({ place }) {
 
       <div className="events__header">
         <span className="events__rating">
-          <i className="events__rating-icon fa-solid fa-star"></i> 4.5
-          {place.valoracion}
+          <i className="events__rating-icon fa-solid fa-star"></i>{" "}
+          {!isNaN(valoracionNumerica)
+            ? valoracionNumerica.toFixed(1)
+            : "N/A"}
         </span>
         <button className="events__fav">
           <i className="fa-regular fa-heart"></i>
@@ -30,11 +35,8 @@ function PlaceCard({ place }) {
       </div>
 
       <div className="events__tags">
-        <span className="events__tag events__tag--music">
-          {place.tipo_musica}
-        </span>
         <span className="events__tag events__tag--price">
-          {place.rango_precio}
+          {place.precio} €
         </span>
       </div>
     </div>

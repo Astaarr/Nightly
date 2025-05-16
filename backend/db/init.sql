@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Insertar usuarios de prueba si no existen
 INSERT IGNORE INTO usuarios (nombre, email, password_hash, fecha_nacimiento)
 VALUES 
-    ('Juan Pérez', 'juan@dominio.com', '$2a$10$WZcbnM.Cf0zA.Tbm4M32u4z3t4MkGxH6Lx9BQ3zBGrlBNCevhY2eC', '1995-04-20'), -- contraseña: prueba123
-    ('Carlos García', 'carlos@dominio.com', '$2a$10$WZcbnM.Cf0zA.Tbm4M32u4z3t4MkGxH6Lx9BQ3zBGrlBNCevhY2eC', '1998-06-15'), -- contraseña: prueba123
-    ('Laura Jiménez', 'laura@dominio.com', '$2a$10$WZcbnM.Cf0zA.Tbm4M32u4z3t4MkGxH6Lx9BQ3zBGrlBNCevhY2eC', '2000-12-05'); -- contraseña: prueba123
+    ('Juan Pérez', 'juan@dominio.com', '$2a$10$hashdeprueba1', '1995-04-20'), -- contraseña: prueba123
+    ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15'), -- contraseña: prueba123
+    ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05'); -- contraseña: prueba123
 
 -- Crear la tabla 'admin' si no existe
 CREATE TABLE IF NOT EXISTS admin (
@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS admin (
 -- Insertar administradores de prueba si no existen
 INSERT IGNORE INTO admin (email, password)
 VALUES 
-    ('admin1@dominio.com', '$2a$10$WZcbnM.Cf0zA.Tbm4M32u4z3t4MkGxH6Lx9BQ3zBGrlBNCevhY2eC'), -- contraseña: admin123
-    ('admin2@dominio.com', '$2a$10$WZcbnM.Cf0zA.Tbm4M32u4z3t4MkGxH6Lx9BQ3zBGrlBNCevhY2eC'); -- contraseña: admin123
+    ('admin1@dominio.com', '$2a$10$adminhash1'), -- contraseña: admin123
+    ('admin2@dominio.com', '$2a$10$adminhash2'); -- contraseña: admin123
 
 -- Crear la tabla 'clientes' si no existe
 CREATE TABLE IF NOT EXISTS clientes (
@@ -46,51 +46,97 @@ CREATE TABLE IF NOT EXISTS clientes (
 -- Insertar clientes de prueba si no existen
 INSERT IGNORE INTO clientes (nombre_cliente, email_cliente, password_hash_cliente, telefono_cliente, direccion_cliente)
 VALUES 
-    ('Discoteca Eclipse', 'eclipse@discoteca.com','$2b$12$UD2IPb0AmjUnNcOb8bpdw.AgABOzZqPFGmB9azyMumAHcs623CgWS', '600123456', 'Calle Mayor 123, Madrid'), -- contraseña: cliente123
-    ('Discoteca Vortex', 'vortex@discoteca.com','$2b$12$x2XNpMOgubsjQLEA/JNYDedTPvwd1mJeV9nsGk2ZyK2ok7Q.MbmjO', '611987654', 'Avenida del Sol 456, Madrid'), -- contraseña: cliente456
-    ('Discoteca Neon', 'neon@discoteca.com','$2b$12$iDYVB5YE4.91u6/dDGzRHuqgmI6Xx8F8axxVp7D9f6q0Vf7Q.qJv6', '622345678', 'Calle Luna 789, Barcelona'); -- contraseña: cliente789
+    ('Discoteca Eclipse', 'eclipse@discoteca.com','$2b$12$clientehash1', '600123456', 'Calle Mayor 123, Madrid'), -- contraseña: cliente123
+    ('Discoteca Vortex', 'vortex@discoteca.com','$2b$12$clientehash2', '611987654', 'Avenida del Sol 456, Madrid'), -- contraseña: cliente456
+    ('Discoteca Neon', 'neon@discoteca.com','$2b$12$clientehash3', '622345678', 'Calle Luna 789, Barcelona'); -- contraseña: cliente789
 
--- Crear la tabla 'discotecas' si no existe
-CREATE TABLE IF NOT EXISTS discotecas (
-    id_discoteca INT AUTO_INCREMENT PRIMARY KEY,
+-- Crear la tabla 'categorias' si no existe
+CREATE TABLE IF NOT EXISTS categorias (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_categoria VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    icono VARCHAR(255),
+    parent_id INT DEFAULT NULL,
+    FOREIGN KEY (parent_id) REFERENCES categorias(id_categoria) ON DELETE SET NULL
+);
+
+-- Insertar categorías principales
+INSERT INTO categorias (nombre_categoria, descripcion, icono) VALUES
+('Salir de fiesta', 'Lugares para bailar y vivir la noche', 'https://cdn.example.com/icons/fiesta.png'),
+('Tomar algo', 'Bares y espacios para disfrutar de una bebida', 'https://cdn.example.com/icons/tomar_algo.png'),
+('Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
+('Planes con acción', 'Actividades dinámicas y juegos', 'https://cdn.example.com/icons/accion.png'),
+('Planes culturales', 'Eventos y espacios culturales', 'https://cdn.example.com/icons/cultural.png');
+
+-- Insertar subcategorías
+INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+('Comercial', 'Música comercial', 'https://cdn.example.com/icons/comercial.png', 1),
+('Techno', 'Música techno', 'https://cdn.example.com/icons/techno.png', 1),
+('Reggaetón', 'Música reggaetón', 'https://cdn.example.com/icons/reggaeton.png', 1),
+('Rooftops', 'Bares en azoteas', 'https://cdn.example.com/icons/rooftop.png', 2),
+('Pubs', 'Ambiente relajado', 'https://cdn.example.com/icons/pubs.png', 2),
+('Bares ocultos', 'Lugares secretos', 'https://cdn.example.com/icons/ocultos.png', 2);
+
+-- Crear la tabla 'lugares' si no existe
+CREATE TABLE IF NOT EXISTS lugares (
+    id_lugar INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
+    id_categoria INT,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     direccion VARCHAR(255),
     ciudad VARCHAR(100),
-    rango_precio ENUM('Barato', 'Medio', 'Caro') DEFAULT 'Medio',
-    estilo_vestimenta VARCHAR(100),
-    tipo_musica VARCHAR(100),
-    foto_portada TEXT,
+    url_imagen VARCHAR(255),
+    precio DECIMAL(6,2),
+    valoracion DECIMAL(2,1) DEFAULT 0.0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL
 );
 
--- Insertar discotecas de prueba si no existen
-INSERT IGNORE INTO discotecas (id_cliente, nombre, descripcion, direccion, ciudad, rango_precio, estilo_vestimenta, tipo_musica, foto_portada)
+-- Insertar lugares de prueba si no existen
+INSERT IGNORE INTO lugares (id_cliente, id_categoria, nombre, descripcion, direccion, ciudad, url_imagen, precio, valoracion)
 VALUES 
-    (1, 'Eclipse Club', 'La mejor discoteca de Madrid', 'Calle Principal 123', 'Madrid', 'Caro', 'Elegante', 'Electrónica', 'eclipse.png'),
-    (2, 'Vortex Night', 'Ambiente urbano y moderno', 'Avenida Sol 456', 'Madrid', 'Medio', 'Casual', 'Reggaeton', 'vortex.png'),
-    (3, 'Neon Party', 'Fiestas temáticas y luces neón', 'Plaza Central 789', 'Barcelona', 'Barato', 'Casual', 'Pop', 'neon.png');
+    (1, 6, 'Eclipse Rooftop', 'Azotea con vistas panorámicas de Madrid', 'Calle Atocha 45', 'Madrid', 'lugares/eclipse.png', 18.50, 4.7),
+    (2, 7, 'Vortex Pub', 'Pub urbano con música en vivo', 'Gran Vía 89', 'Madrid', 'lugares/vortex.png', 12.00, 4.3),
+    (3, 8, 'Neon Hidden Bar', 'Bar oculto con cócteles de autor', 'Calle Secreta 12', 'Barcelona', 'lugares/neon.png', 15.00, 4.8);
 
 -- Crear la tabla 'eventos' si no existe
 CREATE TABLE IF NOT EXISTS eventos (
     id_evento INT AUTO_INCREMENT PRIMARY KEY,
-    id_discoteca INT NOT NULL,
+    id_lugar INT NOT NULL,
     nombre_evento VARCHAR(100) NOT NULL,
     descripcion TEXT,
     fecha_evento DATE NOT NULL,
     precio_entrada DECIMAL(6,2),
     tipo_musica VARCHAR(100),
     dress_code VARCHAR(100),
-    imagen_evento TEXT,
+    imagen_evento VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_discoteca) REFERENCES discotecas(id_discoteca) ON DELETE CASCADE
+    FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE
 );
 
 -- Insertar eventos de prueba si no existen
-INSERT IGNORE INTO eventos (id_discoteca, nombre_evento, descripcion, fecha_evento, precio_entrada, tipo_musica, dress_code, imagen_evento)
+INSERT IGNORE INTO eventos (id_lugar, nombre_evento, descripcion, fecha_evento, precio_entrada, tipo_musica, dress_code, imagen_evento)
 VALUES 
-    (1, 'Fiesta Electrónica', 'La mejor música electrónica con DJ internacional', '2025-06-20', 20.00, 'Electrónica', 'Elegante', 'fiesta_electronica.jpg'),
-    (2, 'Noche de Reggaeton', 'Baila los mejores hits de reggaeton toda la noche', '2025-07-15', 15.00, 'Reggaeton', 'Casual', 'noche_reggaeton.jpg'),
-    (3, 'Fiesta Neón', 'Luces, neón y diversión asegurada', '2025-08-10', 10.00, 'Pop', 'Casual', 'fiesta_neon.jpg');
+    (1, 'Atardecer Electrónico', 'Música electrónica en la azotea con DJ local', '2025-06-20', 20.00, 'Electrónica', 'Elegante', 'eventos/evento1.png'),
+    (2, 'Noche Indie', 'Concierto de bandas emergentes', '2025-07-15', 15.00, 'Indie Rock', 'Casual', 'eventos/evento2.png'),
+    (3, 'Cocktail Secrets', 'Descubre cócteles ocultos', '2025-08-10', 10.00, 'Chill', 'Casual', 'eventos/evento3.png');
+
+-- Crear la tabla 'favoritos_lugares' si no existe
+CREATE TABLE IF NOT EXISTS favoritos_lugares (
+    id_favorito INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_lugar INT NOT NULL,
+    fecha_guardado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (id_usuario, id_lugar),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE
+);
+
+-- Insertar favoritos de prueba
+INSERT IGNORE INTO favoritos_lugares (id_usuario, id_lugar)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3);

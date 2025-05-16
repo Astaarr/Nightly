@@ -1,7 +1,7 @@
 import fs from 'fs';
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
-import app from './app.js'; // <<-- Importar app.js para arrancar Express
+import app from './app.js';
 
 dotenv.config();
 

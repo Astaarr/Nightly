@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AuthForm({ type = "login" }) {
   const isLogin = type === "login";
+  const navigate = useNavigate();
 
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -43,7 +44,6 @@ function AuthForm({ type = "login" }) {
         return;
       }
 
-      // Validar que la fecha es válida
       const fecha = new Date(fecha_nacimiento);
       if (isNaN(fecha.getTime())) {
         setMessage("Fecha de nacimiento no válida");
@@ -51,7 +51,6 @@ function AuthForm({ type = "login" }) {
         return;
       }
 
-      // Validar que el usuario tiene al menos 18 años
       const hoy = new Date();
       const edadMinima = new Date(
         hoy.getFullYear() - 18,
@@ -69,20 +68,29 @@ function AuthForm({ type = "login" }) {
       const endpoint = isLogin ? "/login" : "/register";
       const payload = isLogin
         ? { email, password }
-        : {
-            nombre,
-            email,
-            password,
-            fecha_nacimiento,
-          };
+        : { nombre, email, password, fecha_nacimiento };
 
       const response = await axios.post(
         `http://localhost:4000/api/auth${endpoint}`,
         payload
       );
-      setMessage(response.data.message);
-      setErrorField("");
-      setIsSuccess(true);
+
+      if (isLogin) {
+        const user = response.data.user;
+
+        if (user) {
+          localStorage.setItem("user", JSON.stringify(user));
+          navigate("/places");
+        } else {
+          setMessage("Usuario o contraseña incorrectos");
+          setIsSuccess(false);
+        }
+      } else {
+        setMessage(response.data.message);
+        setErrorField("");
+        setIsSuccess(true);
+        navigate("/login");
+      }
     } catch (error) {
       setMessage(error.response?.data?.message || "Error en la operación");
       setIsSuccess(false);
@@ -111,29 +119,23 @@ function AuthForm({ type = "login" }) {
       </div>
 
       {!isLogin && (
-        <>
-          <div className="auth-form__input-container">
-            <label htmlFor="nombre" className="auth-form__label">
-              Nombre
-            </label>
-            <div className="input__container input__container--user">
-              <input
-                id="nombre"
-                className={`${getInputClassName("nombre")} input`}
-                type="text"
-                placeholder="Nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-              />
-            </div>
+        <div className="auth-form__input-container">
+          <label htmlFor="nombre" className="auth-form__label">Nombre</label>
+          <div className="input__container input__container--user">
+            <input
+              id="nombre"
+              className={`${getInputClassName("nombre")} input`}
+              type="text"
+              placeholder="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+            />
           </div>
-        </>
+        </div>
       )}
 
       <div className="auth-form__input-container">
-        <label htmlFor="email" className="auth-form__label">
-          Correo
-        </label>
+        <label htmlFor="email" className="auth-form__label">Correo</label>
         <div className="input__container input__container--email">
           <input
             id="email"
@@ -147,9 +149,7 @@ function AuthForm({ type = "login" }) {
       </div>
 
       <div className="auth-form__input-container">
-        <label htmlFor="password" className="auth-form__label">
-          Contraseña
-        </label>
+        <label htmlFor="password" className="auth-form__label">Contraseña</label>
         <div className="input__container input__container--password">
           <input
             id="password"
@@ -163,22 +163,20 @@ function AuthForm({ type = "login" }) {
       </div>
 
       {!isLogin && (
-        <>
-          <div className="auth-form__input-container">
-            <label htmlFor="fecha_nacimiento" className="auth-form__label">
-              Fecha de nacimiento
-            </label>
-            <div className="input__container input__container--date">
-              <input
-                id="fecha_nacimiento"
-                className={`${getInputClassName("password")} input`}
-                type="date"
-                value={fecha_nacimiento}
-                onChange={(e) => setFechaNacimiento(e.target.value)}
-              />
-            </div>
+        <div className="auth-form__input-container">
+          <label htmlFor="fecha_nacimiento" className="auth-form__label">
+            Fecha de nacimiento
+          </label>
+          <div className="input__container input__container--date">
+            <input
+              id="fecha_nacimiento"
+              className={`${getInputClassName("fecha_nacimiento")} input`}
+              type="date"
+              value={fecha_nacimiento}
+              onChange={(e) => setFechaNacimiento(e.target.value)}
+            />
           </div>
-        </>
+        </div>
       )}
 
       {message && (
@@ -200,16 +198,12 @@ function AuthForm({ type = "login" }) {
         {isLogin ? (
           <p>
             ¿No tienes una cuenta?{" "}
-            <Link to="/register" className="auth-form__link">
-              Regístrate
-            </Link>
+            <Link to="/register" className="auth-form__link">Regístrate</Link>
           </p>
         ) : (
           <p>
             ¿Ya tienes una cuenta?{" "}
-            <Link to="/login" className="auth-form__link">
-              Inicia sesión
-            </Link>
+            <Link to="/login" className="auth-form__link">Inicia sesión</Link>
           </p>
         )}
       </div>

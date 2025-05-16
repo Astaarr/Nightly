@@ -1,11 +1,13 @@
 // backend/app.js
 import express from 'express';
 import cors from 'cors';
-import authRoutes from './routes/auth.routes.js';  // <-- Importar las rutas de login
-import discotecasRoutes from './routes/discotecas.routes.js';  // <-- Importar las rutas de discotecas
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Importar rutas
+import authRoutes from './routes/auth.routes.js';
+import lugaresRoutes from './routes/lugares.routes.js';
+import eventosRoutes from './routes/eventos.routes.js'
 
 const app = express();
 
@@ -13,15 +15,19 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Servir la carpeta 'public/images'
+// Servir archivos estáticos (por ejemplo, imágenes)
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);  // <-- Añadir las rutas para el login
-app.use('/api/discotecas', discotecasRoutes);  // <-- Añadir las rutas para las discotecas
+// Rutas
+app.use('/api/auth', authRoutes);
+app.use('/api/lugares', lugaresRoutes);
+app.use('/api/eventos', eventosRoutes);
 
+// Ruta de prueba
 app.get('/', (req, res) => {
   res.json({ message: 'API funcionando 🚀' });
 });
