@@ -73,18 +73,22 @@ function AuthForm({ type = "login" }) {
       const response = await axios.post(
         `http://localhost:4000/api/auth${endpoint}`,
         payload
-      );
+      )
+    console.log(response.data); // IMPORTANTE QUITARLO (Lo usamos para ver la respuesta del servidor)
+      ;
 
       if (isLogin) {
-        const user = response.data.user;
+        const { token, user } = response.data;
 
-        if (user) {
-          localStorage.setItem("user", JSON.stringify(user));
-          navigate("/places");
+        if (token && user) {
+          localStorage.setItem("token", token);                   
+          localStorage.setItem("user", JSON.stringify(user));      
+          navigate("/places");                                     
         } else {
           setMessage("Usuario o contraseña incorrectos");
           setIsSuccess(false);
         }
+        
       } else {
         setMessage(response.data.message);
         setErrorField("");

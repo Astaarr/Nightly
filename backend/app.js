@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.routes.js';
 import lugaresRoutes from './routes/lugares.routes.js';
 import eventosRoutes from './routes/eventos.routes.js'
+import favoritosRoutes from './routes/favoritos.routes.js';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/lugares', lugaresRoutes);
 app.use('/api/eventos', eventosRoutes);
+app.use('/api/favoritos', favoritosRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

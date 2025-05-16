@@ -1,5 +1,11 @@
+import jwt from 'jsonwebtoken';
 import { db } from '../db/connection.js';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config(); 
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Función para iniciar sesión
 export const login = async (req, res) => {
@@ -25,14 +31,24 @@ export const login = async (req, res) => {
     }
 
     // Devolver los datos necesarios del usuario
+    // Crear el token con datos mínimos del usuario
+    const token = jwt.sign(
+      { id: user.id, nombre: user.nombre, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '2h' } // puedes ajustar el tiempo
+    );
+
+    // Devolver respuesta con token
     res.status(200).json({
       message: 'Inicio de sesión correcto',
+      token,
       user: {
         id: user.id,
         nombre: user.nombre,
         email: user.email,
       },
     });
+
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ message: 'Error del servidor' });

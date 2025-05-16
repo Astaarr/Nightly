@@ -1,6 +1,28 @@
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
+
 function PlaceCard({ place }) {
   const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
   const valoracionNumerica = Number(place.valoracion);
+  const { token } = useAuth();
+
+  const handleAddFavorito = async () => {
+    try {
+      await axios.post(
+        "http://localhost:4000/api/favoritos",
+        { id_lugar: place.id_lugar },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Lugar añadido a favoritos");
+      // Aquí podrías actualizar estado visual más adelante
+    } catch (error) {
+      console.error("Error al añadir favorito:", error);
+    }
+  };
 
   return (
     <div className="events__card">
@@ -21,7 +43,7 @@ function PlaceCard({ place }) {
             ? valoracionNumerica.toFixed(1)
             : "N/A"}
         </span>
-        <button className="events__fav">
+        <button className="events__fav" onClick={handleAddFavorito}>
           <i className="fa-regular fa-heart"></i>
         </button>
       </div>

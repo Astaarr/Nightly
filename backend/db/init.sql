@@ -62,20 +62,45 @@ CREATE TABLE IF NOT EXISTS categorias (
 
 -- Insertar categorías principales
 INSERT INTO categorias (nombre_categoria, descripcion, icono) VALUES
-('Salir de fiesta', 'Lugares para bailar y vivir la noche', 'https://cdn.example.com/icons/fiesta.png'),
-('Tomar algo', 'Bares y espacios para disfrutar de una bebida', 'https://cdn.example.com/icons/tomar_algo.png'),
+('Salir de fiesta', 'Discotecas y fiestas nocturnas', 'https://cdn.example.com/icons/fiesta.png'),
+('Tomar algo', 'Bares, rooftops y pubs', 'https://cdn.example.com/icons/tomar_algo.png'),
 ('Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
-('Planes con acción', 'Actividades dinámicas y juegos', 'https://cdn.example.com/icons/accion.png'),
-('Planes culturales', 'Eventos y espacios culturales', 'https://cdn.example.com/icons/cultural.png');
+('Planes con acción', 'Actividades con movimiento', 'https://cdn.example.com/icons/accion.png'),
+('Planes culturales', 'Arte, música y espectáculos', 'https://cdn.example.com/icons/cultural.png');
 
--- Insertar subcategorías
+-- Subcategorías de 'Salir de fiesta' (parent_id = 1)
 INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
-('Comercial', 'Música comercial', 'https://cdn.example.com/icons/comercial.png', 1),
-('Techno', 'Música techno', 'https://cdn.example.com/icons/techno.png', 1),
-('Reggaetón', 'Música reggaetón', 'https://cdn.example.com/icons/reggaeton.png', 1),
+('Comercial', 'Música comercial y mainstream', 'https://cdn.example.com/icons/comercial.png', 1),
+('Techno', 'Música techno y electrónica underground', 'https://cdn.example.com/icons/techno.png', 1),
+('Reggaetón', 'Música urbana y reggaetón', 'https://cdn.example.com/icons/reggaeton.png', 1);
+
+-- Subcategorías de 'Tomar algo' (parent_id = 2)
+INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Rooftops', 'Bares en azoteas', 'https://cdn.example.com/icons/rooftop.png', 2),
-('Pubs', 'Ambiente relajado', 'https://cdn.example.com/icons/pubs.png', 2),
-('Bares ocultos', 'Lugares secretos', 'https://cdn.example.com/icons/ocultos.png', 2);
+('Pubs', 'Pubs y bares clásicos', 'https://cdn.example.com/icons/pubs.png', 2),
+('Bares ocultos', 'Bares escondidos y secretos', 'https://cdn.example.com/icons/ocultos.png', 2);
+
+-- Subcategorías de 'Planes gastronómicos' (parent_id = 3)
+INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+('Romántico', 'Cenas íntimas y con ambiente', 'https://cdn.example.com/icons/romantico.png', 3),
+('Tradicional', 'Comida típica y local', 'https://cdn.example.com/icons/tradicional.png', 3),
+('Alternativo', 'Gastronomía original y moderna', 'https://cdn.example.com/icons/alternativo.png', 3),
+('Con espectáculo', 'Cenas con shows y animación', 'https://cdn.example.com/icons/show.png', 3),
+('Estético', 'Lugares con diseño y estética llamativa', 'https://cdn.example.com/icons/estetico.png', 3);
+
+-- Subcategorías de 'Planes con acción' (parent_id = 4)
+INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+('Karting nocturno', 'Carreras de karts por la noche', 'https://cdn.example.com/icons/karting.png', 4),
+('Golf nocturno', 'Golf en escenarios iluminados', 'https://cdn.example.com/icons/golf.png', 4),
+('Bolera', 'Bolos con amigos', 'https://cdn.example.com/icons/bolos.png', 4),
+('Recreativo', 'Arcades y juegos interactivos', 'https://cdn.example.com/icons/recreativo.png', 4);
+
+-- Subcategorías de 'Planes culturales' (parent_id = 5)
+INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+('Música en vivo', 'Conciertos y bandas en directo', 'https://cdn.example.com/icons/musica.png', 5),
+('Teatro', 'Obras, comedia y monólogos', 'https://cdn.example.com/icons/teatro.png', 5),
+('Arte', 'Museos, exposiciones y galerías', 'https://cdn.example.com/icons/arte.png', 5);
+
 
 -- Crear la tabla 'lugares' si no existe
 CREATE TABLE IF NOT EXISTS lugares (

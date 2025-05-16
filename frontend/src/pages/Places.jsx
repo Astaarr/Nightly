@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import PlaceCard from "../components/PlaceCard";
 import PlaceGrid from "../components/PlaceGrid";
 import SearchBar from "../components/SearchBar";
+import { useAuth } from "../hooks/useAuth";
+
 
 function Places() {
+
+  const { isAuthenticated } = useAuth();
   const [lugares, setLugares] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
