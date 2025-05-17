@@ -185,7 +185,7 @@ function AuthForm({ type = "login" }) {
         </p>
       )}
 
-      <button className="auth-form__button" onClick={handleSubmit}>
+      <button type="submit" className="auth-form__button" onClick={handleSubmit}>
         {isLogin ? "Iniciar sesión" : "Registrarse"}
       </button>
 

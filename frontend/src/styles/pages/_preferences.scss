@@ -1,0 +1,71 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.preferences {
+  max-width: 50vh;
+  width: 100%;
+  @include flex(column, nowrap, center, center);
+  gap: 1.5em;
+  padding: 2em 0;
+
+  &__header{
+    text-align: center;
+  }
+
+  &__avatar-container {
+    width: 10em;
+    height: 10em;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      .preferences__avatar {
+        opacity: 0.4;
+      }
+      &::after {
+        opacity: 1; 
+      }
+    }
+
+    &::after {
+      content: "\f030"; 
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5em;
+      color: $color-white;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &__avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: opacity 0.3s;
+  }
+
+  &__input-container {
+    width: 100%;
+  }
+
+
+  &__change-password{
+    @include reset-button();
+    color: $color-main;
+
+    &:hover{
+        color: $color-secondary;
+        opacity: 1;
+    }
+  }
+
+  &__save-button {
+    width: 100%;
+  }
+}

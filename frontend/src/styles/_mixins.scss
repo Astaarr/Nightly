@@ -51,12 +51,12 @@
 
   @include responsive($width-md) {
     max-width: 100%;
-    padding: 0 2rem;
+    padding: 0 3rem;
   }
 
   @include responsive($width-sm) {
     max-width: 100%;
-    padding: 0 1rem;
+    padding: 0 2rem;
   }
 }
 
@@ -93,7 +93,7 @@
   padding: 0.25em 1em;
   background-color: $background;
   backdrop-filter: $blur-low;
-  border-radius: 999px;
+  border-radius: $radius-border-tag;
   transition: background-color $transition-time;
 
   &:hover {

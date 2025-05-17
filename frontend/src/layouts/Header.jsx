@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext"; 
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -9,12 +9,12 @@ const Header = () => {
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
-  }
+  };
 
   const handleAuthToggle = () => {
     setAuthOpen(!authOpen);
-  }
-  
+  };
+
   return (
     <header className={`header ${menuOpen ? "header--black" : ""}`}>
       <div className="header__navbar">
@@ -26,31 +26,51 @@ const Header = () => {
           className={`header__nav ${menuOpen ? "header__nav--open" : ""}`}
           onClick={handleMenuToggle}
         >
-          <NavLink to="/" end className="header__link">Inicio</NavLink>
-          <NavLink to="/places" className="header__link">Lugares</NavLink>
-          <NavLink to="/events" className="header__link">Eventos</NavLink>
+          <NavLink to="/" end className="header__link">
+            Inicio
+          </NavLink>
+          <NavLink to="/places" className="header__link">
+            Lugares
+          </NavLink>
+          <NavLink to="/events" className="header__link">
+            Eventos
+          </NavLink>
         </nav>
 
         <div className="header__actions">
-          {isAuthenticated ? 
-          (
+          {isAuthenticated ? (
             <div className="header__auth">
-              <button className='header__auth-logged' onClick={handleAuthToggle}>
+              <button
+                className="header__auth-logged"
+                onClick={handleAuthToggle}
+              >
                 <i className="fa-solid fa-user"></i>
                 <span className="header__auth-text"> {user.nombre}</span>
               </button>
 
-              <div className={`header__auth-info ${authOpen? "header__auth-info--visible" : ""}`}>
-                  <span className='header__auth-email'>{user.email}</span>
-                  <NavLink to="/places" className="header__link"><i class="fa-solid fa-gear"></i> Preferencias</NavLink>
-                  <button onClick={logout} className="header__auth-logout">
-                    <i className="fa-solid fa-right-to-bracket"></i> Cerrar Sesión 
-                  </button>
+              <div
+                className={`header__auth-info ${
+                  authOpen ? "header__auth-info--visible" : ""
+                }`}
+                onClick={handleAuthToggle}
+              >
+                <div className="header__auth-details">
+                  <span className="header__auth-username">
+                    <strong> {user.nombre}</strong>
+                  </span>
+
+                  {/* <span className="header__auth-email">{user.email}</span> */}
+                </div>
+
+                <NavLink to="/account" className="header__link">
+                  <i className="fa-regular fa-circle-user"></i> Mi cuenta
+                </NavLink>
+                <button onClick={logout} className="header__auth-logout">
+                  <i className="fa-solid fa-right-to-bracket"></i> Cerrar Sesión
+                </button>
               </div>
             </div>
-          ) 
-          : 
-          (
+          ) : (
             <NavLink to="/login" className="header__auth">
               <i className="fa-solid fa-right-to-bracket"></i>
               <span className="header__auth-text"> Iniciar Sesión</span>
@@ -58,14 +78,18 @@ const Header = () => {
           )}
 
           <button
-            className={`header__action ${menuOpen ? "header__action--visible" : "header__action--hidden"}`}
+            className={`header__action ${
+              menuOpen ? "header__action--visible" : "header__action--hidden"
+            }`}
             onClick={handleMenuToggle}
           >
             <i className="fas fa-times"></i>
           </button>
 
           <button
-            className={`header__action ${menuOpen ? "header__action--hidden" : "header__action--visible"}`}
+            className={`header__action ${
+              menuOpen ? "header__action--hidden" : "header__action--visible"
+            }`}
             onClick={handleMenuToggle}
           >
             <i className="fas fa-bars"></i>

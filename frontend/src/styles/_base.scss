@@ -15,7 +15,9 @@
     @include flex(column, wrap, center, center);
 }
 
+
 // PREDETERIMNADO
+
 html{
     font-family: $font-secondary;
     line-height: 1.5;
@@ -30,9 +32,10 @@ h1,h2,h3,h4,h5,h6{
     font-family: $font-main;
     font-weight: 800;
 }
-h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
+
+
+strong{
+    font-weight: 900;
 }
 
 a{
@@ -45,22 +48,27 @@ a{
     }
 }
 
+
+// COMPONENTES GLOBALES
+
 %field{
     font-family: $font-secondary;
     font-size: 1em;
     padding: 0.75em 1em;
     color: inherit;
     border: none;
-    border-radius: $radius-border;
+    border-radius: $radius-border-tag;
 }
 
-button{
+button, .button{
     @extend %field;
     font-weight: 700;
     background: $color-main;
     transition: background $transition-time;
+    cursor: pointer;
 
     &:hover{
+        color: $color-white;
         background: $color-secondary;
     }
 }

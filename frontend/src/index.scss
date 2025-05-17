@@ -1,9 +1,12 @@
 @import './styles/base';
 
 @import './styles/components/header';
+@import './styles/components/changePasswordModal';
 
 @import './styles/pages/auth';
 @import './styles/pages/home';
 @import './styles/pages/places';
+@import 'styles/pages/account.scss';
+@import 'styles/pages/preferences';
 
   

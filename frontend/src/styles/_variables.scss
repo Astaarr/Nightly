@@ -17,16 +17,18 @@ $color-success: #5ccb5f;
 $color-rating: #facc15;
 
 // Blur
+$blur-modal: blur(25px);
 $blur-high: blur(10px);
 $blur-low: blur(3px);
 
 // Radius
 $radius-border: 15px;
+$radius-border-tag: 999px;
 
 // Responsive
 $width-lg: 1360px;
 $width-md: 768px;
-$width-sm: 320px;
+$width-sm: 420px;
 
 // Transitions
 $transition-time: 0.3s;

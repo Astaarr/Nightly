@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PlaceCard from "../components/PlaceCard";
 import PlaceGrid from "../components/PlaceGrid";
 import SearchBar from "../components/SearchBar";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 
 
 function Places() {

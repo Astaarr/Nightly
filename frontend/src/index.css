@@ -23,13 +23,13 @@
 @media screen and (max-width: 768px) {
   #root {
     max-width: 100%;
-    padding: 0 2rem;
+    padding: 0 3rem;
   }
 }
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 420px) {
   #root {
     max-width: 100%;
-    padding: 0 1rem;
+    padding: 0 2rem;
   }
 }
 
@@ -47,9 +47,8 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+strong {
+  font-weight: 900;
 }
 
 a {
@@ -61,21 +60,23 @@ a:hover {
   color: #e72fa9;
 }
 
-input, button {
+input, button, .button {
   font-family: "Mulish", sans-serif;
   font-size: 1em;
   padding: 0.75em 1em;
   color: inherit;
   border: none;
-  border-radius: 15px;
+  border-radius: 999px;
 }
 
-button {
+button, .button {
   font-weight: 700;
   background: #e72fa9;
   transition: background 0.3s;
+  cursor: pointer;
 }
-button:hover {
+button:hover, .button:hover {
+  color: #fafafa;
   background: #f02f6e;
 }
 
@@ -220,13 +221,14 @@ input {
   justify-content: center;
   align-items: flex-start;
 }
-.header__auth-email {
-  padding-bottom: 1em;
+.header__auth-username {
+  display: block;
+  padding-bottom: 0.5em;
 }
-.header__auth-email::after {
+.header__auth-username::after {
   content: "";
   display: block;
-  width: 20%;
+  width: 2em;
   height: 2px;
   background: #fafafa;
   margin-top: 0.5em;
@@ -275,6 +277,62 @@ input {
   .header__action--hidden {
     display: none;
   }
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(25px);
+          backdrop-filter: blur(25px);
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 50vh;
+  width: 100%;
+  height: 100vh;
+  gap: 1em;
+}
+.modal__title {
+  padding-bottom: 1em;
+}
+.modal__field {
+  width: 100%;
+}
+.modal__buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+.modal__button {
+  width: 100%;
+  flex: 1;
+}
+.modal__button--cancel {
+  background: transparent;
+  border: 1px solid #fafafa;
+}
+.modal__button--cancel:hover {
+  background: #fafafa;
+  color: #09090b;
 }
 
 .auth-form {
@@ -339,6 +397,9 @@ input {
   height: 600px;
   padding-top: 80px;
   margin-bottom: 2000px;
+}
+.hero__title {
+  font-size: 3em;
 }
 
 .events__clear-button, .events__filtrer-button {
@@ -506,4 +567,161 @@ input {
 }
 .events__tag:hover, .events__rating:hover {
   background-color: black;
+}
+
+.account {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 2em 0;
+}
+.account__title-section {
+  margin: 1em 0;
+}
+@media screen and (max-width: 768px) {
+  .account {
+    padding: 1em 0;
+  }
+}
+@media screen and (max-width: 420px) {
+  .account {
+    padding: 0;
+  }
+}
+
+.user-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12rem;
+  padding: 0.5em 1em;
+  border-radius: 15px;
+}
+.user-card__header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+.user-card__info {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+.user-card__avatar {
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+}
+.user-card:hover {
+  transition: border 0.6s;
+  border: 1px solid #f02f6e;
+}
+@media screen and (max-width: 768px) {
+  .user-card {
+    gap: 4rem;
+  }
+  .user-card__avatar {
+    width: 3.5em;
+    height: 3.5em;
+    font-size: 0.8em;
+  }
+  .user-card__edit {
+    min-width: 8em;
+    padding: 0.5em 0.75em;
+  }
+}
+@media screen and (max-width: 420px) {
+  .user-card {
+    width: 100%;
+    gap: 0;
+    padding: 0.25em 0.5em;
+  }
+  .user-card__header {
+    gap: 0.5em;
+  }
+  .user-card__edit {
+    min-width: 5em;
+    padding: 0.5em 0.75em;
+  }
+}
+
+.preferences {
+  max-width: 50vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
+  padding: 2em 0;
+}
+.preferences__header {
+  text-align: center;
+}
+.preferences__avatar-container {
+  width: 10em;
+  height: 10em;
+  position: relative;
+  cursor: pointer;
+}
+.preferences__avatar-container:hover .preferences__avatar {
+  opacity: 0.4;
+}
+.preferences__avatar-container:hover::after {
+  opacity: 1;
+}
+.preferences__avatar-container::after {
+  content: "\f030";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5em;
+  color: #fafafa;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.preferences__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: opacity 0.3s;
+}
+.preferences__input-container {
+  width: 100%;
+}
+.preferences__change-password {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fafafa;
+  font-size: 1em;
+  transition: opacity 0.3s;
+  color: #e72fa9;
+}
+.preferences__change-password:hover {
+  background: none;
+  opacity: 0.7;
+}
+.preferences__change-password:hover {
+  color: #f02f6e;
+  opacity: 1;
+}
+.preferences__save-button {
+  width: 100%;
 }/*# sourceMappingURL=index.css.map */
