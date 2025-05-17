@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext"; // Asegúrate de que esta ruta es correcta
 
 function AuthForm({ type = "login" }) {
-  const isLogin = type === "login";
+  const isLogin = type === "login"; // Definir isLogin aquí al inicio del componente
   const navigate = useNavigate();
+  const { login } = useAuth(); // Obtener la función login del contexto
 
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -73,25 +75,14 @@ function AuthForm({ type = "login" }) {
       const response = await axios.post(
         `http://localhost:4000/api/auth${endpoint}`,
         payload
-      )
-    console.log(response.data); // IMPORTANTE QUITARLO (Lo usamos para ver la respuesta del servidor)
-      ;
+      );
 
       if (isLogin) {
         const { token, user } = response.data;
-
-        if (token && user) {
-          localStorage.setItem("token", token);                   
-          localStorage.setItem("user", JSON.stringify(user));      
-          navigate("/places");                                     
-        } else {
-          setMessage("Usuario o contraseña incorrectos");
-          setIsSuccess(false);
-        }
-        
+        login(token, user); // Usar la función login del contexto
+        navigate("/places");
       } else {
         setMessage(response.data.message);
-        setErrorField("");
         setIsSuccess(true);
         navigate("/login");
       }

@@ -120,6 +120,19 @@ input {
   content: "\f002";
 }
 
+.header__action, .header__auth-logout, .header__auth-logged {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fafafa;
+  font-size: 1em;
+  transition: opacity 0.3s;
+}
+.header__action:hover, .header__auth-logout:hover, .header__auth-logged:hover {
+  background: none;
+  opacity: 0.7;
+}
+
 .header {
   width: 100%;
   position: sticky;
@@ -161,16 +174,44 @@ input {
     display: none;
   }
 }
+.header__auth-logout {
+  font-weight: normal;
+  color: #ee4242;
+}
 .header__action {
-  background: none;
-  border: none;
-  color: #fafafa;
-  font-size: 1em;
+  margin-left: 1em;
 }
 @media screen and (min-width: 768px) {
   .header__action {
     display: none;
   }
+}
+.header__auth-info {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  display: none;
+  gap: 0.5em;
+  background: #09090b;
+  padding: 1em 2em;
+}
+.header__auth-info--visible {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+.header__auth-email {
+  padding-bottom: 1em;
+}
+.header__auth-email::after {
+  content: "";
+  display: block;
+  width: 20%;
+  height: 2px;
+  background: #fafafa;
+  margin-top: 0.5em;
 }
 @media screen and (max-width: 768px) {
   .header {

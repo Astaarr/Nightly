@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 
 function PlaceCard({ place }) {
   const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
-  const valoracionNumerica = Number(place.valoracion);
+  const valoracionNumerica = Number(place.valoracion).toFixed(1);
   const { token } = useAuth();
 
   const handleAddFavorito = async () => {
@@ -38,10 +38,7 @@ function PlaceCard({ place }) {
 
       <div className="events__header">
         <span className="events__rating">
-          <i className="events__rating-icon fa-solid fa-star"></i>{" "}
-          {!isNaN(valoracionNumerica)
-            ? valoracionNumerica.toFixed(1)
-            : "N/A"}
+          <i className="events__rating-icon fa-solid fa-star"></i> {valoracionNumerica}
         </span>
         <button className="events__fav" onClick={handleAddFavorito}>
           <i className="fa-regular fa-heart"></i>

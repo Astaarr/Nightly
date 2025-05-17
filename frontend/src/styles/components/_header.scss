@@ -1,5 +1,19 @@
-@use '../variables' as *;
-@use '../mixins' as *;
+@use "../variables" as *;
+@use "../mixins" as *;
+
+%reset_buttons {
+  background: none;
+  border: none;
+  padding: 0;
+  color: $color-white;
+  font-size: 1em;
+  transition: opacity $transition-time;
+
+  &:hover{
+    background: none;
+    opacity: 0.7;
+  }
+}
 
 .header {
   width: 100%;
@@ -14,12 +28,12 @@
     @include flex(row, wrap, space-between, center);
   }
 
-  &__logo{
-    @include flex (row, nowrap, flex-start, center);
+  &__logo {
+    @include flex(row, nowrap, flex-start, center);
     height: 100%;
   }
 
-  &__img{
+  &__img {
     height: 20px;
   }
 
@@ -28,16 +42,51 @@
     gap: 1.5rem;
   }
 
-  &__auth-text{
+  &__auth-text {
     @include hide-mobile();
   }
 
-  &__action{
+  &__auth-logged{
+    @extend %reset_buttons;
+  }
+
+  &__auth-logout{
+    @extend %reset_buttons;
+    font-weight: normal;
+    color: $color-error;
+  }
+
+  &__action {
+    margin-left: 1em;
+    @extend %reset_buttons;
     @include hide-desktop();
-    background: none;
-    border: none;
-    color: $color-white;
-    font-size: 1em;
+  }
+
+  &__auth-info{
+    position: absolute;
+    top: $header-height;
+    right: 0;
+    display: none;
+    gap: 0.5em;
+    background: $color-black;
+    padding: 1em 2em;
+
+    &--visible {
+      @include flex(column, nowrap, center, flex-start);
+    }
+  }
+
+  &__auth-email{
+    padding-bottom: 1em;
+
+    &::after{
+      content: "";
+      display: block;
+      width: 20%;
+      height: 2px;
+      background: $color-white;
+      margin-top: 0.5em;  
+    }
   }
 
   @include responsive($width-md) {
@@ -45,10 +94,10 @@
     transition: background-color $transition-time;
 
     &--black {
-      background-color: $color-black; 
+      background-color: $color-black;
     }
 
-    &__nav{
+    &__nav {
       display: none;
       width: 100%;
       height: 100vh;
@@ -64,27 +113,26 @@
 
       &--open {
         @include flex(column, wrap, flex-start, center);
-        right: -2em; 
+        right: -2em;
       }
     }
 
-    &__img{
+    &__img {
       height: 20px;
     }
 
-    &__actions{
+    &__actions {
       @include flex(row, nowrap, center, center);
     }
 
-    &__action{
-      &--visible{
+    &__action {
+      &--visible {
         display: block;
       }
 
-      &--hidden{
+      &--hidden {
         display: none;
       }
     }
   }
-
 }
