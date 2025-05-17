@@ -1,4 +1,3 @@
-// src/hooks/useAuth.js
 import { useCallback } from "react";
 
 function decodeJWT(token) {
@@ -46,3 +45,4 @@ export function useAuth() {
     logout,
   };
 }
+

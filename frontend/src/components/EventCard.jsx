@@ -17,9 +17,6 @@ function EventCard({ event }) {
           <span className="events__tag events__tag--music">
             <i className="fa-solid fa-music"></i> {event.tipo_musica}
           </span>
-          <button className="events__fav">
-            <i className="fa-regular fa-heart"></i>
-          </button>
         </div>
   
         <div className="events__info">

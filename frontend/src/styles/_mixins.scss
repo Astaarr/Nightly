@@ -1,62 +1,69 @@
-@use 'variables' as *;
-
+@use "variables" as *;
 
 // DISPLAY
-@mixin flex($direction: row, $wrap: nowrap, $justify: flex-start, $align: stretch) {
-    display: flex;
-    flex-direction: $direction;
-    flex-wrap: $wrap;
-    justify-content: $justify;
-    align-items: $align;
+@mixin flex(
+  $direction: row,
+  $wrap: nowrap,
+  $justify: flex-start,
+  $align: stretch
+) {
+  display: flex;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $justify;
+  align-items: $align;
 }
 
-@mixin grid($columns: repeat(auto-fit, minmax(250px, 1fr)), $rows: auto, $gap: 20px) {
-    display: grid;
-    grid-template-columns: $columns;
-    grid-template-rows: $rows;
-    gap: $gap;
+@mixin grid(
+  $columns: repeat(auto-fit, minmax(250px, 1fr)),
+  $rows: auto,
+  $gap: 20px
+) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  gap: $gap;
 
-    @include responsive($width-lg){
-      grid-template-columns: repeat(2, 1fr);
-    }
+  @include responsive($width-lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    @include responsive($width-md){
-      grid-template-columns: 1fr;
-    }
+  @include responsive($width-md) {
+    grid-template-columns: 1fr;
+  }
 }
-
 
 // RESPONSIVE
 @mixin responsive($breakpoint) {
-    @media screen and (max-width: $breakpoint) {
-      @content;
-    }
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
 }
 
 @mixin max-width {
   max-width: $width-lg;
   margin: 0 auto;
 
-  @include responsive($width-lg){
+  @include responsive($width-lg) {
     max-width: 100%;
     padding: 0 4rem;
   }
 
-  @include responsive($width-md){
+  @include responsive($width-md) {
     max-width: 100%;
     padding: 0 2rem;
   }
 
-  @include responsive($width-sm){
+  @include responsive($width-sm) {
     max-width: 100%;
     padding: 0 1rem;
   }
 }
 
 @mixin hide-mobile {
-    @include responsive($width-md) {
-      display: none;
-    }
+  @include responsive($width-md) {
+    display: none;
+  }
 }
 
 @mixin hide-desktop {
@@ -66,17 +73,30 @@
 }
 
 // COMPONENTS
-@mixin tag($background: $color-translucent){
+@mixin reset_button() {
+  background: none;
+  border: none;
+  padding: 0;
+  color: $color-white;
+  font-size: 1em;
+  transition: opacity $transition-time;
+
+  &:hover {
+    background: none;
+    opacity: 0.7;
+  }
+}
+
+@mixin tag($background: $color-translucent) {
   display: inline-block;
   font-size: 0.8em;
   padding: 0.25em 1em;
   background-color: $background;
-  backdrop-filter: blur(2px);
+  backdrop-filter: $blur-low;
   border-radius: 999px;
   transition: background-color $transition-time;
-  
-  &:hover{
+
+  &:hover {
     background-color: darken($color-black, 50%);
   }
 }
-

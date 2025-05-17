@@ -120,24 +120,10 @@ input {
   content: "\f002";
 }
 
-.header__action, .header__auth-logout, .header__auth-logged {
-  background: none;
-  border: none;
-  padding: 0;
-  color: #fafafa;
-  font-size: 1em;
-  transition: opacity 0.3s;
-}
-.header__action:hover, .header__auth-logout:hover, .header__auth-logged:hover {
-  background: none;
-  opacity: 0.7;
-}
-
 .header {
   width: 100%;
   position: sticky;
   top: 0;
-  background: rgba(0, 0, 0, 0.6);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   z-index: 1000;
@@ -174,12 +160,44 @@ input {
     display: none;
   }
 }
+.header__auth-logged {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fafafa;
+  font-size: 1em;
+  transition: opacity 0.3s;
+}
+.header__auth-logged:hover {
+  background: none;
+  opacity: 0.7;
+}
 .header__auth-logout {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fafafa;
+  font-size: 1em;
+  transition: opacity 0.3s;
   font-weight: normal;
   color: #ee4242;
 }
+.header__auth-logout:hover {
+  background: none;
+  opacity: 0.7;
+}
 .header__action {
   margin-left: 1em;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fafafa;
+  font-size: 1em;
+  transition: opacity 0.3s;
+}
+.header__action:hover {
+  background: none;
+  opacity: 0.7;
 }
 @media screen and (min-width: 768px) {
   .header__action {
@@ -323,6 +341,28 @@ input {
   margin-bottom: 2000px;
 }
 
+.events__clear-button, .events__filtrer-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fafafa;
+  font-size: 1em;
+  transition: opacity 0.3s;
+  position: absolute;
+  top: calc(50% - 0.65em);
+  color: #a1a1aa;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+.events__clear-button:hover, .events__filtrer-button:hover {
+  background: none;
+  opacity: 0.7;
+}
+.events__clear-button:hover, .events__filtrer-button:hover {
+  color: #fafafa;
+  background: none;
+}
+
 .places {
   width: 100%;
   padding: 2rem 0;
@@ -357,19 +397,10 @@ input {
   position: relative;
 }
 .events__filtrer-button {
-  position: absolute;
   right: 1em;
-  top: calc(50% - 0.65em);
-  padding: 0;
-  margin: 0;
-  color: #a1a1aa;
-  background: none;
-  transition: color 0.3s;
-  cursor: pointer;
 }
-.events__filtrer-button:hover {
-  color: #fafafa;
-  background: none;
+.events__clear-button {
+  right: 6em;
 }
 .events__card {
   width: 100%;
@@ -402,7 +433,7 @@ input {
   transform: scale(0.98);
 }
 .events__card:hover::after {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8));
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9));
 }
 .events__card:hover .events__title {
   color: #e72fa9;
@@ -429,8 +460,23 @@ input {
   color: #facc15;
 }
 .events__fav {
-  background-color: rgba(0, 0, 0, 0.6);
-  cursor: pointer;
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.25em 1em;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  border-radius: 999px;
+  transition: background-color 0.3s;
+  font-size: 1em;
+  width: 3em;
+  height: 3em;
+}
+.events__fav:hover {
+  background-color: black;
+}
+.events__fav:hover {
+  color: #f02f6e;
 }
 .events__title {
   font-size: 1.3em;
@@ -453,8 +499,8 @@ input {
   font-size: 0.8em;
   padding: 0.25em 1em;
   background-color: rgba(0, 0, 0, 0.4);
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
   border-radius: 999px;
   transition: background-color 0.3s;
 }
