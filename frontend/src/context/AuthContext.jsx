@@ -17,45 +17,68 @@ function isTokenExpired(token) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Nuevo estado para controlar carga inicial
+  const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-
+  const validateAndSetAuth = useCallback((token, userData) => {
     if (token && userData && !isTokenExpired(token)) {
       setUser(JSON.parse(userData));
+      setToken(token);
       setIsAuthenticated(true);
-    } else {
-      // Elimina los datos inválidos pero NO redirige aquí
+      return true;
+    }
+    return false;
+  }, []);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+
+    if (!validateAndSetAuth(storedToken, storedUser)) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     }
-    setIsLoading(false); // Finaliza la carga
-  }, []);
+    setIsLoading(false);
+  }, [validateAndSetAuth]);
 
-  const login = useCallback((token, userData) => {
-    localStorage.setItem('token', token);
+  const login = useCallback((newToken, userData) => {
+    localStorage.setItem('token', newToken);
     localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
-    setIsAuthenticated(true);
-  }, []);
+    validateAndSetAuth(newToken, JSON.stringify(userData));
+  }, [validateAndSetAuth]);
 
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
+    setToken(null);
     setIsAuthenticated(false);
-    window.location.href = '/login'; // Redirige SOLO cuando se llama explícitamente
+    window.location.href = '/login';
   }, []);
 
+  const getAuthHeader = useCallback(() => {
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  }, [token]);
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated, 
+      isLoading, 
+      token,
+      login, 
+      logout,
+      getAuthHeader
+    }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+  }
+  return context;
 }

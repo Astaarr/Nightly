@@ -4,16 +4,23 @@ export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Token no proporcionado' });
+    return res.status(401).json({ message: 'Token no proporcionado o formato incorrecto' });
   }
 
   const token = authHeader.split(' ')[1];
 
+  if (!token) {
+    return res.status(401).json({ message: 'Token no proporcionado' });
+  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // guardamos los datos del usuario en la request
+    req.user = decoded;
     next();
   } catch (err) {
-    return res.status(403).json({ message: 'Token inválido o expirado' });
+    if (err.name === 'TokenExpiredError') {
+      return res.status(403).json({ message: 'Token expirado' });
+    }
+    return res.status(403).json({ message: 'Token inválido' });
   }
 };

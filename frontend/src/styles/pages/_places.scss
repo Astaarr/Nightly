@@ -8,11 +8,11 @@
   color: $color-grey;
   transition: color $transition-time;
   cursor: pointer;
-  
-    &:hover {
-      color: $color-white;
-      background: none;
-    }
+
+  &:hover {
+    color: $color-white;
+    background: none;
+  }
 }
 
 .places {
@@ -113,6 +113,12 @@
 
     &:hover {
       color: $color-secondary;
+    }
+
+    &--active {
+      @include tag(rgba(22, 1, 1, 0.4));
+      color: $color-secondary;
+      font-size: 1em;
     }
   }
 

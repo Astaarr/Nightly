@@ -280,7 +280,7 @@ input {
 }
 
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -307,8 +307,9 @@ input {
   height: 100vh;
   gap: 1em;
 }
-.modal__title {
-  padding-bottom: 1em;
+.modal__header {
+  text-align: center;
+  padding-bottom: 1.5em;
 }
 .modal__field {
   width: 100%;
@@ -538,6 +539,21 @@ input {
 }
 .events__fav:hover {
   color: #f02f6e;
+}
+.events__fav--active {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.25em 1em;
+  background-color: rgba(22, 1, 1, 0.4);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  border-radius: 999px;
+  transition: background-color 0.3s;
+  color: #f02f6e;
+  font-size: 1em;
+}
+.events__fav--active:hover {
+  background-color: black;
 }
 .events__title {
   font-size: 1.3em;

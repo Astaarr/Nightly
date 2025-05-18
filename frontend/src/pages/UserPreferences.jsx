@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ChangePasswordModal from "../components/ChangePasswordModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 function UserPreferences() {
   const [avatar, setAvatar] = React.useState(
@@ -23,13 +24,38 @@ function UserPreferences() {
     }
   };
 
-  const [showModal, setShowModal] = React.useState(false);
+  // Estados separados para cada modal
+  const [showChangePasswordModal, setShowChangePasswordModal] =
+    React.useState(false);
+  const [showConfirmModal, setShowConfirmModal] = React.useState(false);
+
+  const handleConfirm = () => {
+    alert("Acción confirmada ✅"); //Cambiar alert por envío de datos a BBDD
+    setShowConfirmModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowConfirmModal(false);
+    setShowChangePasswordModal(false);
+  };
 
   return (
     <div className="preferences">
-      {showModal && <ChangePasswordModal onClose={() => setShowModal(false)} />}
+      {showChangePasswordModal && (
+        <ChangePasswordModal
+          onClose={() => setShowChangePasswordModal(false)}
+        />
+      )}
 
-        
+      {showConfirmModal && (
+        <ConfirmModal
+          title={"Atención"}
+          message={"¿Estás seguro que desea guardar los cambios?"}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
+
       <header className="preferences__header">
         <h1>Preferencias</h1>
         <Link to="/account">
@@ -67,7 +93,7 @@ function UserPreferences() {
       </div>
 
       <div className="preferences__input-container">
-        <label htmlFor="nombre" className="preferences__label">
+        <label htmlFor="correo" className="preferences__label">
           Correo
         </label>
         <div className="input__container input__container--email">
@@ -86,14 +112,19 @@ function UserPreferences() {
         </span>
         <button
           className="preferences__change-password"
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowChangePasswordModal(true)}
         >
           Modificar contraseña
         </button>
       </div>
 
       <div className="preferences__input-container">
-        <button className="preferences__save-button">Guardar</button>
+        <button
+          className="preferences__save-button"
+          onClick={() => setShowConfirmModal(true)}
+        >
+          Guardar
+        </button>
       </div>
     </div>
   );

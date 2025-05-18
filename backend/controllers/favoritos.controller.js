@@ -1,13 +1,15 @@
-// backend/controllers/favoritos.controller.js
 import { db } from '../db/connection.js';
 
-// GET /api/favoritos
 export const getFavoritos = async (req, res) => {
+  if (!req.user?.id) {
+    return res.status(401).json({ message: 'Usuario no autenticado' });
+  }
+
   const id_usuario = req.user.id;
 
   try {
     const [rows] = await db.query(
-      `SELECT l.* FROM favoritos_lugares f
+      `SELECT l.id_lugar FROM favoritos_lugares f
        JOIN lugares l ON f.id_lugar = l.id_lugar
        WHERE f.id_usuario = ?`,
       [id_usuario]
@@ -20,8 +22,11 @@ export const getFavoritos = async (req, res) => {
   }
 };
 
-// POST /api/favoritos
 export const addFavorito = async (req, res) => {
+  if (!req.user?.id) {
+    return res.status(401).json({ message: 'Usuario no autenticado' });
+  }
+
   const id_usuario = req.user.id;
   const { id_lugar } = req.body;
 
@@ -30,10 +35,15 @@ export const addFavorito = async (req, res) => {
   }
 
   try {
-    await db.query(
+    const [result] = await db.query(
       `INSERT IGNORE INTO favoritos_lugares (id_usuario, id_lugar) VALUES (?, ?)`,
       [id_usuario, id_lugar]
     );
+    
+    if (result.affectedRows === 0) {
+      return res.status(200).json({ message: 'El lugar ya estaba en favoritos' });
+    }
+    
     res.status(201).json({ message: 'Favorito añadido' });
   } catch (error) {
     console.error('Error al añadir favorito:', error);
@@ -41,16 +51,24 @@ export const addFavorito = async (req, res) => {
   }
 };
 
-// DELETE /api/favoritos/:id_lugar
 export const removeFavorito = async (req, res) => {
+  if (!req.user?.id) {
+    return res.status(401).json({ message: 'Usuario no autenticado' });
+  }
+
   const id_usuario = req.user.id;
   const { id_lugar } = req.params;
 
   try {
-    await db.query(
+    const [result] = await db.query(
       `DELETE FROM favoritos_lugares WHERE id_usuario = ? AND id_lugar = ?`,
       [id_usuario, id_lugar]
     );
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Favorito no encontrado' });
+    }
+    
     res.json({ message: 'Favorito eliminado' });
   } catch (error) {
     console.error('Error al eliminar favorito:', error);
