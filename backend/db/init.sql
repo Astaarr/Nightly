@@ -9,15 +9,16 @@ CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
+    avatar_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insertar usuarios de prueba si no existen
-INSERT IGNORE INTO usuarios (nombre, email, password_hash, fecha_nacimiento)
+INSERT IGNORE INTO usuarios (nombre, email, password_hash, fecha_nacimiento, avatar_url)
 VALUES 
-    ('Juan Pérez', 'juan@dominio.com', '$2a$10$hashdeprueba1', '1995-04-20'), -- contraseña: prueba123
-    ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15'), -- contraseña: prueba123
-    ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05'); -- contraseña: prueba123
+    ('Juan Pérez', 'juan@dominio.com', '$2a$10$hashdeprueba1', '1995-04-20', 'avatars/user_1.png'), -- contraseña: prueba123
+    ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15', 'avatars/user_2.png'), -- contraseña: prueba123
+    ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05', 'avatars/user_3.png'); -- contraseña: prueba123
 
 -- Crear la tabla 'admin' si no existe
 CREATE TABLE IF NOT EXISTS admin (

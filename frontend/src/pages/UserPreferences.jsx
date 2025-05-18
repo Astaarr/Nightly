@@ -1,37 +1,84 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import ConfirmModal from "../components/ConfirmModal";
 
 function UserPreferences() {
-  const [avatar, setAvatar] = React.useState(
-    "https://unavatar.io/substack/bankless"
-  );
-  const fileInputRef = React.useRef(null);
+  const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
+  const fileInputRef = useRef(null);
+
+  const [nombre, setNombre] = useState("");
+  const [correo, setCorreo] = useState("");
+
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  // Cargar datos del usuario al iniciar
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      setNombre(userData.nombre || "");
+      setCorreo(userData.email || "");
+
+      if (userData.avatar_url) {
+        setAvatar(`http://localhost:4000/${userData.avatar_url}`);
+      }
+    }
+  }, []);
 
   const handleAvatarClick = () => {
     fileInputRef.current.click();
   };
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setAvatar(event.target.result);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    try {
+      const response = await axios.post("http://localhost:4000/api/usuarios/avatar", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const { avatarUrl } = response.data;
+      const fullUrl = `http://localhost:4000/${avatarUrl}`;
+      setAvatar(fullUrl);
+
+      // Actualizar localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
+      localStorage.setItem("user", JSON.stringify({ ...user, avatar_url: avatarUrl }));
+    } catch (error) {
+      console.error("Error al subir avatar:", error);
     }
   };
 
-  // Estados separados para cada modal
-  const [showChangePasswordModal, setShowChangePasswordModal] =
-    React.useState(false);
-  const [showConfirmModal, setShowConfirmModal] = React.useState(false);
+  const handleConfirm = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        "http://localhost:4000/api/usuarios/perfil",
+        { nombre, email: correo },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-  const handleConfirm = () => {
-    alert("Acción confirmada ✅"); //Cambiar alert por envío de datos a BBDD
-    setShowConfirmModal(false);
+      const user = JSON.parse(localStorage.getItem("user"));
+      localStorage.setItem("user", JSON.stringify({ ...user, nombre, email: correo }));
+
+      setShowConfirmModal(false);
+    } catch (error) {
+      console.error("Error al guardar cambios:", error);
+    }
   };
 
   const handleCancel = () => {
@@ -42,15 +89,13 @@ function UserPreferences() {
   return (
     <div className="preferences">
       {showChangePasswordModal && (
-        <ChangePasswordModal
-          onClose={() => setShowChangePasswordModal(false)}
-        />
+        <ChangePasswordModal onClose={() => setShowChangePasswordModal(false)} />
       )}
 
       {showConfirmModal && (
         <ConfirmModal
-          title={"Atención"}
-          message={"¿Estás seguro que desea guardar los cambios?"}
+          title="Atención"
+          message="¿Estás seguro que deseas guardar los cambios?"
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
@@ -63,10 +108,7 @@ function UserPreferences() {
         </Link>
       </header>
 
-      <div
-        className="preferences__avatar-container"
-        onClick={handleAvatarClick}
-      >
+      <div className="preferences__avatar-container" onClick={handleAvatarClick}>
         <img className="preferences__avatar" src={avatar} alt="Avatar" />
       </div>
 
@@ -79,36 +121,36 @@ function UserPreferences() {
       />
 
       <div className="preferences__input-container">
-        <label htmlFor="nombre" className="preferences__label">
-          Nombre
-        </label>
+        <label htmlFor="nombre" className="preferences__label">Nombre</label>
         <div className="input__container input__container--user">
           <input
             id="nombre"
             className="input"
             type="text"
             placeholder="Nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
           />
         </div>
       </div>
 
       <div className="preferences__input-container">
-        <label htmlFor="correo" className="preferences__label">
-          Correo
-        </label>
+        <label htmlFor="correo" className="preferences__label">Correo</label>
         <div className="input__container input__container--email">
           <input
             id="correo"
             className="input"
             type="email"
             placeholder="Correo"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
           />
         </div>
       </div>
 
       <div className="preferences__input-container">
         <span className="preferences__message">
-          ¿Desea modificar la contraseña?{" "}
+          ¿Deseas modificar la contraseña?
         </span>
         <button
           className="preferences__change-password"

@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.routes.js';
 import lugaresRoutes from './routes/lugares.routes.js';
 import eventosRoutes from './routes/eventos.routes.js'
 import favoritosRoutes from './routes/favoritos.routes.js';
+import usuariosRoutes from './routes/usuarios.routes.js';
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/lugares', lugaresRoutes);
 app.use('/api/eventos', eventosRoutes);
 app.use('/api/favoritos', favoritosRoutes);
+app.use('/api/usuarios', usuariosRoutes);
+app.use('/avatars', express.static(path.join(__dirname, 'public', 'avatars')));
 
 // Ruta de prueba
 app.get('/', (req, res) => {
