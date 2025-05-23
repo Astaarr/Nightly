@@ -166,3 +166,22 @@ VALUES
     (1, 1),
     (2, 2),
     (3, 3);
+
+
+-- Crear la tabla 'reservas_eventos' si no existe
+CREATE TABLE IF NOT EXISTS reservas_eventos (
+    id_reserva INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_evento INT NOT NULL,
+    fecha_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cantidad INT DEFAULT 1,
+    estado VARCHAR(50) DEFAULT 'confirmada',
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
+);
+
+INSERT INTO reservas_eventos (id_usuario, id_evento, cantidad)
+VALUES
+    (1, 1, 2),
+    (2, 2, 1),
+    (3, 3, 3);
