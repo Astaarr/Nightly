@@ -42,7 +42,12 @@ html {
   scroll-behavior: smooth;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Raleway", sans-serif;
   font-weight: 800;
 }
@@ -60,7 +65,8 @@ a:hover {
   color: #e72fa9;
 }
 
-input, button, .button {
+input, button,
+.button {
   font-family: "Mulish", sans-serif;
   font-size: 1em;
   padding: 0.75em 1em;
@@ -69,13 +75,25 @@ input, button, .button {
   border-radius: 999px;
 }
 
-button, .button {
+.input__container::after, .input__container::before {
+  font-family: "Font Awesome 6 Free";
+  font-size: 1em;
+  font-weight: 900;
+  color: #a1a1aa;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+button,
+.button {
   font-weight: 700;
   background: #e72fa9;
   transition: background 0.3s;
   cursor: pointer;
 }
-button:hover, .button:hover {
+button:hover,
+.button:hover {
   color: #fafafa;
   background: #f02f6e;
 }
@@ -96,14 +114,10 @@ input {
   display: inline-block;
 }
 .input__container::before {
-  font-family: "Font Awesome 6 Free";
-  font-size: 1em;
-  font-weight: 900;
-  color: #a1a1aa;
-  position: absolute;
   left: 1em;
-  top: 50%;
-  transform: translateY(-50%);
+}
+.input__container::after {
+  right: 1em;
 }
 .input__container--user::before {
   content: "\f007";
@@ -619,7 +633,107 @@ input {
 }
 
 .place {
-  background-color: red !important;
+  width: 100%;
+  min-height: 100vh;
+}
+.place__swiper {
+  position: absolute;
+  max-width: 1360px;
+  margin: 0 auto;
+  height: 100vh;
+  z-index: 1;
+}
+@media screen and (max-width: 1360px) {
+  .place__swiper {
+    max-width: 100%;
+    padding: 0 4rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .place__swiper {
+    max-width: 100%;
+    padding: 0 3rem;
+  }
+}
+@media screen and (max-width: 420px) {
+  .place__swiper {
+    max-width: 100%;
+    padding: 0 2rem;
+  }
+}
+.place__image {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.place__overlay {
+  position: sticky;
+  top: 50vh;
+  width: 100%;
+  z-index: 10;
+}
+.place__content {
+  padding: 2rem;
+  border-radius: 15px;
+  min-height: 50vh;
+  width: 100%;
+  -webkit-backdrop-filter: blur(25px);
+          backdrop-filter: blur(25px);
+}
+.place__tag {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.25em 1em;
+  background-color: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  border-radius: 999px;
+  transition: background-color 0.3s;
+}
+.place__tag:hover {
+  background-color: black;
+}
+.place__timetable {
+  width: -moz-fit-content;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: space-between;
+}
+.place__day {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2em;
+}
+.place__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.place__action {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.25em 1em;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  border-radius: 999px;
+  transition: background-color 0.3s;
+  width: 3em;
+  height: 3em;
+  font-size: 1em;
+}
+.place__action:hover {
+  background-color: black;
 }
 
 .account {
