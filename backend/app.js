@@ -10,6 +10,10 @@ import lugaresRoutes from './routes/lugares.routes.js';
 import eventosRoutes from './routes/eventos.routes.js'
 import favoritosRoutes from './routes/favoritos.routes.js';
 import usuariosRoutes from './routes/usuarios.routes.js';
+import reservasRoutes from "./routes/reservas.routes.js";
+import filtrosRoutes from './routes/filtros.routes.js';
+
+
 
 const app = express();
 
@@ -31,6 +35,10 @@ app.use('/api/eventos', eventosRoutes);
 app.use('/api/favoritos', favoritosRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/avatars', express.static(path.join(__dirname, 'public', 'avatars')));
+app.use("/api/reservas", reservasRoutes);
+app.use('/api/filtros', filtrosRoutes);
+
+
 
 // Ruta de prueba
 app.get('/', (req, res) => {

@@ -22,7 +22,7 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
 
     try {
       if (esFavorito) {
-        await axios.delete(`http://localhost:4000/api/favoritos/${place.id_lugar}`, {
+        await axios.delete(`http://localhost:4000/api/favoritos/lugar/${place.id_lugar}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEsFavorito(false);

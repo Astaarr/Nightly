@@ -115,17 +115,31 @@ CREATE TABLE IF NOT EXISTS lugares (
     url_imagen VARCHAR(255),
     precio DECIMAL(6,2),
     valoracion DECIMAL(2,1) DEFAULT 0.0,
+    edad_minima INT DEFAULT 18,
+    edad_maxima INT DEFAULT 65,
+    nivel_formalidad ENUM('informal', 'formal') DEFAULT 'informal',
+    ambiente ENUM('tranquilo', 'vibrante') DEFAULT 'tranquilo',
+    tamano_grupo ENUM('solo', 'pareja', 'grupo') DEFAULT 'grupo',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE,
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL
 );
 
 -- Insertar lugares de prueba si no existen
-INSERT IGNORE INTO lugares (id_cliente, id_categoria, nombre, descripcion, direccion, ciudad, url_imagen, precio, valoracion)
+INSERT IGNORE INTO lugares (
+    id_cliente, id_categoria, nombre, descripcion, direccion, ciudad,
+    url_imagen, precio, valoracion, edad_minima, edad_maxima,
+    nivel_formalidad, ambiente, tamano_grupo
+)
 VALUES 
-    (1, 6, 'Eclipse Rooftop', 'Azotea con vistas panorámicas de Madrid', 'Calle Atocha 45', 'Madrid', 'lugares/eclipse.png', 18.50, 4.7),
-    (2, 7, 'Vortex Pub', 'Pub urbano con música en vivo', 'Gran Vía 89', 'Madrid', 'lugares/vortex.png', 12.00, 4.3),
-    (3, 8, 'Neon Hidden Bar', 'Bar oculto con cócteles de autor', 'Calle Secreta 12', 'Barcelona', 'lugares/neon.png', 15.00, 4.8);
+    (1, 6, 'Eclipse Rooftop', 'Azotea con vistas panorámicas de Madrid', 'Calle Atocha 45', 'Madrid',
+     'lugares/eclipse.png', 18.50, 4.7, 21, 35, 'informal', 'vibrante', 'grupo'),
+     
+    (2, 7, 'Vortex Pub', 'Pub urbano con música en vivo', 'Gran Vía 89', 'Madrid',
+     'lugares/vortex.png', 12.00, 4.3, 18, 45, 'informal', 'vibrante', 'pareja'),
+     
+    (3, 8, 'Neon Hidden Bar', 'Bar oculto con cócteles de autor', 'Calle Secreta 12', 'Barcelona',
+     'lugares/neon.png', 15.00, 4.8, 25, 50, 'formal', 'tranquilo', 'pareja');
 
 -- Crear la tabla 'eventos' si no existe
 CREATE TABLE IF NOT EXISTS eventos (
@@ -138,16 +152,33 @@ CREATE TABLE IF NOT EXISTS eventos (
     tipo_musica VARCHAR(100),
     dress_code VARCHAR(100),
     imagen_evento VARCHAR(255),
+    edad_minima INT DEFAULT 18,
+    edad_maxima INT DEFAULT 65,
+    nivel_formalidad ENUM('informal', 'formal') DEFAULT 'informal',
+    ambiente ENUM('tranquilo', 'vibrante') DEFAULT 'vibrante',
+    tamano_grupo ENUM('solo', 'pareja', 'grupo') DEFAULT 'grupo',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE
 );
 
 -- Insertar eventos de prueba si no existen
-INSERT IGNORE INTO eventos (id_lugar, nombre_evento, descripcion, fecha_evento, precio_entrada, tipo_musica, dress_code, imagen_evento)
+INSERT IGNORE INTO eventos (
+    id_lugar, nombre_evento, descripcion, fecha_evento, precio_entrada,
+    tipo_musica, dress_code, imagen_evento,
+    edad_minima, edad_maxima, nivel_formalidad, ambiente, tamano_grupo
+)
 VALUES 
-    (1, 'Atardecer Electrónico', 'Música electrónica en la azotea con DJ local', '2025-06-20', 20.00, 'Electrónica', 'Elegante', 'eventos/evento1.png'),
-    (2, 'Noche Indie', 'Concierto de bandas emergentes', '2025-07-15', 15.00, 'Indie Rock', 'Casual', 'eventos/evento2.png'),
-    (3, 'Cocktail Secrets', 'Descubre cócteles ocultos', '2025-08-10', 10.00, 'Chill', 'Casual', 'eventos/evento3.png');
+    (1, 'Atardecer Electrónico', 'Música electrónica en la azotea con DJ local', '2025-06-20',
+     20.00, 'Electrónica', 'Elegante', 'eventos/evento1.png',
+     21, 40, 'formal', 'vibrante', 'grupo'),
+     
+    (2, 'Noche Indie', 'Concierto de bandas emergentes', '2025-07-15',
+     15.00, 'Indie Rock', 'Casual', 'eventos/evento2.png',
+     18, 35, 'informal', 'tranquilo', 'grupo'),
+     
+    (3, 'Cocktail Secrets', 'Descubre cócteles ocultos', '2025-08-10',
+     10.00, 'Chill', 'Casual', 'eventos/evento3.png',
+     25, 50, 'formal', 'tranquilo', 'pareja');
 
 -- Crear la tabla 'favoritos_lugares' si no existe
 CREATE TABLE IF NOT EXISTS favoritos_lugares (
