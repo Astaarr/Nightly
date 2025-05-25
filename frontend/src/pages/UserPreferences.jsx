@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import ConfirmModal from "../components/ConfirmModal";
+import { useNavigate } from "react-router-dom";
+
 
 function UserPreferences() {
   const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
@@ -15,6 +17,8 @@ function UserPreferences() {
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const navigate = useNavigate();
 
   // Cargar datos del usuario al iniciar
   useEffect(() => {
@@ -100,6 +104,7 @@ function UserPreferences() {
       // Limpiar el archivo temporal
       setAvatarFile(null);
       setShowConfirmModal(false);
+      navigate("/account");
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
