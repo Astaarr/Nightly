@@ -105,7 +105,7 @@ function AuthForm({ type = "login" }) {
   };
 
   return (
-    <div className="auth-form">
+    <div className="auth-form" onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}>
       <div className="input-container">
         <h2 className="auth-form__title">NightLy</h2>
         <p className="auth-form__description">

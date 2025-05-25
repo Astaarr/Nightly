@@ -14,7 +14,7 @@ export const login = async (req, res) => {
   try {
     // Buscar usuario por email
     const [rows] = await db.query(
-      'SELECT id, nombre, email, password_hash FROM usuarios WHERE email = ?',
+      'SELECT id, nombre, email, password_hash, avatar_url FROM usuarios WHERE email = ?',
       [email]
     );
 
@@ -46,6 +46,7 @@ export const login = async (req, res) => {
         id: user.id,
         nombre: user.nombre,
         email: user.email,
+        avatar_url: user.avatar_url
       },
     });
 

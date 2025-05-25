@@ -387,7 +387,7 @@ input {
 
 .hero {
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url("../../../public/hero/img01-min.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url("./hero/img01-min.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
@@ -636,6 +636,8 @@ input {
 .user-card__avatar {
   width: 4em;
   height: 4em;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 50%;
 }
 .user-card:hover {
@@ -737,6 +739,9 @@ input {
 .preferences__change-password:hover {
   color: #f02f6e;
   opacity: 1;
+}
+.preferences__message {
+  padding-right: 0.25em;
 }
 .preferences__save-button {
   width: 100%;

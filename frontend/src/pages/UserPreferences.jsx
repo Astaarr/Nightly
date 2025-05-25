@@ -6,6 +6,8 @@ import ConfirmModal from "../components/ConfirmModal";
 
 function UserPreferences() {
   const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
+  const [tempAvatar, setTempAvatar] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
   const fileInputRef = useRef(null);
 
   const [nombre, setNombre] = useState("");
@@ -26,42 +28,33 @@ function UserPreferences() {
       }
     }
   }, []);
+  
+  // Actualizar tempAvatar cuando avatar cambia
+  useEffect(() => {
+    setTempAvatar(avatar);
+  }, [avatar]);
 
   const handleAvatarClick = () => {
     fileInputRef.current.click();
   };
 
-  const handleAvatarChange = async (e) => {
+  const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    const token = localStorage.getItem("token");
-    const formData = new FormData();
-    formData.append("avatar", file);
-
-    try {
-      const response = await axios.post("http://localhost:4000/api/usuarios/avatar", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      const { avatarUrl } = response.data;
-      const fullUrl = `http://localhost:4000/${avatarUrl}`;
-      setAvatar(fullUrl);
-
-      // Actualizar localStorage
-      const user = JSON.parse(localStorage.getItem("user"));
-      localStorage.setItem("user", JSON.stringify({ ...user, avatar_url: avatarUrl }));
-    } catch (error) {
-      console.error("Error al subir avatar:", error);
-    }
+    
+    // Guardar el archivo para subirlo más tarde
+    setAvatarFile(file);
+    
+    // Crear una URL temporal para previsualizar la imagen
+    const objectUrl = URL.createObjectURL(file);
+    setTempAvatar(objectUrl);
   };
 
   const handleConfirm = async () => {
     try {
       const token = localStorage.getItem("token");
+      
+      // Primero actualizar los datos del perfil
       await axios.put(
         "http://localhost:4000/api/usuarios/perfil",
         { nombre, email: correo },
@@ -71,10 +64,41 @@ function UserPreferences() {
           },
         }
       );
-
+      
+      // Si hay un nuevo avatar, subirlo
+      let avatarUrl = null;
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append("avatar", avatarFile);
+        
+        const response = await axios.post("http://localhost:4000/api/usuarios/avatar", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        
+        avatarUrl = response.data.avatarUrl;
+        const fullUrl = `http://localhost:4000/${avatarUrl}`;
+        setAvatar(fullUrl);
+      }
+      
+      // Actualizar localStorage
       const user = JSON.parse(localStorage.getItem("user"));
-      localStorage.setItem("user", JSON.stringify({ ...user, nombre, email: correo }));
-
+      const updatedUser = { 
+        ...user, 
+        nombre, 
+        email: correo 
+      };
+      
+      if (avatarUrl) {
+        updatedUser.avatar_url = avatarUrl;
+      }
+      
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      
+      // Limpiar el archivo temporal
+      setAvatarFile(null);
       setShowConfirmModal(false);
     } catch (error) {
       console.error("Error al guardar cambios:", error);
@@ -82,6 +106,11 @@ function UserPreferences() {
   };
 
   const handleCancel = () => {
+    // Si se cancela, restaurar la imagen original
+    if (avatarFile) {
+      setTempAvatar(avatar);
+      setAvatarFile(null);
+    }
     setShowConfirmModal(false);
     setShowChangePasswordModal(false);
   };
@@ -109,7 +138,7 @@ function UserPreferences() {
       </header>
 
       <div className="preferences__avatar-container" onClick={handleAvatarClick}>
-        <img className="preferences__avatar" src={avatar} alt="Avatar" />
+        <img className="preferences__avatar" src={tempAvatar || avatar} alt="Avatar" />
       </div>
 
       <input

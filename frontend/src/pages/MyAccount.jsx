@@ -10,15 +10,32 @@ function MyAccount() {
   const [lugaresFavoritos, setLugaresFavoritos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
 
-  if (isLoading) {
-    return <div>Cargando...</div>;
-  }
+  // Efecto para cargar y actualizar los datos del usuario
+  useEffect(() => {
+    const loadUserData = () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (storedUser) {
+        setUserData(storedUser);
+        
+        // Actualizar el avatar cuando cambian los datos del usuario
+        if (storedUser.avatar_url) {
+          setAvatar(`http://localhost:4000/${storedUser.avatar_url}`);
+        } else {
+          setAvatar("https://unavatar.io/substack/bankless");
+        }
+      }
+    };
 
-  if (!isAuthenticated) {
-    window.location.href = "/login";
-    return null;
-  }
+    loadUserData(); // Cargar datos iniciales
+
+    // Configurar un intervalo para verificar cambios
+    const interval = setInterval(loadUserData, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     async function fetchFavoritos() {
@@ -26,7 +43,6 @@ function MyAccount() {
         setLoading(true);
         setError(null);
         
-        // 1. Obtener los IDs de los lugares favoritos
         const favoritosResponse = await axios.get("http://localhost:4000/api/favoritos", {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -38,13 +54,11 @@ function MyAccount() {
           return;
         }
 
-        // 2. Obtener la información completa de cada lugar favorito
         const lugaresResponse = await axios.get("http://localhost:4000/api/lugares");
         const lugaresCompletos = lugaresResponse.data.filter(lugar => 
           favoritosIds.includes(lugar.id_lugar)
         );
 
-        // 3. Marcar cada lugar como favorito
         const lugaresConFavorito = lugaresCompletos.map(lugar => ({
           ...lugar,
           esFavorito: true
@@ -59,18 +73,37 @@ function MyAccount() {
       }
     }
 
-    fetchFavoritos();
+    if (isAuthenticated) {
+      fetchFavoritos();
+    }
   }, [token, isAuthenticated]);
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    window.location.href = "/login";
+    return null;
+  }
 
   if (loading) {
     return <div className="loading">Cargando tus favoritos...</div>;
+  }
+
+  if (!userData) {
+    return <div className="loading">Cargando datos del usuario...</div>;
   }
 
   return (
     <>
       <section className="account">
         <h2 className="account__title-section">Mi cuenta</h2>
-        <UserCard username={user.nombre} email={user.email} />
+        <UserCard 
+          username={userData.nombre} 
+          email={userData.email} 
+          avatar={avatar}
+        />
       </section>
 
       <section className="account">
