@@ -2,11 +2,14 @@
 
 @import './styles/components/header';
 @import './styles/components/modal';
+@import 'styles/components/search-bar';
 
 @import './styles/pages/auth';
 @import './styles/pages/home';
 @import './styles/pages/places';
+@import './styles/pages/_placeDetails';
 @import 'styles/pages/account.scss';
 @import 'styles/pages/preferences';
+
 
   

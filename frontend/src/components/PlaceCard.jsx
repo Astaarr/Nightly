@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function PlaceCard({ place, onFavoritoChange = () => {} }) {
   const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
@@ -9,10 +10,12 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
   const [esFavorito, setEsFavorito] = useState(place.esFavorito || false);
   const [loadingFavorito, setLoadingFavorito] = useState(false);
   const [errorFavorito, setErrorFavorito] = useState(null);
+  const navigate = useNavigate();
 
   const handleToggleFavorito = async () => {
     if (!isAuthenticated) {
-      setErrorFavorito('Debes iniciar sesión para guardar favoritos');
+      // Redirigir al usuario a la página de inicio de sesión
+      navigate('/login');
       return;
     }
 
@@ -50,7 +53,7 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
   };
 
   return (
-    <div className="events__card">
+    <article className="events__card">
       <img
         src={imagenUrl}
         alt={place.nombre}
@@ -68,7 +71,7 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
         <button
           className={`events__fav ${esFavorito ? "events__fav--active" : ""}`}
           onClick={handleToggleFavorito}
-          disabled={loadingFavorito || !isAuthenticated}
+          disabled={loadingFavorito}
           aria-label={esFavorito ? "Quitar de favoritos" : "Añadir a favoritos"}
           title={!isAuthenticated ? "Inicia sesión para guardar favoritos" : ""}
         >
@@ -93,7 +96,7 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
       <div className="events__tags">
         <span className="events__tag events__tag--price">{place.precio} €</span>
       </div>
-    </div>
+    </article>
   );
 }
 

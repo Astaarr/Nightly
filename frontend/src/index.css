@@ -336,6 +336,48 @@ input {
   color: #09090b;
 }
 
+.search-bar {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.search-bar__navbar {
+  width: 100%;
+}
+.search-bar__input {
+  position: relative;
+}
+.search-bar__filtrer-button {
+  right: 1em;
+}
+.search-bar__clear-button {
+  right: 6em;
+}
+.search-bar__categories {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+.search-bar__category {
+  background: transparent;
+  border: 1px solid #a1a1aa;
+}
+.search-bar__category:hover {
+  border: none;
+}
+.search-bar__category--active {
+  background: #e72fa9;
+  border: none;
+}
+
 .auth-form {
   max-width: 50vh;
   width: 100%;
@@ -403,7 +445,7 @@ input {
   font-size: 3em;
 }
 
-.events__clear-button, .events__filtrer-button {
+.search-bar__filtrer-button, .search-bar__clear-button {
   background: none;
   border: none;
   padding: 0;
@@ -416,11 +458,11 @@ input {
   transition: color 0.3s;
   cursor: pointer;
 }
-.events__clear-button:hover, .events__filtrer-button:hover {
+.search-bar__filtrer-button:hover, .search-bar__clear-button:hover {
   background: none;
   opacity: 0.7;
 }
-.events__clear-button:hover, .events__filtrer-button:hover {
+.search-bar__filtrer-button:hover, .search-bar__clear-button:hover {
   color: #fafafa;
   background: none;
 }
@@ -454,16 +496,6 @@ input {
     grid-template-columns: 1fr;
   }
 }
-.events__search-bar {
-  margin: 2em 0;
-  position: relative;
-}
-.events__filtrer-button {
-  right: 1em;
-}
-.events__clear-button {
-  right: 6em;
-}
 .events__card {
   width: 100%;
   height: 12rem;
@@ -491,8 +523,8 @@ input {
   pointer-events: none;
   z-index: -1;
 }
-.events__card:hover {
-  transform: scale(0.98);
+.events__card:hover .events__image {
+  transform: scale(1.2);
 }
 .events__card:hover::after {
   background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9));
@@ -509,6 +541,7 @@ input {
   -o-object-fit: cover;
      object-fit: cover;
   z-index: -10;
+  transition: transform 0.3s;
 }
 .events__header {
   width: 100%;
@@ -583,6 +616,10 @@ input {
 }
 .events__tag:hover, .events__rating:hover {
   background-color: black;
+}
+
+.place {
+  background-color: red !important;
 }
 
 .account {

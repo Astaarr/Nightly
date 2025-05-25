@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import ConfirmModal from "../components/ConfirmModal";
+import { useAuth } from "../context/AuthContext";
 
 function UserPreferences() {
   const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
@@ -17,6 +18,7 @@ function UserPreferences() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -88,6 +90,9 @@ function UserPreferences() {
       }
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
+      
+      // Actualizar el contexto de autenticación para reflejar los cambios en el header
+      login(token, updatedUser);
 
       setAvatarFile(null);
       setShowConfirmModal(false);
