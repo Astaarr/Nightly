@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Places from "../pages/Places";
 import Events from "../pages/Events";
+import Place from "../pages/Place";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import MyAccount from "../pages/MyAccount";
@@ -14,6 +15,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/places" element={<Places />} />
       <Route path="/events" element={<Events />} />
+      <Route path="/place" element={<Place />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<MyAccount />} />

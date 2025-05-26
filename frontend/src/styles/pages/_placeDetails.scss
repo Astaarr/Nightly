@@ -2,40 +2,113 @@
 @use "../mixins" as *;
 
 .place {
+  position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: calc(100vh - $header-height);
 
-  &__swiper {
+
+  &__image {
     position: absolute;
-    @include max-width();
-    height: 100vh;
+    top: 0;
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
     z-index: 1;
   }
 
-  &__image {
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-  }
-
-  &__overlay {
-    position: sticky;
-    top: 50vh;
-    width: 100%;
     z-index: 10;
   }
 
   &__content {
+    position: absolute;
+    top: 40vh;
+    left: 0;
     padding: 2rem;
     border-radius: $radius-border;
     min-height: 50vh;
     width: 100%;
     backdrop-filter: $blur-modal;
+    z-index: 20;
+
+    @include flex(column, nowrap);
+    gap: 2rem;
+  }
+
+  &__sections {
+    width: 100%;
+    @include flex(row, nowrap, space-between, flex-start);
+    @include responsive($width-md) {
+      @include flex(column, nowrap, flex-start, center);
+    }
+  }
+
+  &__section {
+    width: 100%;
+  }
+
+  &__title {
+    position: relative;
+    @include flex(row, nowrap, center, center);
+    width: 100%;
+    height: 45%;
+    font-size: 3em;
+    z-index: 100;
+  }
+
+  &__description {
+    @include flex(row, nowrap, center, center);
+    width: 100%;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    height: 80%;
+  }
+
+  &__item {
+    @include flex(row, nowrap, flex-start, baseline);
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  &__tags{
+    @include flex (row, wrap);
+    gap: 0.5em;
   }
 
   &__tag {
     @include tag();
   }
+
+  &__icon {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid $color-main;
+    color: $color-main;
+  }
+
+  &__view-timetable{
+    transition: color $transition-time;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover{
+      color: $color-secondary;
+    }
+  }
+
+   &__view-timetable-icon{
+    transition: transform $transition-time ;
+   }
 
   &__timetable {
     width: fit-content;
@@ -48,8 +121,10 @@
   }
 
   &__actions {
-    width: 100%;
-    @include flex(row, nowrap, space-between, center);
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 100;
   }
 
   &__action {
@@ -57,5 +132,10 @@
     width: 3em;
     height: 3em;
     font-size: 1em;
+    transition: color $transition-time;
+
+    &:hover {
+      color: $color-main;
+    }
   }
 }
