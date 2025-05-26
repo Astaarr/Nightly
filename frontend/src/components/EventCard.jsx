@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 function EventCard({ event }) {
+  const navigate = useNavigate();
     const imagenUrl = `http://localhost:4000/images/${event.imagen_evento}`;
   
     return (
-      <div className="events__card">
+      <div className="events__card" onClick={() => navigate(`/event/${event.id_evento}`)}>
         <img
           src={imagenUrl}
           alt={event.nombre_evento}

@@ -1,9 +1,43 @@
-import PlaceDetails from "../components/PlaceDetails"
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import PlaceDetails from '../components/PlaceDetails';
 
-function Place(){
-    return(
-        <PlaceDetails />
-    )
+function Place() {
+  const { id } = useParams();
+  const [place, setPlace] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchPlace() {
+      try {
+        const response = await axios.get(`http://localhost:4000/api/lugares/${id}`);
+        setPlace(response.data);
+      } catch (error) {
+        console.error('Error al cargar el lugar:', error);
+        setError('No se pudo cargar la información del lugar');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPlace();
+  }, [id]);
+
+  if (loading) {
+    return <div className="loading">Cargando lugar...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  if (!place) {
+    return <div className="error">No se encontró el lugar</div>;
+  }
+
+  return <PlaceDetails item={place} type="place" />;
 }
 
 export default Place;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function PlaceCard({ place, onFavoritoChange = () => {} }) {
   const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
@@ -53,7 +53,7 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
   };
 
   return (
-    <article className="events__card">
+    <article className="events__card" onClick={() => navigate(`/place/${place.id_lugar}`)}>
       <img
         src={imagenUrl}
         alt={place.nombre}

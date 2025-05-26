@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Places from "../pages/Places";
 import Events from "../pages/Events";
 import Place from "../pages/Place";
+import Event from "../pages/Event";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import MyAccount from "../pages/MyAccount";
@@ -14,8 +15,9 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/places" element={<Places />} />
+      <Route path="/place/:id" element={<Place />} />
       <Route path="/events" element={<Events />} />
-      <Route path="/place" element={<Place />} />
+      <Route path="/event/:id" element={<Event />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<MyAccount />} />
