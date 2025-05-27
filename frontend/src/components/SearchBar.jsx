@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChange }) {
+function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChange, type = "place" }) {
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -9,6 +9,8 @@ function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChan
 
   useEffect(() => {
     const obtenerCategorias = async () => {
+      if (type !== "place") return;
+      
       try {
         setLoading(true);
         setError(null);
@@ -23,12 +25,12 @@ function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChan
     };
 
     obtenerCategorias();
-  }, []);
+  }, [type]);
 
   const handleCategoriaClick = (id) => {
     const nueva = id === categoriaSeleccionada ? null : id;
     setCategoriaSeleccionada(nueva);
-    onCategoriaChange?.(nueva); // Propagar al componente padre
+    onCategoriaChange?.(nueva);
   };
 
   return (
@@ -56,30 +58,32 @@ function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChan
         </div>
       </div>
 
-      <div className="search-bar__categories">
-        <button
-          className={`search-bar__category ${categoriaSeleccionada === null ? "search-bar__category--active" : ""}`}
-          onClick={() => handleCategoriaClick(null)}
-        >
-          Todos
-        </button>
+      {type === "place" && (
+        <div className="search-bar__categories">
+          <button
+            className={`search-bar__category ${categoriaSeleccionada === null ? "search-bar__category--active" : ""}`}
+            onClick={() => handleCategoriaClick(null)}
+          >
+            Todos
+          </button>
 
-        {loading ? (
-          <span>Cargando categorías...</span>
-        ) : error ? (
-          <span className="error">{error}</span>
-        ) : (
-          categorias.map((categoria) => (
-            <button
-              key={categoria.id_categoria}
-              className={`search-bar__category ${categoriaSeleccionada === categoria.id_categoria ? "search-bar__category--active" : ""}`}
-              onClick={() => handleCategoriaClick(categoria.id_categoria)}
-            >
-              {categoria.nombre_categoria}
-            </button>
-          ))
-        )}
-      </div>
+          {loading ? (
+            <span>Cargando categorías...</span>
+          ) : error ? (
+            <span className="error">{error}</span>
+          ) : (
+            categorias.map((categoria) => (
+              <button
+                key={categoria.id_categoria}
+                className={`search-bar__category ${categoriaSeleccionada === categoria.id_categoria ? "search-bar__category--active" : ""}`}
+                onClick={() => handleCategoriaClick(categoria.id_categoria)}
+              >
+                {categoria.nombre_categoria}
+              </button>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }

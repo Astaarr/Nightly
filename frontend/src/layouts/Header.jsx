@@ -45,7 +45,11 @@ const Header = () => {
                 className="header__auth-logged"
                 onClick={handleAuthToggle}
               >
-                <i className="fa-solid fa-user"></i>
+                <img
+                  className="header__auth-avatar"
+                  src={user.avatar_url ? `http://localhost:4000/${user.avatar_url}` : "https://unavatar.io/substack/bankless"}
+                  alt="Avatar usuario"
+                />
                 <span className="header__auth-text"> {user.nombre}</span>
               </button>
 

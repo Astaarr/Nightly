@@ -18,7 +18,7 @@ function UserPreferences() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { updateUser } = useAuth();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -79,20 +79,11 @@ function UserPreferences() {
         setAvatar(fullUrl);
       }
 
-      const user = JSON.parse(localStorage.getItem("user"));
-      const updatedUser = {
-        ...user,
-        nombre,
-      };
-
+      const updatedUserData = { nombre };
       if (avatarUrl) {
-        updatedUser.avatar_url = avatarUrl;
+        updatedUserData.avatar_url = avatarUrl;
       }
-
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      
-      // Actualizar el contexto de autenticación para reflejar los cambios en el header
-      login(token, updatedUser);
+      updateUser(updatedUserData);
 
       setAvatarFile(null);
       setShowConfirmModal(false);

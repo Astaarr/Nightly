@@ -1,41 +1,21 @@
 import { useAuth } from "../context/AuthContext";
 import UserCard from "../components/UserCard";
 import PlaceCard from "../components/PlaceCard";
+import EventCard from "../components/EventCard";
 import PlaceGrid from "../components/PlaceGrid";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function MyAccount() {
   const { user, isAuthenticated, isLoading, token } = useAuth();
   const [lugaresFavoritos, setLugaresFavoritos] = useState([]);
+  const [eventosReservados, setEventosReservados] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingReservas, setLoadingReservas] = useState(true);
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
+  const [errorReservas, setErrorReservas] = useState(null);
 
-  // Efecto para cargar y actualizar los datos del usuario
-  useEffect(() => {
-    const loadUserData = () => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      if (storedUser) {
-        setUserData(storedUser);
-        
-        // Actualizar el avatar cuando cambian los datos del usuario
-        if (storedUser.avatar_url) {
-          setAvatar(`http://localhost:4000/${storedUser.avatar_url}`);
-        } else {
-          setAvatar("https://unavatar.io/substack/bankless");
-        }
-      }
-    };
-
-    loadUserData(); // Cargar datos iniciales
-
-    // Configurar un intervalo para verificar cambios
-    const interval = setInterval(loadUserData, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     async function fetchFavoritos() {
@@ -73,8 +53,32 @@ function MyAccount() {
       }
     }
 
+    async function fetchReservas() {
+      try {
+        setLoadingReservas(true);
+        setErrorReservas(null);
+        
+        const reservasResponse = await axios.get("http://localhost:4000/api/reservas", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (reservasResponse.data.length === 0) {
+          setEventosReservados([]);
+          return;
+        }
+
+        setEventosReservados(reservasResponse.data);
+      } catch (error) {
+        console.error("Error al cargar reservas:", error);
+        setErrorReservas("Error al cargar tus eventos reservados. Inténtalo de nuevo más tarde.");
+      } finally {
+        setLoadingReservas(false);
+      }
+    }
+
     if (isAuthenticated) {
       fetchFavoritos();
+      fetchReservas();
     }
   }, [token, isAuthenticated]);
 
@@ -87,12 +91,8 @@ function MyAccount() {
     return null;
   }
 
-  if (loading) {
-    return <div className="loading">Cargando tus favoritos...</div>;
-  }
-
-  if (!userData) {
-    return <div className="loading">Cargando datos del usuario...</div>;
+  if (loading || loadingReservas) {
+    return <div className="loading">Cargando tu información...</div>;
   }
 
   return (
@@ -100,9 +100,9 @@ function MyAccount() {
       <section className="account">
         <h2 className="account__title-section">Mi cuenta</h2>
         <UserCard 
-          username={userData.nombre} 
-          email={userData.email} 
-          avatar={avatar}
+          username={user.nombre} 
+          email={user.email} 
+          avatar={user.avatar_url ? `http://localhost:4000/${user.avatar_url}` : "https://unavatar.io/substack/bankless"}
         />
       </section>
 
@@ -113,8 +113,8 @@ function MyAccount() {
           <div className="error-message">{error}</div>
         ) : lugaresFavoritos.length === 0 ? (
           <div className="no-favorites">
-            <p>Aún no has agregado ningún lugar a favoritos.</p>
-            <p>¡Explora nuestros lugares y guarda tus favoritos!</p>
+            <p className="account__message-empty">Aún no has agregado ningún lugar a favoritos.</p>
+            <p className="account__message-empty"><Link to="/places" className="auth-form__link">¡Explora nuestros lugares!</Link></p>
           </div>
         ) : (
           <PlaceGrid>
@@ -126,6 +126,31 @@ function MyAccount() {
                   if (!estado) {
                     setLugaresFavoritos(prev => prev.filter(f => f.id_lugar !== id));
                   }
+                }}
+              />
+            ))}
+          </PlaceGrid>
+        )}
+      </section>
+
+      <section className="account">
+        <h2 className="account__title-section">Mis eventos reservados</h2>
+        
+        {errorReservas ? (
+          <div className="error-message">{errorReservas}</div>
+        ) : eventosReservados.length === 0 ? (
+          <div className="no-favorites">
+            <p className="account__message-empty">Aún no has reservado ningún evento.</p>
+            <p className="account__message-empty"><Link to="/events" className="auth-form__link">¡Descubre nuestros eventos!</Link></p>
+          </div>
+        ) : (
+          <PlaceGrid>
+            {eventosReservados.map((evento) => (
+              <EventCard 
+                key={evento.id_evento} 
+                event={evento}
+                onReservaChange={(id) => {
+                  setEventosReservados(prev => prev.filter(e => e.id_evento !== id));
                 }}
               />
             ))}

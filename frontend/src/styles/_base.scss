@@ -133,3 +133,27 @@ input {
     }
   }
 }
+
+// Scroll Bar
+/* Fondo de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+}
+
+/* Estilo del riel */
+::-webkit-scrollbar-track {
+    background: $color-translucent;
+    border-radius: 5px;
+}
+
+/* Estilo del "thumb" (parte que se mueve) */
+::-webkit-scrollbar-thumb {
+    background: $color-main;
+    border-radius: $radius-border-tag;
+}
+
+/* Cambio de color al pasar el cursor */
+::-webkit-scrollbar-thumb:hover {
+    background: $color-secondary;
+}
