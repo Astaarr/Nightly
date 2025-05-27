@@ -90,6 +90,7 @@ function Places() {
           console.log("Categoría seleccionada:", idCategoria);
           setCategoriaSeleccionada(idCategoria);
         }}
+        categoriaSeleccionada={categoriaSeleccionada}
       />
 
       <PlaceGrid>
