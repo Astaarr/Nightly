@@ -2,6 +2,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import EventCard from "../components/EventCard";
 
 function PlaceCard({ place, onFavoritoChange = () => { } }) {
   const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
@@ -97,7 +98,7 @@ function PlaceCard({ place, onFavoritoChange = () => { } }) {
       </div>
 
       <div className="events__tags">
-        <span className="events__tag events__tag--price">{place.precio} €</span>
+        <span className="events__tag events__tag--price">{place.precio}</span>
       </div>
     </article>
   );

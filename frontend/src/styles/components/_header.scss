@@ -1,7 +1,6 @@
 @use "../variables" as *;
 @use "../mixins" as *;
 
-
 .header {
   width: 100%;
   position: sticky;
@@ -29,15 +28,24 @@
     gap: 1.5rem;
   }
 
+  &__auth-avatar {
+    width: 2.5em;
+    height: 2.5em;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
   &__auth-text {
     @include hide-mobile();
   }
 
-  &__auth-logged{
+  &__auth-logged {
     @include reset_button();
+    @include flex(row, nowrap, center, center);
+    gap: 1em;
   }
 
-  &__auth-logout{
+  &__auth-logout {
     @include reset_button();
     font-weight: normal;
     color: $color-error;
@@ -49,7 +57,7 @@
     @include hide-desktop();
   }
 
-  &__auth-info{
+  &__auth-info {
     position: absolute;
     top: $header-height;
     right: 0;
@@ -63,18 +71,17 @@
     }
   }
 
-
-  &__auth-username{
+  &__auth-username {
     display: block;
     padding-bottom: 0.5em;
 
-    &::after{
+    &::after {
       content: "";
       display: block;
       width: 2em;
       height: 2px;
       background: $color-white;
-      margin-top: 0.5em;  
+      margin-top: 0.5em;
     }
   }
 

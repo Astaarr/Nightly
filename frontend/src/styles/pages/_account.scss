@@ -10,6 +10,10 @@
     margin: 1em 0;
   }
 
+  &__message-empty{
+    text-align: center;
+  }
+
   @include responsive($width-md) {
     padding: 1em 0;
   }

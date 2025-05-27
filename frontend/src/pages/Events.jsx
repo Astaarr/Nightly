@@ -40,6 +40,7 @@ function Events() {
         value={busqueda}
         onChange={setBusqueda}
         placeholder="Buscar eventos..."
+        type="event"
       />
 
       <PlaceGrid>

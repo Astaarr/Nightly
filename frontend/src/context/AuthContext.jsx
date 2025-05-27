@@ -60,6 +60,12 @@ export function AuthProvider({ children }) {
     return token ? { Authorization: `Bearer ${token}` } : {};
   }, [token]);
 
+  const updateUser = useCallback((userData) => {
+    const updatedUser = { ...user, ...userData };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  }, [user]);
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -68,7 +74,8 @@ export function AuthProvider({ children }) {
       token,
       login, 
       logout,
-      getAuthHeader
+      getAuthHeader,
+      updateUser
     }}>
       {children}
     </AuthContext.Provider>

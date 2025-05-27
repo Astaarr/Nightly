@@ -25,7 +25,14 @@
 
   &__categories {
     width: 100%;
-    @include flex(row, wrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; 
+    cursor: grab;
+    &::-webkit-scrollbar {
+      display: none; 
+    }
     gap: 1em;
   }
 
