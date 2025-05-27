@@ -104,11 +104,11 @@ function PlaceDetails({ item, type }) {
                 <i className="place__icon fa-solid fa-calendar-days"></i>
                 <div className="place__details">
                   <h3 className="place__details-name">Horario</h3>
-                  <span 
-                    className="place__view-timetable" 
+                  <span
+                    className="place__view-timetable"
                     onClick={toggleTimetable}
                   >
-                    Ver horarios <i 
+                    Ver horarios <i
                       className="place__view-timetable-icon fa-solid fa-angle-down"
                       style={{ transform: showTimetable ? 'rotate(180deg)' : 'rotate(0deg)' }}
                     ></i>
@@ -146,7 +146,7 @@ function PlaceDetails({ item, type }) {
                   <h3 className="place__details-name">Precio Medio</h3>
                   <span className="place__price">
                     {type === 'place' ? (
-                      Array(item.precio).fill().map((_, i) => (
+                      [...item.precio].map((_, i) => (
                         <i key={i} className="fa-solid fa-euro-sign"></i>
                       ))
                     ) : (

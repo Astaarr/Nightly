@@ -204,3 +204,31 @@ VALUES
     (1, 1, 2),
     (2, 2, 1),
     (3, 3, 3);
+
+-- Crear la tabla 'horarios_lugar' si no existe
+CREATE TABLE IF NOT EXISTS horarios_lugar (
+  id_horario INT AUTO_INCREMENT PRIMARY KEY,
+  id_lugar INT NOT NULL,
+  dia VARCHAR(20) NOT NULL,
+  hora_apertura TIME NOT NULL,
+  hora_cierre TIME NOT NULL,
+  FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE,
+  UNIQUE (id_lugar, dia)
+);
+
+-- Insertar horarios de ejemplo
+INSERT IGNORE INTO horarios_lugar (id_lugar, dia, hora_apertura, hora_cierre) VALUES
+(1, 'Lunes', '16:00:00', '00:00:00'),
+(1, 'Martes', '16:00:00', '00:00:00'),
+(1, 'Miércoles', '16:00:00', '00:00:00'),
+(1, 'Jueves', '16:00:00', '01:00:00'),
+(1, 'Viernes', '18:00:00', '03:00:00'),
+(1, 'Sábado', '18:00:00', '03:00:00'),
+(1, 'Domingo', '16:00:00', '00:00:00'),
+
+(2, 'Jueves', '20:00:00', '02:00:00'),
+(2, 'Viernes', '20:00:00', '03:00:00'),
+(2, 'Sábado', '20:00:00', '03:00:00'),
+
+(3, 'Viernes', '19:00:00', '02:00:00'),
+(3, 'Sábado', '19:00:00', '02:00:00');
