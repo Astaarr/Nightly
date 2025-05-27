@@ -32,7 +32,7 @@ function PlaceDetails({ item, type }) {
 
     try {
       if (esFavorito) {
-        await axios.delete(`http://localhost:4000/api/favoritos/lugar/${item.id_lugar}`, {
+        await axios.delete(`http://localhost:4000/api/favoritos/${item.id_lugar}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEsFavorito(false);
