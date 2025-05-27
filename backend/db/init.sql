@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS nightly CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE nightly;
 
--- Crear la tabla 'usuarios' si no existe
+-- Crear tabla usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -13,14 +13,13 @@ CREATE TABLE IF NOT EXISTS usuarios (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insertar usuarios de prueba si no existen
 INSERT IGNORE INTO usuarios (nombre, email, password_hash, fecha_nacimiento, avatar_url)
 VALUES 
-    ('Juan Pérez', 'juan@dominio.com', '$2a$10$hashdeprueba1', '1995-04-20', 'avatars/user_1.png'), -- contraseña: prueba123
+('Juan Pérez', 'juan@dominio.com', '$2a$10$hashdeprueba1', '1995-04-20', 'avatars/user_1.png'), -- contraseña: prueba123
     ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15', 'avatars/user_2.png'), -- contraseña: prueba123
     ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05', 'avatars/user_3.png'); -- contraseña: prueba123
 
--- Crear la tabla 'categorias' si no existe
+-- Crear tabla categorias
 CREATE TABLE IF NOT EXISTS categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre_categoria VARCHAR(100) NOT NULL UNIQUE,
@@ -30,13 +29,21 @@ CREATE TABLE IF NOT EXISTS categorias (
     FOREIGN KEY (parent_id) REFERENCES categorias(id_categoria) ON DELETE SET NULL
 );
 
--- Insertar categorías principales
-INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono) VALUES
-('Salir de fiesta', 'Discotecas y fiestas nocturnas', 'https://cdn.example.com/icons/fiesta.png'),
-('Tomar algo', 'Bares, rooftops y pubs', 'https://cdn.example.com/icons/tomar_algo.png'),
-('Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
-('Planes con acción', 'Actividades con movimiento', 'https://cdn.example.com/icons/accion.png'),
-('Planes culturales', 'Arte, música y espectáculos', 'https://cdn.example.com/icons/cultural.png');
+-- Insertar categorías principales con IDs fijos:
+-- TRUCO: Insertar con ID explícito forzando la auto_increment (requiere desactivar y reactivar temporalmente la restricción si es necesario)
+SET FOREIGN_KEY_CHECKS=0;
+
+INSERT IGNORE INTO categorias (id_categoria, nombre_categoria, descripcion, icono) VALUES
+(1, 'Salir de fiesta', 'Discotecas y fiestas nocturnas', 'https://cdn.example.com/icons/fiesta.png'),
+(2, 'Tomar algo', 'Bares, rooftops y pubs', 'https://cdn.example.com/icons/tomar_algo.png'),
+(3, 'Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
+(4, 'Planes con acción', 'Actividades con movimiento', 'https://cdn.example.com/icons/accion.png'),
+(5, 'Planes culturales', 'Arte, música y espectáculos', 'https://cdn.example.com/icons/cultural.png');
+
+SET FOREIGN_KEY_CHECKS=1;
+
+-- Ajustar auto_increment para que continúe desde el último ID insertado:
+ALTER TABLE categorias AUTO_INCREMENT = 6;
 
 -- Subcategorías de 'Salir de fiesta' (parent_id = 1)
 INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
@@ -192,12 +199,12 @@ VALUES
 
 -- Sala Equis (id_lugar: 4)
 (4, 'Cine + Indie Live', 'Proyección de cortos + concierto indie acústico', '2025-06-22',
- 8.00, 'Indie', 'Casual', 'eventos/equis_cineindie.png',
+ 8.00, 'Indie', 'Casual', 'eventos/equis_cineindie.jpg',
  18, 40, 'informal', 'tranquilo', 'pareja'),
 
 -- Bodega de la Ardosa (id_lugar: 6)
 (6, 'Cerveza y Flamenco', 'Muestra de flamenco en vivo con degustación de cervezas artesanas', '2025-09-14',
- 10.00, 'Flamenco', 'Rústico', 'eventos/ardosa_flamenco.png',
+ 10.00, 'Flamenco', 'Rústico', 'eventos/ardosa_flamenco.jpg',
  30, 60, 'informal', 'tranquilo', 'pareja'),
 
 -- Fabrik (id_lugar: 9)
@@ -207,42 +214,42 @@ VALUES
 
 -- Shôko Madrid (id_lugar: 10)
 (10, 'R&B Sunset Vibes', 'R&B moderno con cócteles al aire libre desde el atardecer', '2025-07-10',
- 20.00, 'R&B', 'Urbano', 'eventos/shoko_rnb.png',
+ 20.00, 'R&B', 'Urbano', 'eventos/shoko_rnb.jpg',
  21, 35, 'formal', 'vibrante', 'pareja'),
 
 -- Sala Mon (id_lugar: 11)
 (11, 'Indie Rock Night', 'Noche de bandas indie con cerveza artesanal y ambiente alternativo', '2025-06-15',
- 16.00, 'Indie Rock', 'Informal', 'eventos/mon_indierock.png',
+ 16.00, 'Indie Rock', 'Informal', 'eventos/mon_indierock.jpg',
  20, 40, 'informal', 'vibrante', 'grupo'),
 
 -- La Venencia (id_lugar: 12)
 (12, 'Versos y Vinos', 'Recital poético con degustación de vino jerezano', '2025-10-05',
- 10.00, 'Instrumental', 'Elegante', 'eventos/venencia_poetas.png',
+ 10.00, 'Instrumental', 'Elegante', 'eventos/venencia_poetas.jpg',
  30, 65, 'formal', 'tranquilo', 'pareja'),
 
 -- Oh My Club (id_lugar: 2)
 (2, 'Cena & Show Deluxe', 'Cena gourmet con espectáculo de cabaret y música house', '2025-07-12',
- 50.00, 'House', 'Elegante', 'eventos/ohmyclub_dinner.png',
+ 50.00, 'House', 'Elegante', 'eventos/ohmyclub_dinner.jpg',
  25, 45, 'formal', 'vibrante', 'pareja'),
 
 -- La Vía Láctea (id_lugar: 5)
 (5, 'Rock & Roll Revival', 'Clásicos del rock de los 70s y 80s con banda en directo', '2025-06-28',
- 12.00, 'Rock', 'Casual', 'eventos/vialactea_rock.png',
+ 12.00, 'Rock', 'Casual', 'eventos/vialactea_rock.jpg',
  18, 40, 'informal', 'vibrante', 'grupo'),
 
 -- El Jardín Secreto (id_lugar: 7)
 (7, 'Noches Románticas', 'Velada íntima con jazz en vivo y cócteles especiales', '2025-07-20',
- 18.00, 'Jazz', 'Formal', 'eventos/jardin_jazz.png',
+ 18.00, 'Jazz', 'Formal', 'eventos/jardin_jazz.jpg',
  21, 50, 'formal', 'tranquilo', 'pareja'),
 
 -- The Irish Rover (id_lugar: 8)
 (8, 'Noche Irlandesa', 'Concierto de folk irlandés y degustación de cervezas', '2025-08-01',
- 10.00, 'Folk', 'Casual', 'eventos/irish_folk.png',
+ 10.00, 'Folk', 'Casual', 'eventos/irish_folk.jpg',
  18, 50, 'informal', 'vibrante', 'grupo'),
 
 -- Azotea del Círculo de Bellas Artes (id_lugar: 13)
 (13, 'Sunset Chillout', 'DJ set con ambient chill y vistas panorámicas', '2025-07-25',
- 25.00, 'Chillout', 'Elegante', 'eventos/azotea_chill.png',
+ 25.00, 'Chillout', 'Elegante', 'eventos/azotea_chill.jpg',
  21, 60, 'formal', 'tranquilo', 'pareja'),
 
 -- Bowling Chamartín (id_lugar: 14)
@@ -252,7 +259,7 @@ VALUES
 
 -- Medias Puri (id_lugar: 15)
 (15, 'Puri Underground Show', 'Noche con performances alternativas y música electrónica', '2025-08-17',
- 35.00, 'Electrónica', 'Libre', 'eventos/puri_show.png',
+ 35.00, 'Electrónica', 'Libre', 'eventos/puri_show.jpg',
  21, 50, 'informal', 'vibrante', 'grupo'),
 
 -- La Neomudéjar (id_lugar: 16)
@@ -267,7 +274,7 @@ VALUES
 
 -- 1862 Dry Bar (id_lugar: 18)
 (18, 'Coctelería y Jazz', 'Clase de mixología con música en vivo estilo jazz', '2025-06-27',
- 20.00, 'Jazz', 'Formal', 'eventos/1862_jazzmix.png',
+ 20.00, 'Jazz', 'Formal', 'eventos/1862_jazzmix.jpg',
  21, 55, 'formal', 'tranquilo', 'pareja');
 
 -- Crear la tabla 'favoritos_lugares' si no existe
@@ -281,12 +288,16 @@ CREATE TABLE IF NOT EXISTS favoritos_lugares (
     FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE
 );
 
--- Insertar favoritos de prueba
-INSERT IGNORE INTO favoritos_lugares (id_usuario, id_lugar)
-VALUES
-    (1, 1),
-    (2, 2),
-    (3, 3);
+-- Insertar favoritos de ejemplo
+INSERT IGNORE INTO favoritos_lugares (id_usuario, id_lugar) VALUES
+(1, 1),  -- Juan Pérez guarda Teatro Kapital
+(1, 4),  -- Juan guarda Sala Equis
+(2, 2),  -- Carlos guarda Oh My Club
+(2, 3),  -- Carlos guarda Opium Madrid
+(2, 9),  -- Carlos guarda Fabrik
+(3, 7),  -- Laura guarda El Jardín Secreto
+(3, 5),  -- Laura guarda La Vía Láctea
+(1, 10); -- Juan también guarda Shoko Madrid
 
 
 -- Crear la tabla 'reservas_eventos' si no existe
@@ -303,9 +314,15 @@ CREATE TABLE IF NOT EXISTS reservas_eventos (
 
 INSERT INTO reservas_eventos (id_usuario, id_evento, cantidad)
 VALUES
-    (1, 1, 2),
-    (2, 2, 1),
-    (3, 3, 3);
+(1, 1, 2),   -- Juan y su pareja a Kapital Gold Nights
+(2, 2, 1),   -- Carlos va solo a la White Party
+(3, 4, 2),   -- Laura y su pareja al Cine + Indie Live
+(1, 5, 3),   -- Juan con 2 amigos al Techno Reload en Fabrik
+(3, 11, 2),  -- Laura y su pareja a Indie Rock Night en Sala Mon
+(2, 8, 4),   -- Carlos y tres amigos a la Noche Irlandesa en The Irish Rover
+(1, 6, 2),   -- Juan con su pareja a R&B Sunset Vibes en Shôko Madrid
+(2, 13, 2),  -- Carlos y su novia al Sunset Chillout en la Azotea del Círculo
+(3, 16, 1);  -- Laura va sola a la experiencia de Arte Sonoro en La Neomudéjar
 
 -- Crear la tabla 'horarios_lugar' si no existe
 CREATE TABLE IF NOT EXISTS horarios_lugar (
