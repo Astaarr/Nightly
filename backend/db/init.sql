@@ -23,7 +23,7 @@ VALUES
 -- Crear la tabla 'categorias' si no existe
 CREATE TABLE IF NOT EXISTS categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_categoria VARCHAR(100) NOT NULL,
+    nombre_categoria VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT,
     icono VARCHAR(255),
     parent_id INT DEFAULT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS categorias (
 );
 
 -- Insertar categorías principales
-INSERT INTO categorias (nombre_categoria, descripcion, icono) VALUES
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono) VALUES
 ('Salir de fiesta', 'Discotecas y fiestas nocturnas', 'https://cdn.example.com/icons/fiesta.png'),
 ('Tomar algo', 'Bares, rooftops y pubs', 'https://cdn.example.com/icons/tomar_algo.png'),
 ('Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
@@ -39,19 +39,19 @@ INSERT INTO categorias (nombre_categoria, descripcion, icono) VALUES
 ('Planes culturales', 'Arte, música y espectáculos', 'https://cdn.example.com/icons/cultural.png');
 
 -- Subcategorías de 'Salir de fiesta' (parent_id = 1)
-INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Comercial', 'Música comercial y mainstream', 'https://cdn.example.com/icons/comercial.png', 1),
 ('Techno', 'Música techno y electrónica underground', 'https://cdn.example.com/icons/techno.png', 1),
 ('Reggaetón', 'Música urbana y reggaetón', 'https://cdn.example.com/icons/reggaeton.png', 1);
 
 -- Subcategorías de 'Tomar algo' (parent_id = 2)
-INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Rooftops', 'Bares en azoteas', 'https://cdn.example.com/icons/rooftop.png', 2),
 ('Pubs', 'Pubs y bares clásicos', 'https://cdn.example.com/icons/pubs.png', 2),
 ('Bares ocultos', 'Bares escondidos y secretos', 'https://cdn.example.com/icons/ocultos.png', 2);
 
 -- Subcategorías de 'Planes gastronómicos' (parent_id = 3)
-INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Romántico', 'Cenas íntimas y con ambiente', 'https://cdn.example.com/icons/romantico.png', 3),
 ('Tradicional', 'Comida típica y local', 'https://cdn.example.com/icons/tradicional.png', 3),
 ('Alternativo', 'Gastronomía original y moderna', 'https://cdn.example.com/icons/alternativo.png', 3),
@@ -59,14 +59,14 @@ INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Estético', 'Lugares con diseño y estética llamativa', 'https://cdn.example.com/icons/estetico.png', 3);
 
 -- Subcategorías de 'Planes con acción' (parent_id = 4)
-INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Karting nocturno', 'Carreras de karts por la noche', 'https://cdn.example.com/icons/karting.png', 4),
 ('Golf nocturno', 'Golf en escenarios iluminados', 'https://cdn.example.com/icons/golf.png', 4),
 ('Bolera', 'Bolos con amigos', 'https://cdn.example.com/icons/bolos.png', 4),
 ('Recreativo', 'Arcades y juegos interactivos', 'https://cdn.example.com/icons/recreativo.png', 4);
 
 -- Subcategorías de 'Planes culturales' (parent_id = 5)
-INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 ('Música en vivo', 'Conciertos y bandas en directo', 'https://cdn.example.com/icons/musica.png', 5),
 ('Teatro', 'Obras, comedia y monólogos', 'https://cdn.example.com/icons/teatro.png', 5),
 ('Arte', 'Museos, exposiciones y galerías', 'https://cdn.example.com/icons/arte.png', 5);
@@ -76,7 +76,7 @@ INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 CREATE TABLE IF NOT EXISTS lugares (
     id_lugar INT AUTO_INCREMENT PRIMARY KEY,
     id_categoria INT,
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT,
     direccion VARCHAR(255),
     ciudad VARCHAR(100),
@@ -157,7 +157,7 @@ VALUES
 CREATE TABLE IF NOT EXISTS eventos (
     id_evento INT AUTO_INCREMENT PRIMARY KEY,
     id_lugar INT NOT NULL,
-    nombre_evento VARCHAR(100) NOT NULL,
+    nombre_evento VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT,
     fecha_evento DATE NOT NULL,
     precio_entrada DECIMAL(6,2),
@@ -306,3 +306,31 @@ VALUES
     (1, 1, 2),
     (2, 2, 1),
     (3, 3, 3);
+
+-- Crear la tabla 'horarios_lugar' si no existe
+CREATE TABLE IF NOT EXISTS horarios_lugar (
+  id_horario INT AUTO_INCREMENT PRIMARY KEY,
+  id_lugar INT NOT NULL,
+  dia VARCHAR(20) NOT NULL,
+  hora_apertura TIME NOT NULL,
+  hora_cierre TIME NOT NULL,
+  FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE,
+  UNIQUE (id_lugar, dia)
+);
+
+-- Insertar horarios de ejemplo
+INSERT IGNORE INTO horarios_lugar (id_lugar, dia, hora_apertura, hora_cierre) VALUES
+(1, 'Lunes', '16:00:00', '00:00:00'),
+(1, 'Martes', '16:00:00', '00:00:00'),
+(1, 'Miércoles', '16:00:00', '00:00:00'),
+(1, 'Jueves', '16:00:00', '01:00:00'),
+(1, 'Viernes', '18:00:00', '03:00:00'),
+(1, 'Sábado', '18:00:00', '03:00:00'),
+(1, 'Domingo', '16:00:00', '00:00:00'),
+
+(2, 'Jueves', '20:00:00', '02:00:00'),
+(2, 'Viernes', '20:00:00', '03:00:00'),
+(2, 'Sábado', '20:00:00', '03:00:00'),
+
+(3, 'Viernes', '19:00:00', '02:00:00'),
+(3, 'Sábado', '19:00:00', '02:00:00');

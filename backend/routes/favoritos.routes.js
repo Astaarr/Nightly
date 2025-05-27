@@ -11,6 +11,6 @@ const router = express.Router();
 
 router.get('/', verifyToken, getFavoritos);
 router.post('/', verifyToken, addFavorito);
-router.delete('/:id_lugar', verifyToken, removeFavorito);
+router.delete('/lugar/:id_lugar', verifyToken, removeFavorito);
 
 export default router;

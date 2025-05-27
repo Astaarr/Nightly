@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 function PlaceDetails({ item, type }) {
   const [showTimetable, setShowTimetable] = useState(false);
   const [esFavorito, setEsFavorito] = useState(item.esFavorito || false);
+  const [loadingFavorito, setLoadingFavorito] = useState(false);
+  const [errorFavorito, setErrorFavorito] = useState(null);
   const navigate = useNavigate();
+  const { isAuthenticated, token } = useAuth();
 
   const toggleTimetable = () => {
     setShowTimetable(!showTimetable);
@@ -12,6 +17,41 @@ function PlaceDetails({ item, type }) {
 
   const handleBack = () => {
     navigate(type === 'place' ? '/places' : '/events');
+  };
+
+  const handleToggleFavorito = async (e) => {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    if (loadingFavorito) return;
+    setLoadingFavorito(true);
+    setErrorFavorito(null);
+
+    try {
+      if (esFavorito) {
+        await axios.delete(`http://localhost:4000/api/favoritos/${item.id_lugar}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setEsFavorito(false);
+      } else {
+        await axios.post(
+          "http://localhost:4000/api/favoritos",
+          { id_lugar: item.id_lugar },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setEsFavorito(true);
+      }
+    } catch (error) {
+      console.error("Error al cambiar favorito:", error);
+      setErrorFavorito(
+        error.response?.data?.message || 'Error al actualizar favoritos. Inténtalo de nuevo.'
+      );
+    } finally {
+      setLoadingFavorito(false);
+    }
   };
 
   return (
@@ -27,7 +67,6 @@ function PlaceDetails({ item, type }) {
           e.target.src = "https://placehold.co/300x200?text=Sin+Imagen";
         }}
       />
-    
 
       <div className="place__actions">
         <button className="place__action" onClick={handleBack}>
@@ -65,13 +104,13 @@ function PlaceDetails({ item, type }) {
                 <i className="place__icon fa-solid fa-calendar-days"></i>
                 <div className="place__details">
                   <h3 className="place__details-name">Horario</h3>
-                  <span 
-                    className="place__view-timetable" 
+                  <span
+                    className="place__view-timetable"
                     onClick={toggleTimetable}
                   >
-                    Ver horarios <i 
+                    Ver horarios <i
                       className="place__view-timetable-icon fa-solid fa-angle-down"
-                      style={{ transform: showTimetable ? 'rotate(180deg)' : 'rotate(0deg)'}}
+                      style={{ transform: showTimetable ? 'rotate(180deg)' : 'rotate(0deg)' }}
                     ></i>
                   </span>
                   {showTimetable && (
@@ -98,7 +137,6 @@ function PlaceDetails({ item, type }) {
                   )}
                 </div>
               </div>
-
             </article>
 
             <article className="place__section">
@@ -108,7 +146,7 @@ function PlaceDetails({ item, type }) {
                   <h3 className="place__details-name">Precio Medio</h3>
                   <span className="place__price">
                     {type === 'place' ? (
-                      Array(item.precio).fill().map((_, i) => (
+                      [...item.precio].map((_, i) => (
                         <i key={i} className="fa-solid fa-euro-sign"></i>
                       ))
                     ) : (
@@ -139,13 +177,21 @@ function PlaceDetails({ item, type }) {
               </div>
             </article>
           </div>
-          <button className="place__fav-button">
-            {type === 'place' ? (
-              <><i className="fa-regular fa-heart"></i> Favoritos</>
-            ) : (
-              <><i className="fa-regular fa-calendar-check"></i> Reservar</>
-            )}
+
+          <button
+            className={`place__fav-button ${esFavorito ? "place__fav-button--active" : ""}`}
+            onClick={handleToggleFavorito}
+            disabled={loadingFavorito}
+          >
+            <i className={esFavorito ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
+            {esFavorito ? " Guardado" : " Favoritos"}
           </button>
+
+          {errorFavorito && (
+            <div className="place__error">
+              {errorFavorito}
+            </div>
+          )}
         </section>
       </div>
     </section>

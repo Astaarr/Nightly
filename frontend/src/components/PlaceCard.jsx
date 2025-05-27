@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-function PlaceCard({ place, onFavoritoChange = () => {} }) {
+function PlaceCard({ place, onFavoritoChange = () => { } }) {
   const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
   const valoracionNumerica = Number(place.valoracion).toFixed(1);
   const { token, isAuthenticated } = useAuth();
@@ -42,7 +42,7 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
     } catch (error) {
       console.error("Error al cambiar favorito:", error);
       setErrorFavorito(
-        error.response?.data?.message || 
+        error.response?.data?.message ||
         'Error al actualizar favoritos. Inténtalo de nuevo.'
       );
       // Revertir el cambio visual si hay error
@@ -70,7 +70,10 @@ function PlaceCard({ place, onFavoritoChange = () => {} }) {
         </span>
         <button
           className={`events__fav ${esFavorito ? "events__fav--active" : ""}`}
-          onClick={handleToggleFavorito}
+          onClick={(e) => {
+            e.stopPropagation(); 
+            handleToggleFavorito();
+          }}
           disabled={loadingFavorito}
           aria-label={esFavorito ? "Quitar de favoritos" : "Añadir a favoritos"}
           title={!isAuthenticated ? "Inicia sesión para guardar favoritos" : ""}

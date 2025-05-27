@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function SearchBar({ value, onChange, placeholder = "Buscar..." }) {
+function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChange }) {
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,9 @@ function SearchBar({ value, onChange, placeholder = "Buscar..." }) {
   }, []);
 
   const handleCategoriaClick = (id) => {
-    setCategoriaSeleccionada(id === categoriaSeleccionada ? null : id);
+    const nueva = id === categoriaSeleccionada ? null : id;
+    setCategoriaSeleccionada(nueva);
+    onCategoriaChange?.(nueva); // Propagar al componente padre
   };
 
   return (
@@ -42,7 +44,7 @@ function SearchBar({ value, onChange, placeholder = "Buscar..." }) {
           />
           {value && (
             <button
-              className="search-bar__clear-button" 
+              className="search-bar__clear-button"
               onClick={() => onChange("")}
             >
               <i className="fa-solid fa-xmark"></i>
@@ -53,14 +55,15 @@ function SearchBar({ value, onChange, placeholder = "Buscar..." }) {
           </button>
         </div>
       </div>
+
       <div className="search-bar__categories">
-        <button 
+        <button
           className={`search-bar__category ${categoriaSeleccionada === null ? "search-bar__category--active" : ""}`}
           onClick={() => handleCategoriaClick(null)}
         >
           Todos
         </button>
-        
+
         {loading ? (
           <span>Cargando categorías...</span>
         ) : error ? (

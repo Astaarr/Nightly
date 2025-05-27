@@ -10,36 +10,48 @@ function Places() {
   const [lugares, setLugares] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (authLoading) return;
 
-    async function fetchData() {
+    const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
-        
-        // Obtener lugares
-        const lugaresResponse = await axios.get("http://localhost:4000/api/lugares");
+
+        // Construir la URL con query param si hay categoría seleccionada
+        let url = "http://localhost:4000/api/lugares";
+        if (categoriaSeleccionada) {
+          url += `?categoria=${categoriaSeleccionada}`;
+        }
+
+        const lugaresResponse = await axios.get(url);
         let lugaresData = lugaresResponse.data;
 
-        // Obtener favoritos si está autenticado
+        // Marcar favoritos si el usuario está logueado
         if (isAuthenticated && token) {
           try {
             const favoritosResponse = await axios.get(
-              "http://localhost:4000/api/favoritos", 
-              { headers: { Authorization: `Bearer ${token}` } }
+              "http://localhost:4000/api/favoritos",
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
-            
-            const favoritosIds = favoritosResponse.data.map(fav => fav.id_lugar);
-            lugaresData = lugaresData.map(lugar => ({
+
+            const favoritosIds = favoritosResponse.data.map(
+              (fav) => fav.id_lugar
+            );
+
+            lugaresData = lugaresData.map((lugar) => ({
               ...lugar,
               esFavorito: favoritosIds.includes(lugar.id_lugar),
             }));
           } catch (favoritosError) {
             console.error("Error al cargar favoritos:", favoritosError);
-            // Continuar sin marcar favoritos si hay error
           }
         }
 
@@ -50,12 +62,12 @@ function Places() {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchData();
-  }, [isAuthenticated, token, authLoading]);
+  }, [categoriaSeleccionada, isAuthenticated, token, authLoading]);
 
-  const lugaresFiltrados = lugares.filter(place =>
+  const lugaresFiltrados = lugares.filter((place) =>
     place.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
 
@@ -74,7 +86,10 @@ function Places() {
       <SearchBar
         value={busqueda}
         onChange={setBusqueda}
-        placeholder="Buscar lugar..."
+        onCategoriaChange={(idCategoria) => {
+          console.log("Categoría seleccionada:", idCategoria);
+          setCategoriaSeleccionada(idCategoria);
+        }}
       />
 
       <PlaceGrid>
@@ -83,9 +98,11 @@ function Places() {
             key={place.id_lugar}
             place={place}
             onFavoritoChange={(id_lugar, nuevoEstado) => {
-              setLugares(prev =>
-                prev.map(l =>
-                  l.id_lugar === id_lugar ? { ...l, esFavorito: nuevoEstado } : l
+              setLugares((prev) =>
+                prev.map((l) =>
+                  l.id_lugar === id_lugar
+                    ? { ...l, esFavorito: nuevoEstado }
+                    : l
                 )
               );
             }}
