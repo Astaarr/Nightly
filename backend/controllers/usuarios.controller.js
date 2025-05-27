@@ -38,12 +38,12 @@ export const cambiarPassword = async (req, res) => {
 // Actualizar nombre y email del perfil
 export const actualizarPerfil = async (req, res) => {
   const { id } = req.user;
-  const { nombre, email } = req.body;
+  const { nombre } = req.body;
 
   try {
     await db.query(
-      'UPDATE usuarios SET nombre = ?, email = ? WHERE id = ?',
-      [nombre, email, id]
+      'UPDATE usuarios SET nombre = ? WHERE id = ?',
+      [nombre, id]
     );
 
     res.json({ message: 'Datos actualizados correctamente' });
@@ -52,6 +52,7 @@ export const actualizarPerfil = async (req, res) => {
     res.status(500).json({ message: 'Error al actualizar datos del usuario' });
   }
 };
+
 
 // Configuración de almacenamiento de Multer
 const storage = multer.diskStorage({
