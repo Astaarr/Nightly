@@ -217,7 +217,7 @@ input {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 0.5em;
 }
 .header__auth-logged:hover {
   background: none;

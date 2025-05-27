@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChange, type = "place" }) {
+function SearchBar({ 
+  value, 
+  onChange, 
+  placeholder = "Buscar...", 
+  onCategoriaChange, 
+  categoriaSeleccionada, 
+  type = "place" 
+}) {
   const [categorias, setCategorias] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const obtenerCategorias = async () => {
       if (type !== "place") return;
-      
+
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get("http://localhost:4000/api/categorias/principales");
+        const response = await axios.get(
+          "http://localhost:4000/api/categorias/principales"
+        );
         setCategorias(response.data);
       } catch (error) {
         console.error("Error al obtener categorías:", error);
@@ -27,11 +35,9 @@ function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChan
     obtenerCategorias();
   }, [type]);
 
-  const handleCategoriaClick = (id) => {
-    const nueva = id === categoriaSeleccionada ? null : id;
-    setCategoriaSeleccionada(nueva);
-    onCategoriaChange?.(nueva);
-  };
+const handleCategoriaClick = (id) => {
+  onCategoriaChange?.(id);
+};
 
   return (
     <div className="search-bar">
@@ -61,7 +67,11 @@ function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChan
       {type === "place" && (
         <div className="search-bar__categories">
           <button
-            className={`search-bar__category ${categoriaSeleccionada === null ? "search-bar__category--active" : ""}`}
+            className={`search-bar__category ${
+              categoriaSeleccionada === null
+                ? "search-bar__category--active"
+                : ""
+            }`}
             onClick={() => handleCategoriaClick(null)}
           >
             Todos
@@ -75,7 +85,11 @@ function SearchBar({ value, onChange, placeholder = "Buscar...", onCategoriaChan
             categorias.map((categoria) => (
               <button
                 key={categoria.id_categoria}
-                className={`search-bar__category ${categoriaSeleccionada === categoria.id_categoria ? "search-bar__category--active" : ""}`}
+                className={`search-bar__category ${
+                  categoriaSeleccionada === categoria.id_categoria
+                    ? "search-bar__category--active"
+                    : ""
+                }`}
                 onClick={() => handleCategoriaClick(categoria.id_categoria)}
               >
                 {categoria.nombre_categoria}

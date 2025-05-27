@@ -42,7 +42,7 @@
   &__auth-logged {
     @include reset_button();
     @include flex(row, nowrap, center, center);
-    gap: 1em;
+    gap: 0.5em;
   }
 
   &__auth-logout {
