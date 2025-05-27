@@ -20,37 +20,6 @@ VALUES
     ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15', 'avatars/user_2.png'), -- contraseña: prueba123
     ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05', 'avatars/user_3.png'); -- contraseña: prueba123
 
--- Crear la tabla 'admin' si no existe
-CREATE TABLE IF NOT EXISTS admin (
-    id_admin INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
-);
-
--- Insertar administradores de prueba si no existen
-INSERT IGNORE INTO admin (email, password)
-VALUES 
-    ('admin1@dominio.com', '$2a$10$adminhash1'), -- contraseña: admin123
-    ('admin2@dominio.com', '$2a$10$adminhash2'); -- contraseña: admin123
-
--- Crear la tabla 'clientes' si no existe
-CREATE TABLE IF NOT EXISTS clientes (
-    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_cliente VARCHAR(100) NOT NULL,
-    email_cliente VARCHAR(100) NOT NULL UNIQUE,
-    password_hash_cliente VARCHAR(255) NOT NULL,
-    telefono_cliente VARCHAR(16),
-    direccion_cliente TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Insertar clientes de prueba si no existen
-INSERT IGNORE INTO clientes (nombre_cliente, email_cliente, password_hash_cliente, telefono_cliente, direccion_cliente)
-VALUES 
-    ('Discoteca Eclipse', 'eclipse@discoteca.com','$2b$12$clientehash1', '600123456', 'Calle Mayor 123, Madrid'), -- contraseña: cliente123
-    ('Discoteca Vortex', 'vortex@discoteca.com','$2b$12$clientehash2', '611987654', 'Avenida del Sol 456, Madrid'), -- contraseña: cliente456
-    ('Discoteca Neon', 'neon@discoteca.com','$2b$12$clientehash3', '622345678', 'Calle Luna 789, Barcelona'); -- contraseña: cliente789
-
 -- Crear la tabla 'categorias' si no existe
 CREATE TABLE IF NOT EXISTS categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
@@ -106,14 +75,13 @@ INSERT INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
 -- Crear la tabla 'lugares' si no existe
 CREATE TABLE IF NOT EXISTS lugares (
     id_lugar INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente INT NOT NULL,
     id_categoria INT,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     direccion VARCHAR(255),
     ciudad VARCHAR(100),
     url_imagen VARCHAR(255),
-    precio DECIMAL(6,2),
+    precio ENUM('bajo', 'medio', 'alto') DEFAULT 'medio',
     valoracion DECIMAL(2,1) DEFAULT 0.0,
     edad_minima INT DEFAULT 18,
     edad_maxima INT DEFAULT 65,
@@ -121,25 +89,69 @@ CREATE TABLE IF NOT EXISTS lugares (
     ambiente ENUM('tranquilo', 'vibrante') DEFAULT 'tranquilo',
     tamano_grupo ENUM('solo', 'pareja', 'grupo') DEFAULT 'grupo',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE,
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL
 );
 
 -- Insertar lugares de prueba si no existen
 INSERT IGNORE INTO lugares (
-    id_cliente, id_categoria, nombre, descripcion, direccion, ciudad,
+    id_categoria, nombre, descripcion, direccion, ciudad,
     url_imagen, precio, valoracion, edad_minima, edad_maxima,
     nivel_formalidad, ambiente, tamano_grupo
 )
-VALUES 
-    (1, 6, 'Eclipse Rooftop', 'Azotea con vistas panorámicas de Madrid', 'Calle Atocha 45', 'Madrid',
-     'lugares/eclipse.png', 18.50, 4.7, 21, 35, 'informal', 'vibrante', 'grupo'),
-     
-    (2, 7, 'Vortex Pub', 'Pub urbano con música en vivo', 'Gran Vía 89', 'Madrid',
-     'lugares/vortex.png', 12.00, 4.3, 18, 45, 'informal', 'vibrante', 'pareja'),
-     
-    (3, 8, 'Neon Hidden Bar', 'Bar oculto con cócteles de autor', 'Calle Secreta 12', 'Barcelona',
-     'lugares/neon.png', 15.00, 4.8, 25, 50, 'formal', 'tranquilo', 'pareja');
+VALUES
+(6, 'Teatro Kapital', 'Discoteca icónica de Madrid con siete plantas temáticas.', 'Calle de Atocha, 125', 'Madrid',
+ '../images/lugares/kapital.jpg', 'alto', 4.3, 18, 40, 'informal', 'vibrante', 'grupo'),
+
+(8, 'Oh My Club', 'Discoteca moderna con cenas y espectáculos en vivo.', 'Calle de Rosario Pino, 14', 'Madrid',
+ '../images/lugares/ohmyclub.jpg', 'alto', 4.5, 21, 45, 'formal', 'vibrante', 'grupo'),
+
+(6, 'Opium Madrid', 'Club elegante con música house y reguetón.', 'Calle de José Abascal, 56', 'Madrid',
+ '../images/lugares/opium.jpg', 'alto', 4.4, 21, 40, 'formal', 'vibrante', 'grupo'),
+
+(20, 'Sala Equis', 'Espacio cultural con cine, música y bar.', 'Calle del Duque de Alba, 4', 'Madrid',
+ '../images/lugares/equis.jpg', 'bajo', 4.2, 18, 50, 'informal', 'tranquilo', 'pareja'),
+
+(11, 'La Vía Láctea', 'Bar mítico de Malasaña con música en vivo.', 'Calle de Velarde, 18', 'Madrid',
+ '../images/lugares/vialactea.jpg', 'bajo', 4.0, 18, 40, 'informal', 'vibrante', 'grupo'),
+
+(14, 'Bodega de la Ardosa', 'Taberna tradicional famosa por su tortilla.', 'Calle de Colón, 13', 'Madrid',
+ '../images/lugares/ardosa.jpg', 'bajo', 4.6, 18, 65, 'informal', 'tranquilo', 'pareja'),
+
+(13, 'El Jardín Secreto', 'Bar con terraza escondida y ambiente romántico.', 'Calle de Montera, 37', 'Madrid',
+ '../images/lugares/jardinsecreto.jpg', 'medio', 4.5, 18, 50, 'formal', 'tranquilo', 'pareja'),
+
+(11, 'The Irish Rover', 'Pub irlandés con música en vivo y deportes.', 'Avenida de Brasil, 7', 'Madrid',
+ '../images/lugares/irishrover.jpg', 'bajo', 4.3, 18, 50, 'informal', 'vibrante', 'grupo'),
+
+(7, 'Fabrik', 'Macrodiscoteca especializada en música electrónica.', 'Avenida de la Industria, 82', 'Humanes de Madrid',
+ '../images/lugares/fabrik.png', 'alto', 4.7, 18, 40, 'informal', 'vibrante', 'grupo'),
+
+(8, 'Shoko Madrid', 'Discoteca y restaurante con eventos temáticos.', 'Calle de Toledo, 86', 'Madrid',
+ '../images/lugares/shoko.jpg', 'medio', 4.2, 18, 40, 'formal', 'vibrante', 'grupo'),
+
+(19, 'Sala Mon', 'Sala de conciertos y club nocturno.', 'Calle de Hilarión Eslava, 36', 'Madrid',
+ '../images/lugares/mon.jpg', 'medio', 4.1, 18, 40, 'informal', 'vibrante', 'grupo'),
+
+(12, 'La Venencia', 'Bar histórico especializado en vinos de Jerez.', 'Calle de Echegaray, 7', 'Madrid',
+ '../images/lugares/venencia.jpg', 'bajo', 4.8, 18, 65, 'informal', 'tranquilo', 'pareja'),
+
+(9, 'Azotea del Círculo de Bellas Artes', 'Una de las mejores vistas de Madrid, ideal para tomar algo con estilo.',
+ 'Calle de Alcalá, 42', 'Madrid', '../images/lugares/azotea_cba.jpg', 'medio', 4.6, 18, 60, 'formal', 'tranquilo', 'pareja'),
+
+(17, 'Bowling Chamartín', 'Bolera clásica para disfrutar con amigos, música y copas.',
+ 'Calle de Bolivia, 13', 'Madrid', '../images/lugares/bowling.jpg', 'bajo', 4.0, 18, 50, 'informal', 'vibrante', 'grupo'),
+
+(16, 'Medias Puri', 'Discoteca underground con espectáculos sorpresa y ambiente alternativo.',
+ 'Plaza de Tirso de Molina, 1', 'Madrid', '../images/lugares/mediaspuri.jpg', 'alto', 4.4, 21, 50, 'informal', 'vibrante', 'grupo'),
+
+(21, 'La Neomudéjar', 'Centro de arte contemporáneo en una antigua estación de tren.',
+ 'Calle de Antonio Nebrija, s/n', 'Madrid', '../images/lugares/neomudejar.jpg', 'bajo', 4.5, 18, 65, 'informal', 'tranquilo', 'solo'),
+
+(15, 'StreetXO', 'Restaurante con cocina fusión radical y ambiente urbano.',
+ 'Calle de Serrano, 52', 'Madrid', '../images/lugares/streetxo.jpg', 'alto', 4.7, 21, 50, 'informal', 'vibrante', 'pareja'),
+
+(10, '1862 Dry Bar', 'Cócteles clásicos en un bar oculto estilo speakeasy.',
+ 'Calle del Pez, 27', 'Madrid', '../images/lugares/1862drybar.jpg', 'medio', 4.6, 21, 55, 'formal', 'tranquilo', 'pareja');
 
 -- Crear la tabla 'eventos' si no existe
 CREATE TABLE IF NOT EXISTS eventos (
@@ -168,17 +180,95 @@ INSERT IGNORE INTO eventos (
     edad_minima, edad_maxima, nivel_formalidad, ambiente, tamano_grupo
 )
 VALUES 
-    (1, 'Atardecer Electrónico', 'Música electrónica en la azotea con DJ local', '2025-06-20',
-     20.00, 'Electrónica', 'Elegante', 'eventos/evento1.png',
-     21, 40, 'formal', 'vibrante', 'grupo'),
-     
-    (2, 'Noche Indie', 'Concierto de bandas emergentes', '2025-07-15',
-     15.00, 'Indie Rock', 'Casual', 'eventos/evento2.png',
-     18, 35, 'informal', 'tranquilo', 'grupo'),
-     
-    (3, 'Cocktail Secrets', 'Descubre cócteles ocultos', '2025-08-10',
-     10.00, 'Chill', 'Casual', 'eventos/evento3.png',
-     25, 50, 'formal', 'tranquilo', 'pareja');
+-- Teatro Kapital (id_lugar: 1)
+(1, 'Kapital Gold Nights', 'Noche exclusiva con zona VIP, champán y música house', '2025-07-05',
+ 40.00, 'House', 'Elegante', 'eventos/kapital_gold.jpg',
+ 23, 40, 'formal', 'vibrante', 'pareja'),
+
+-- Opium Madrid (id_lugar: 3)
+(3, 'White Party', 'Fiesta temática en blanco con música electrónica y show de luces', '2025-08-09',
+ 30.00, 'Electrónica', 'Blanco total', 'eventos/opium_white.jpg',
+ 21, 35, 'formal', 'vibrante', 'grupo'),
+
+-- Sala Equis (id_lugar: 4)
+(4, 'Cine + Indie Live', 'Proyección de cortos + concierto indie acústico', '2025-06-22',
+ 8.00, 'Indie', 'Casual', 'eventos/equis_cineindie.png',
+ 18, 40, 'informal', 'tranquilo', 'pareja'),
+
+-- Bodega de la Ardosa (id_lugar: 6)
+(6, 'Cerveza y Flamenco', 'Muestra de flamenco en vivo con degustación de cervezas artesanas', '2025-09-14',
+ 10.00, 'Flamenco', 'Rústico', 'eventos/ardosa_flamenco.png',
+ 30, 60, 'informal', 'tranquilo', 'pareja'),
+
+-- Fabrik (id_lugar: 9)
+(9, 'Techno Reload', 'Evento de techno con más de 6 horas de DJs internacionales', '2025-08-03',
+ 38.00, 'Techno', 'Libre', 'eventos/fabrik_techno.jpg',
+ 18, 35, 'informal', 'vibrante', 'grupo'),
+
+-- Shôko Madrid (id_lugar: 10)
+(10, 'R&B Sunset Vibes', 'R&B moderno con cócteles al aire libre desde el atardecer', '2025-07-10',
+ 20.00, 'R&B', 'Urbano', 'eventos/shoko_rnb.png',
+ 21, 35, 'formal', 'vibrante', 'pareja'),
+
+-- Sala Mon (id_lugar: 11)
+(11, 'Indie Rock Night', 'Noche de bandas indie con cerveza artesanal y ambiente alternativo', '2025-06-15',
+ 16.00, 'Indie Rock', 'Informal', 'eventos/mon_indierock.png',
+ 20, 40, 'informal', 'vibrante', 'grupo'),
+
+-- La Venencia (id_lugar: 12)
+(12, 'Versos y Vinos', 'Recital poético con degustación de vino jerezano', '2025-10-05',
+ 10.00, 'Instrumental', 'Elegante', 'eventos/venencia_poetas.png',
+ 30, 65, 'formal', 'tranquilo', 'pareja'),
+
+-- Oh My Club (id_lugar: 2)
+(2, 'Cena & Show Deluxe', 'Cena gourmet con espectáculo de cabaret y música house', '2025-07-12',
+ 50.00, 'House', 'Elegante', 'eventos/ohmyclub_dinner.png',
+ 25, 45, 'formal', 'vibrante', 'pareja'),
+
+-- La Vía Láctea (id_lugar: 5)
+(5, 'Rock & Roll Revival', 'Clásicos del rock de los 70s y 80s con banda en directo', '2025-06-28',
+ 12.00, 'Rock', 'Casual', 'eventos/vialactea_rock.png',
+ 18, 40, 'informal', 'vibrante', 'grupo'),
+
+-- El Jardín Secreto (id_lugar: 7)
+(7, 'Noches Románticas', 'Velada íntima con jazz en vivo y cócteles especiales', '2025-07-20',
+ 18.00, 'Jazz', 'Formal', 'eventos/jardin_jazz.png',
+ 21, 50, 'formal', 'tranquilo', 'pareja'),
+
+-- The Irish Rover (id_lugar: 8)
+(8, 'Noche Irlandesa', 'Concierto de folk irlandés y degustación de cervezas', '2025-08-01',
+ 10.00, 'Folk', 'Casual', 'eventos/irish_folk.png',
+ 18, 50, 'informal', 'vibrante', 'grupo'),
+
+-- Azotea del Círculo de Bellas Artes (id_lugar: 13)
+(13, 'Sunset Chillout', 'DJ set con ambient chill y vistas panorámicas', '2025-07-25',
+ 25.00, 'Chillout', 'Elegante', 'eventos/azotea_chill.png',
+ 21, 60, 'formal', 'tranquilo', 'pareja'),
+
+-- Bowling Chamartín (id_lugar: 14)
+(14, 'Noche Retro Bowling', 'Torneo de bolos temático años 80 con premios', '2025-06-30',
+ 8.00, 'Pop 80s', 'Retro', 'eventos/bowling_retro.png',
+ 18, 50, 'informal', 'vibrante', 'grupo'),
+
+-- Medias Puri (id_lugar: 15)
+(15, 'Puri Underground Show', 'Noche con performances alternativas y música electrónica', '2025-08-17',
+ 35.00, 'Electrónica', 'Libre', 'eventos/puri_show.png',
+ 21, 50, 'informal', 'vibrante', 'grupo'),
+
+-- La Neomudéjar (id_lugar: 16)
+(16, 'Arte Sonoro Live', 'Instalación audiovisual y música experimental en directo', '2025-07-18',
+ 15.00, 'Experimental', 'Creativo', 'eventos/neomudejar_sound.png',
+ 18, 65, 'informal', 'tranquilo', 'solo'),
+
+-- StreetXO (id_lugar: 17)
+(17, 'XO Fusion Party', 'Showcooking con DJ y cócteles de autor', '2025-07-08',
+ 45.00, 'Fusión electrónica', 'Urbano', 'eventos/streetxo_fusion.png',
+ 21, 50, 'informal', 'vibrante', 'pareja'),
+
+-- 1862 Dry Bar (id_lugar: 18)
+(18, 'Coctelería y Jazz', 'Clase de mixología con música en vivo estilo jazz', '2025-06-27',
+ 20.00, 'Jazz', 'Formal', 'eventos/1862_jazzmix.png',
+ 21, 55, 'formal', 'tranquilo', 'pareja');
 
 -- Crear la tabla 'favoritos_lugares' si no existe
 CREATE TABLE IF NOT EXISTS favoritos_lugares (
