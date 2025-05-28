@@ -19,7 +19,7 @@ VALUES
     ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15', 'avatars/user_2.png'), -- contraseña: prueba123
     ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05', 'avatars/user_3.png'); -- contraseña: prueba123
 
--- Crear tabla categorias
+-- Crear la tabla 'categorias' si no existe
 CREATE TABLE IF NOT EXISTS categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre_categoria VARCHAR(100) NOT NULL UNIQUE,
@@ -29,21 +29,13 @@ CREATE TABLE IF NOT EXISTS categorias (
     FOREIGN KEY (parent_id) REFERENCES categorias(id_categoria) ON DELETE SET NULL
 );
 
--- Insertar categorías principales con IDs fijos:
--- TRUCO: Insertar con ID explícito forzando la auto_increment (requiere desactivar y reactivar temporalmente la restricción si es necesario)
-SET FOREIGN_KEY_CHECKS=0;
-
-INSERT IGNORE INTO categorias (id_categoria, nombre_categoria, descripcion, icono) VALUES
-(1, 'Salir de fiesta', 'Discotecas y fiestas nocturnas', 'https://cdn.example.com/icons/fiesta.png'),
-(2, 'Tomar algo', 'Bares, rooftops y pubs', 'https://cdn.example.com/icons/tomar_algo.png'),
-(3, 'Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
-(4, 'Planes con acción', 'Actividades con movimiento', 'https://cdn.example.com/icons/accion.png'),
-(5, 'Planes culturales', 'Arte, música y espectáculos', 'https://cdn.example.com/icons/cultural.png');
-
-SET FOREIGN_KEY_CHECKS=1;
-
--- Ajustar auto_increment para que continúe desde el último ID insertado:
-ALTER TABLE categorias AUTO_INCREMENT = 6;
+-- Insertar categorías principales
+INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono) VALUES
+('Salir de fiesta', 'Discotecas y fiestas nocturnas', 'https://cdn.example.com/icons/fiesta.png'),
+('Tomar algo', 'Bares, rooftops y pubs', 'https://cdn.example.com/icons/tomar_algo.png'),
+('Planes gastronómicos', 'Restaurantes y experiencias culinarias', 'https://cdn.example.com/icons/gastronomia.png'),
+('Planes con acción', 'Actividades con movimiento', 'https://cdn.example.com/icons/accion.png'),
+('Planes culturales', 'Arte, música y espectáculos', 'https://cdn.example.com/icons/cultural.png');
 
 -- Subcategorías de 'Salir de fiesta' (parent_id = 1)
 INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) VALUES
@@ -78,7 +70,6 @@ INSERT IGNORE INTO categorias (nombre_categoria, descripcion, icono, parent_id) 
 ('Teatro', 'Obras, comedia y monólogos', 'https://cdn.example.com/icons/teatro.png', 5),
 ('Arte', 'Museos, exposiciones y galerías', 'https://cdn.example.com/icons/arte.png', 5);
 
-
 -- Crear la tabla 'lugares' si no existe
 CREATE TABLE IF NOT EXISTS lugares (
     id_lugar INT AUTO_INCREMENT PRIMARY KEY,
@@ -106,58 +97,58 @@ INSERT IGNORE INTO lugares (
     nivel_formalidad, ambiente, tamano_grupo
 )
 VALUES
-(6, 'Teatro Kapital', 'Discoteca icónica de Madrid con siete plantas temáticas.', 'Calle de Atocha, 125', 'Madrid',
+(1, 'Teatro Kapital', 'Discoteca icónica de Madrid con siete plantas temáticas.', 'Calle de Atocha, 125', 'Madrid',
  '../images/lugares/kapital.jpg', 'alto', 4.3, 18, 40, 'informal', 'vibrante', 'grupo'),
 
-(8, 'Oh My Club', 'Discoteca moderna con cenas y espectáculos en vivo.', 'Calle de Rosario Pino, 14', 'Madrid',
+(1, 'Oh My Club', 'Discoteca moderna con cenas y espectáculos en vivo.', 'Calle de Rosario Pino, 14', 'Madrid',
  '../images/lugares/ohmyclub.jpg', 'alto', 4.5, 21, 45, 'formal', 'vibrante', 'grupo'),
 
-(6, 'Opium Madrid', 'Club elegante con música house y reguetón.', 'Calle de José Abascal, 56', 'Madrid',
+(1, 'Opium Madrid', 'Club elegante con música house y reguetón.', 'Calle de José Abascal, 56', 'Madrid',
  '../images/lugares/opium.jpg', 'alto', 4.4, 21, 40, 'formal', 'vibrante', 'grupo'),
 
-(20, 'Sala Equis', 'Espacio cultural con cine, música y bar.', 'Calle del Duque de Alba, 4', 'Madrid',
+(5, 'Sala Equis', 'Espacio cultural con cine, música y bar.', 'Calle del Duque de Alba, 4', 'Madrid',
  '../images/lugares/equis.jpg', 'bajo', 4.2, 18, 50, 'informal', 'tranquilo', 'pareja'),
 
-(11, 'La Vía Láctea', 'Bar mítico de Malasaña con música en vivo.', 'Calle de Velarde, 18', 'Madrid',
+(2, 'La Vía Láctea', 'Bar mítico de Malasaña con música en vivo.', 'Calle de Velarde, 18', 'Madrid',
  '../images/lugares/vialactea.jpg', 'bajo', 4.0, 18, 40, 'informal', 'vibrante', 'grupo'),
 
-(14, 'Bodega de la Ardosa', 'Taberna tradicional famosa por su tortilla.', 'Calle de Colón, 13', 'Madrid',
+(3, 'Bodega de la Ardosa', 'Taberna tradicional famosa por su tortilla.', 'Calle de Colón, 13', 'Madrid',
  '../images/lugares/ardosa.jpg', 'bajo', 4.6, 18, 65, 'informal', 'tranquilo', 'pareja'),
 
-(13, 'El Jardín Secreto', 'Bar con terraza escondida y ambiente romántico.', 'Calle de Montera, 37', 'Madrid',
+(3, 'El Jardín Secreto', 'Bar con terraza escondida y ambiente romántico.', 'Calle de Montera, 37', 'Madrid',
  '../images/lugares/jardinsecreto.jpg', 'medio', 4.5, 18, 50, 'formal', 'tranquilo', 'pareja'),
 
-(11, 'The Irish Rover', 'Pub irlandés con música en vivo y deportes.', 'Avenida de Brasil, 7', 'Madrid',
+(3, 'The Irish Rover', 'Pub irlandés con música en vivo y deportes.', 'Avenida de Brasil, 7', 'Madrid',
  '../images/lugares/irishrover.jpg', 'bajo', 4.3, 18, 50, 'informal', 'vibrante', 'grupo'),
 
-(7, 'Fabrik', 'Macrodiscoteca especializada en música electrónica.', 'Avenida de la Industria, 82', 'Humanes de Madrid',
+(1, 'Fabrik', 'Macrodiscoteca especializada en música electrónica.', 'Avenida de la Industria, 82', 'Humanes de Madrid',
  '../images/lugares/fabrik.png', 'alto', 4.7, 18, 40, 'informal', 'vibrante', 'grupo'),
 
-(8, 'Shoko Madrid', 'Discoteca y restaurante con eventos temáticos.', 'Calle de Toledo, 86', 'Madrid',
+(1, 'Shoko Madrid', 'Discoteca y restaurante con eventos temáticos.', 'Calle de Toledo, 86', 'Madrid',
  '../images/lugares/shoko.jpg', 'medio', 4.2, 18, 40, 'formal', 'vibrante', 'grupo'),
 
-(19, 'Sala Mon', 'Sala de conciertos y club nocturno.', 'Calle de Hilarión Eslava, 36', 'Madrid',
+(1, 'Sala Mon', 'Sala de conciertos y club nocturno.', 'Calle de Hilarión Eslava, 36', 'Madrid',
  '../images/lugares/mon.jpg', 'medio', 4.1, 18, 40, 'informal', 'vibrante', 'grupo'),
 
-(12, 'La Venencia', 'Bar histórico especializado en vinos de Jerez.', 'Calle de Echegaray, 7', 'Madrid',
+(2, 'La Venencia', 'Bar histórico especializado en vinos de Jerez.', 'Calle de Echegaray, 7', 'Madrid',
  '../images/lugares/venencia.jpg', 'bajo', 4.8, 18, 65, 'informal', 'tranquilo', 'pareja'),
 
-(9, 'Azotea del Círculo de Bellas Artes', 'Una de las mejores vistas de Madrid, ideal para tomar algo con estilo.',
+(3, 'Azotea del Círculo de Bellas Artes', 'Una de las mejores vistas de Madrid, ideal para tomar algo con estilo.',
  'Calle de Alcalá, 42', 'Madrid', '../images/lugares/azotea_cba.jpg', 'medio', 4.6, 18, 60, 'formal', 'tranquilo', 'pareja'),
 
-(17, 'Bowling Chamartín', 'Bolera clásica para disfrutar con amigos, música y copas.',
+(4, 'Bowling Chamartín', 'Bolera clásica para disfrutar con amigos, música y copas.',
  'Calle de Bolivia, 13', 'Madrid', '../images/lugares/bowling.jpg', 'bajo', 4.0, 18, 50, 'informal', 'vibrante', 'grupo'),
 
-(16, 'Medias Puri', 'Discoteca underground con espectáculos sorpresa y ambiente alternativo.',
+(1, 'Medias Puri', 'Discoteca underground con espectáculos sorpresa y ambiente alternativo.',
  'Plaza de Tirso de Molina, 1', 'Madrid', '../images/lugares/mediaspuri.jpg', 'alto', 4.4, 21, 50, 'informal', 'vibrante', 'grupo'),
 
-(21, 'La Neomudéjar', 'Centro de arte contemporáneo en una antigua estación de tren.',
+(5, 'La Neomudéjar', 'Centro de arte contemporáneo en una antigua estación de tren.',
  'Calle de Antonio Nebrija, s/n', 'Madrid', '../images/lugares/neomudejar.jpg', 'bajo', 4.5, 18, 65, 'informal', 'tranquilo', 'solo'),
 
-(15, 'StreetXO', 'Restaurante con cocina fusión radical y ambiente urbano.',
+(3, 'StreetXO', 'Restaurante con cocina fusión radical y ambiente urbano.',
  'Calle de Serrano, 52', 'Madrid', '../images/lugares/streetxo.jpg', 'alto', 4.7, 21, 50, 'informal', 'vibrante', 'pareja'),
 
-(10, '1862 Dry Bar', 'Cócteles clásicos en un bar oculto estilo speakeasy.',
+(2, '1862 Dry Bar', 'Cócteles clásicos en un bar oculto estilo speakeasy.',
  'Calle del Pez, 27', 'Madrid', '../images/lugares/1862drybar.jpg', 'medio', 4.6, 21, 55, 'formal', 'tranquilo', 'pareja');
 
 -- Crear la tabla 'eventos' si no existe
