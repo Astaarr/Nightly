@@ -7,6 +7,8 @@
   top: 0;
   // background: $color-translucent;
   backdrop-filter: $blur-high;
+  border-radius: $radius-border-tag;
+  padding: 0 2em;
   z-index: 1000;
 
   &__navbar {
@@ -26,6 +28,12 @@
   &__nav {
     @include flex;
     gap: 1.5rem;
+  }
+
+  &__link{
+    &--active{
+      color: $color-main;
+    }
   }
 
   &__auth-avatar {

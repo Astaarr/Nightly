@@ -37,7 +37,7 @@
   &__card {
     width: 100%;
     height: 12rem;
-    @include flex(column, wrap, space-between, flex-start);
+    @include flex(column, nowrap, space-between, flex-start);
     padding: 1em 2em;
     border-radius: $radius-border;
 

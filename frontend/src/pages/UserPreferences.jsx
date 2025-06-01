@@ -155,7 +155,7 @@ function UserPreferences() {
         <div className="input__container input__container--email">
           <input
             id="correo"
-            className="input"
+            className="input preferences__input-email"
             type="email"
             placeholder="Correo"
             value={correo}

@@ -1,4 +1,4 @@
-function ConfirmModal({ isOpen, title, message, onConfirm, onCancel }) {
+function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, showCancel = true }) {
 
   return (
     <div className="modal-overlay">
@@ -9,12 +9,14 @@ function ConfirmModal({ isOpen, title, message, onConfirm, onCancel }) {
         </div>
 
         <div className="modal__buttons">
-          <button
-            className="modal__button modal__button--cancel"
-            onClick={onCancel}
-          >
-            Cancelar
-          </button>
+          {showCancel && (
+            <button
+              className="modal__button modal__button--cancel"
+              onClick={onCancel}
+            >
+              Cancelar
+            </button>
+          )}
           <button className="modal__button" onClick={onConfirm}>
             Confirmar
           </button>

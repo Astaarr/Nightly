@@ -54,6 +54,15 @@
     width: 100%;
   }
 
+  &__input-email{
+    color: $color-grey;
+
+    &:hover{
+      cursor: not-allowed;
+    }
+
+  }
+
 
   &__change-password{
     @include reset-button();

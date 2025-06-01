@@ -149,13 +149,15 @@ input {
 
 /* Estilo del "thumb" (parte que se mueve) */
 ::-webkit-scrollbar-thumb {
-  background: #e72fa9;
+  background: #2e2e2f;
   border-radius: 999px;
+  -webkit-transition: background 0.3s;
+  transition: background 0.3s;
 }
 
 /* Cambio de color al pasar el cursor */
 ::-webkit-scrollbar-thumb:hover {
-  background: #f02f6e;
+  background: #e72fa9;
 }
 
 .header {
@@ -164,6 +166,8 @@ input {
   top: 0;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 0 2em;
   z-index: 1000;
 }
 .header__navbar {
@@ -192,6 +196,9 @@ input {
   justify-content: flex-start;
   align-items: stretch;
   gap: 1.5rem;
+}
+.header__link--active {
+  color: #e72fa9;
 }
 .header__auth-avatar {
   width: 2.5em;
@@ -361,8 +368,63 @@ input {
   text-align: center;
   padding-bottom: 1.5em;
 }
+.modal__event-name {
+  font-size: 2.5em;
+}
+.modal__content {
+  width: 100%;
+}
 .modal__field {
   width: 100%;
+  margin-bottom: 1em;
+}
+.modal__item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+.modal__columns {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+@media screen and (max-width: 768px) {
+  .modal__columns {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+.modal__back-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+.modal__back {
+  background: transparent;
+  border: 1px solid #a1a1aa;
+  color: #fafafa;
+  width: 3em;
+  height: 3em;
+  font-size: 1em;
+  transition: border-color 0.3s;
+}
+.modal__back:hover {
+  background: transparent;
+  border-color: #fafafa;
 }
 .modal__buttons {
   width: 100%;
@@ -384,6 +446,16 @@ input {
 .modal__button--cancel:hover {
   background: #fafafa;
   color: #09090b;
+}
+.modal__button i {
+  margin-right: 0.5em;
+}
+.modal__message {
+  color: #ee4242;
+}
+.modal__animation {
+  width: 200px;
+  height: 200px;
 }
 
 .search-bar {
@@ -558,7 +630,7 @@ input {
   height: 12rem;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;
   padding: 1em 2em;
@@ -841,24 +913,19 @@ input {
   z-index: 100;
 }
 .place__action {
-  display: inline-block;
-  font-size: 0.8em;
-  padding: 0.25em 1em;
-  background-color: rgba(0, 0, 0, 0.4);
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
-  border-radius: 999px;
-  transition: background-color 0.3s;
+  background: transparent;
+  -webkit-backdrop-filter: blur(25px);
+          backdrop-filter: blur(25px);
+  border: 1px solid #a1a1aa;
+  color: #fafafa;
   width: 3em;
   height: 3em;
   font-size: 1em;
-  transition: color 0.3s;
+  transition: border-color 0.3s;
 }
 .place__action:hover {
-  background-color: black;
-}
-.place__action:hover {
-  color: #e72fa9;
+  background: transparent;
+  border-color: #fafafa;
 }
 
 .account {
@@ -1001,6 +1068,12 @@ input {
 }
 .preferences__input-container {
   width: 100%;
+}
+.preferences__input-email {
+  color: #a1a1aa;
+}
+.preferences__input-email:hover {
+  cursor: not-allowed;
 }
 .preferences__change-password {
   background: none;

@@ -149,11 +149,12 @@ input {
 
 /* Estilo del "thumb" (parte que se mueve) */
 ::-webkit-scrollbar-thumb {
-    background: $color-main;
+    background: $color-border;
     border-radius: $radius-border-tag;
+    transition: background $transition-time;
 }
 
 /* Cambio de color al pasar el cursor */
 ::-webkit-scrollbar-thumb:hover {
-    background: $color-secondary;
+    background: $color-main;
 }

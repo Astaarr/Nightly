@@ -25,8 +25,53 @@
     padding-bottom: 1.5em;
   }
 
+  &__event-name{
+    font-size: 2.5em;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
   &__field {
     width: 100%;
+    margin-bottom: 1em;
+  }
+
+  &__item{
+    @include flex(row, nowrap, center, center);
+    gap: 0.5em;
+  }
+
+  &__columns{
+    width: 100%;
+    @include flex(row, wrap, space-between, center);
+    gap: 1em;
+    margin-bottom: 1em;
+
+    @include responsive($width-md) {
+      @include flex(column, nowrap, center, flex-start);
+    }
+  }
+
+  &__back-container {
+    width: 100%;
+    @include flex(row, nowrap, flex-end, center);
+  }
+
+  &__back {
+    background: transparent;
+    border: 1px solid $color-grey;
+    color: $color-white;
+    width: 3em;
+    height: 3em;
+    font-size: 1em;
+    transition: border-color $transition-time;
+
+    &:hover {
+      background: transparent;
+      border-color: $color-white;
+    }
   }
 
   &__buttons {
@@ -48,5 +93,18 @@
         color: $color-black;
       }
     }
+
+    i{
+      margin-right: 0.5em;
+    }
+  }
+
+  &__message{
+    color: $color-error;
+  }
+
+  &__animation{
+    width: 200px;
+    height: 200px;
   }
 }

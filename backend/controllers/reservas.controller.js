@@ -23,7 +23,7 @@ export const obtenerReservasUsuario = async (req, res) => {
 
 export const crearReserva = async (req, res) => {
   const { id } = req.user;
-  const { id_evento } = req.body;
+  const { id_evento, usuario_reserva, email_reserva } = req.body;
 
   try {
     // Verificar si el evento existe y está disponible
@@ -50,10 +50,17 @@ export const crearReserva = async (req, res) => {
       });
     }
 
-    // Crear la reserva
+    // Validar que se proporcionaron los datos necesarios
+    if (!usuario_reserva || !email_reserva) {
+      return res.status(400).json({
+        message: "El nombre y email del usuario son requeridos"
+      });
+    }
+
+    // Crear la reserva con los nuevos campos
     const [result] = await db.query(
-      "INSERT INTO reservas_eventos (id_usuario, id_evento, fecha_reserva) VALUES (?, ?, NOW())",
-      [id, id_evento]
+      "INSERT INTO reservas_eventos (id_usuario, id_evento, fecha_reserva, usuario_reserva, email_reserva) VALUES (?, ?, NOW(), ?, ?)",
+      [id, id_evento, usuario_reserva, email_reserva]
     );
 
     res.status(201).json({ 

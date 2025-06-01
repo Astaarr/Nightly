@@ -12,7 +12,10 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.13.5",
+    "@lottiefiles/dotlottie-react-native": "^0.2.0",
     "axios": "^1.8.4",
+    "lottie-react": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.3",

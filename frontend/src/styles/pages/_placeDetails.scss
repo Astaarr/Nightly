@@ -142,14 +142,18 @@
   }
 
   &__action {
-    @include tag(rgba(0, 0, 0, 0.4));
+    background: transparent;
+    backdrop-filter: $blur-modal;
+    border: 1px solid $color-grey;
+    color: $color-white;
     width: 3em;
     height: 3em;
     font-size: 1em;
-    transition: color $transition-time;
+    transition: border-color $transition-time;
 
     &:hover {
-      color: $color-main;
+      background: transparent;
+      border-color: $color-white;
     }
   }
 }

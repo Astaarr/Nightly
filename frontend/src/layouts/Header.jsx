@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
@@ -27,13 +26,29 @@ const Header = () => {
           className={`header__nav ${menuOpen ? "header__nav--open" : ""}`}
           onClick={handleMenuToggle}
         >
-          <NavLink to="/" end className="header__link">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              isActive ? "header__link header__link--active" : "header__link"
+            }
+          >
             Inicio
           </NavLink>
-          <NavLink to="/places" className="header__link">
+          <NavLink
+            to="/places"
+            className={({ isActive }) =>
+              isActive ? "header__link header__link--active" : "header__link"
+            }
+          >
             Lugares
           </NavLink>
-          <NavLink to="/events" className="header__link">
+          <NavLink
+            to="/events"
+            className={({ isActive }) =>
+              isActive ? "header__link header__link--active" : "header__link"
+            }
+          >
             Eventos
           </NavLink>
         </nav>
@@ -47,7 +62,11 @@ const Header = () => {
               >
                 <img
                   className="header__auth-avatar"
-                  src={user.avatar_url ? `http://localhost:4000/${user.avatar_url}` : "https://unavatar.io/substack/bankless"}
+                  src={
+                    user.avatar_url
+                      ? `http://localhost:4000/${user.avatar_url}`
+                      : "https://unavatar.io/substack/bankless"
+                  }
                   alt="Avatar usuario"
                 />
                 <span className="header__auth-text"> {user.nombre}</span>

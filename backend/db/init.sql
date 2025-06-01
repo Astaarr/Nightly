@@ -296,6 +296,8 @@ CREATE TABLE IF NOT EXISTS reservas_eventos (
     id_reserva INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_evento INT NOT NULL,
+    usuario_reserva VARCHAR(100) NOT NULL,
+    email_reserva VARCHAR(100) NOT NULL,
     fecha_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     cantidad INT DEFAULT 1,
     estado VARCHAR(50) DEFAULT 'confirmada',
@@ -303,17 +305,17 @@ CREATE TABLE IF NOT EXISTS reservas_eventos (
     FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
 );
 
-INSERT INTO reservas_eventos (id_usuario, id_evento, cantidad)
+INSERT INTO reservas_eventos (id_usuario, id_evento, cantidad, usuario_reserva, email_reserva)
 VALUES
-(1, 1, 2),   -- Juan y su pareja a Kapital Gold Nights
-(2, 2, 1),   -- Carlos va solo a la White Party
-(3, 4, 2),   -- Laura y su pareja al Cine + Indie Live
-(1, 5, 3),   -- Juan con 2 amigos al Techno Reload en Fabrik
-(3, 11, 2),  -- Laura y su pareja a Indie Rock Night en Sala Mon
-(2, 8, 4),   -- Carlos y tres amigos a la Noche Irlandesa en The Irish Rover
-(1, 6, 2),   -- Juan con su pareja a R&B Sunset Vibes en Shôko Madrid
-(2, 13, 2),  -- Carlos y su novia al Sunset Chillout en la Azotea del Círculo
-(3, 16, 1);  -- Laura va sola a la experiencia de Arte Sonoro en La Neomudéjar
+(1, 1, 2, 'Juan Pérez', 'juan@example.com'),  
+(2, 2, 1, 'Carlos García', 'carlos@example.com'), 
+(3, 4, 2, 'Laura Martínez', 'laura@example.com'),  
+(1, 5, 3, 'Juan Pérez', 'juan@example.com'),  
+(3, 11, 2, 'Laura Martínez', 'laura@example.com'),  
+(2, 8, 4, 'Carlos García', 'carlos@example.com'),   
+(1, 6, 2, 'Juan Pérez', 'juan@example.com'),  
+(2, 13, 2, 'Carlos García', 'carlos@example.com'),  
+(3, 16, 1, 'Laura Martínez', 'laura@example.com'); 
 
 -- Crear la tabla 'horarios_lugar' si no existe
 CREATE TABLE IF NOT EXISTS horarios_lugar (
