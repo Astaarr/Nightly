@@ -1,0 +1,18 @@
+<mjml>
+  <mj-body background-color="#f4f4f4">
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text font-size="22px" color="#333" font-family="Helvetica, Arial, sans-serif">
+          ¡Hola, {{name}}! 👋
+        </mj-text>
+        <mj-text font-size="16px" color="#555">
+          Gracias por registrarte en <strong>Nightly</strong>. Estamos encantados de tenerte con nosotros.
+        </mj-text>
+        <mj-divider border-color="#dddddd" />
+        <mj-text font-size="14px" color="#999">
+          Si no fuiste tú quien se registró, puedes ignorar este correo.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { db } from '../db/connection.js';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import { sendWelcomeEmail } from '../utils/mailer.js';
 
 dotenv.config(); 
 
@@ -76,9 +77,13 @@ export const register = async (req, res) => {
       [nombre, email, hashedPassword, fecha_nacimiento]
     );
 
-    res.status(200).json({ message: 'Registro exitoso' });
+    // Enviar correo de bienvenida
+    await sendWelcomeEmail({ to: email, name: nombre });
+
+    res.status(200).json({ message: 'Registro exitoso y correo enviado' });
   } catch (error) {
     console.error('Error en registro:', error);
     res.status(500).json({ message: 'Error al registrar usuario' });
   }
 };
+
