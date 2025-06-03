@@ -39,6 +39,7 @@ app.use('/avatars', express.static(path.join(__dirname, 'public', 'avatars')));
 app.use("/api/reservas", reservasRoutes);
 app.use('/api/filtros', filtrosRoutes);
 app.use('/api/categorias', categoriasRoutes);
+app.use('/qrs', express.static(path.join(__dirname, 'public', 'qrs')));
 
 
 

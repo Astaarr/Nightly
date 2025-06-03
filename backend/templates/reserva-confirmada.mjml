@@ -1,0 +1,50 @@
+<mjml>
+  <mj-head>
+    <mj-title>Confirmación de tu reserva</mj-title>
+    <mj-preview>Tu entrada para {{evento}} está confirmada</mj-preview>
+  </mj-head>
+
+  <mj-body background-color="#ffffff" font-family="Helvetica, Arial, sans-serif">
+    <mj-section>
+      <mj-column>
+        <mj-image src="{{imagen_evento}}" alt="Imagen del evento" width="600px" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold">
+          🎟️ Confirmación de tu reserva: {{evento}}
+        </mj-text>
+
+        <mj-text font-size="16px">
+          ¡Hola, {{name}}!
+          <br />
+          Tu reserva para <strong>{{evento}}</strong> el <strong>{{fecha}}</strong> ha sido confirmada.
+        </mj-text>
+
+        <mj-text font-size="14px" color="#555">
+          <strong>Dirección:</strong> {{direccion}}<br />
+          <strong>Lugar:</strong> {{lugar}}<br />
+          <strong>Ciudad:</strong> {{ciudad}}<br />
+          <strong>Precio entrada:</strong> {{precio}} €
+        </mj-text>
+
+        <mj-text font-size="16px">
+          Presenta este código QR en la entrada:
+        </mj-text>
+
+            <mj-image src="{{qr}}" alt="Código QR" width="150px" />
+
+        <mj-divider border-color="#cccccc" />
+        <mj-text font-size="13px" color="#999">
+          Este QR es único y no debe compartirse.
+          <br />
+          Puedes mostrarlo desde tu correo o imprimirlo.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
+
+
