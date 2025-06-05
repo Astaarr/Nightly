@@ -36,7 +36,7 @@ function Reserve({ event, onClose, onReservaChange }) {
     }
 
     try {
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:4000/api/reservas",
         {
           id_evento: event.id_evento,
@@ -46,9 +46,14 @@ function Reserve({ event, onClose, onReservaChange }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      setIsSuccess(true);
-      // Llamar a la función del componente padre para manejar el cambio de estado
-      onReservaChange(event.id_evento);
+      if (response.status === 201) {
+        setIsSuccess(true);
+        setMessage("Reserva realizada con éxito");
+        // Esperar un momento para asegurar que el backend ha procesado todo
+        setTimeout(() => {
+          onReservaChange(event.id_evento);
+        }, 1000);
+      }
     } catch (error) {
       setMessage(error.response?.data?.message || "Error al realizar la reserva");
       setIsSuccess(false);

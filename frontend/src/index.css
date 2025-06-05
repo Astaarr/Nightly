@@ -16,20 +16,20 @@
 }
 @media screen and (max-width: 1360px) {
   #root {
-    max-width: 100%;
+    max-width: 100vw;
     padding: 0 4rem;
   }
 }
 @media screen and (max-width: 768px) {
   #root {
-    max-width: 100%;
+    max-width: 100vw;
     padding: 0 3rem;
   }
 }
 @media screen and (max-width: 420px) {
   #root {
-    max-width: 100%;
-    padding: 0 2rem;
+    max-width: 100vw;
+    padding: 0 1rem;
   }
 }
 
@@ -507,6 +507,87 @@ input {
   border: none;
 }
 
+.events {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+@media screen and (max-width: 1360px) {
+  .events {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 768px) {
+  .events {
+    grid-template-columns: 1fr;
+  }
+}
+
+.account .events {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+@media screen and (max-width: 1360px) {
+  .account .events {
+    max-width: 100vw;
+    padding: 0 4rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .account .events {
+    max-width: 100vw;
+    padding: 0 3rem;
+  }
+}
+@media screen and (max-width: 420px) {
+  .account .events {
+    max-width: 100vw;
+    padding: 0 1rem;
+  }
+}
+.account .events__card {
+  flex: 0 0 33vw;
+}
+@media screen and (min-width: 1360px) {
+  .account .events__card {
+    flex: 0 0 33%;
+    flex-basis: 30vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  .account .events__card {
+    flex: 0 0 50vw;
+  }
+}
+@media screen and (max-width: 420px) {
+  .account .events__card {
+    flex: 0 0 80vw;
+  }
+}
+
+.pagination {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin-top: 2rem;
+}
+.pagination__button:disabled {
+  background: transparent;
+  border: 1px solid #e72fa9;
+  cursor: not-allowed;
+}
+
 .auth-form {
   max-width: 50vh;
   width: 100%;
@@ -610,20 +691,6 @@ input {
 
 .events {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  gap: 1rem;
-}
-@media screen and (max-width: 1360px) {
-  .events {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media screen and (max-width: 768px) {
-  .events {
-    grid-template-columns: 1fr;
-  }
 }
 .events__card {
   width: 100%;
@@ -942,6 +1009,14 @@ input {
 }
 .account__message-empty {
   text-align: center;
+}
+.account__place-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
 }
 @media screen and (max-width: 768px) {
   .account {

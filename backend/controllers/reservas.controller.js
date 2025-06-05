@@ -65,7 +65,8 @@ export const crearReserva = async (req, res) => {
       [id, id_evento, usuario_reserva, email_reserva]
     );
 
-    await sendReservaEmail({
+    // Enviar correo de forma asíncrona
+    sendReservaEmail({
       to: email_reserva,
       name: usuario_reserva,
       evento: {
@@ -77,8 +78,12 @@ export const crearReserva = async (req, res) => {
         nombre_lugar: evento[0].nombre_lugar,
         ciudad: evento[0].ciudad
       }
+    }).catch(error => {
+      console.error("Error al enviar correo de confirmación:", error);
+      // No lanzamos el error para no afectar la respuesta al cliente
     });
 
+    // Respondemos inmediatamente sin esperar al envío del correo
     res.status(201).json({
       message: "Reserva creada exitosamente",
       id_reserva: result.insertId

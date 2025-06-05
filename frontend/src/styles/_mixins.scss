@@ -40,23 +40,29 @@
   }
 }
 
+@mixin responsive-min($breakpoint) {
+  @media screen and (min-width: $breakpoint) {
+    @content;
+  }
+}
+
 @mixin max-width {
   max-width: $width-lg;
   margin: 0 auto;
 
   @include responsive($width-lg) {
-    max-width: 100%;
+    max-width: 100vw;
     padding: 0 4rem;
   }
 
   @include responsive($width-md) {
-    max-width: 100%;
+    max-width: 100vw;
     padding: 0 3rem;
   }
 
   @include responsive($width-sm) {
-    max-width: 100%;
-    padding: 0 2rem;
+    max-width: 100vw;
+    padding: 0 1rem;
   }
 }
 

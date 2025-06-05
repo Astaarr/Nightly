@@ -32,7 +32,6 @@
 
 .events {
   width: 100%;
-  @include grid(repeat(3, 1fr), auto, 1rem);
 
   &__card {
     width: 100%;
