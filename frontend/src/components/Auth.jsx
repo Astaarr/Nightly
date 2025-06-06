@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext"; // Asegúrate de que esta ruta es correcta
+import { useAuth } from "../context/AuthContext";
+import { useNotification } from "../context/NotificationContext";
 
 function AuthForm({ type = "login" }) {
   const isLogin = type === "login"; // Definir isLogin aquí al inicio del componente
   const navigate = useNavigate();
   const { login } = useAuth(); // Obtener la función login del contexto
+  const { showNotification } = useNotification();
 
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -79,11 +81,15 @@ function AuthForm({ type = "login" }) {
 
       if (isLogin) {
         const { token, user } = response.data;
-        login(token, user); // Usar la función login del contexto
+        login(token, user);
+        // Mostrar notificación de bienvenida con el nombre del usuario
+        showNotification(`¡Bienvenido/a ${user.nombre}! Nos alegra verte de nuevo.`);
         navigate("/places");
       } else {
         setMessage(response.data.message);
         setIsSuccess(true);
+        // Mostrar notificación al registrarse
+        showNotification("¡Registro exitoso! Te hemos enviado un correo de bienvenida.");
         navigate("/login");
       }
     } catch (error) {

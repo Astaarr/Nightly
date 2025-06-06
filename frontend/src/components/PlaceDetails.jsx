@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useNotification } from "../context/NotificationContext";
 import Reserve from "./Reserve";
 import ConfirmModal from "./ConfirmModal";
 import ConfirmAnimation from "./confirmAnimation";
@@ -16,6 +17,7 @@ function PlaceDetails({ item, type }) {
   const [reservado, setReservado] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated, token } = useAuth();
+  const { showNotification } = useNotification();
 
   const [showReserveModal, setShowReserveModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -65,13 +67,13 @@ function PlaceDetails({ item, type }) {
   };
 
   const handleToggleFavorito = async (e) => {
-    e.stopPropagation();
+    e.preventDefault();
+
     if (!isAuthenticated) {
       navigate("/login");
       return;
     }
 
-    if (loadingFavorito) return;
     setLoadingFavorito(true);
     setErrorFavorito(null);
 
@@ -84,6 +86,7 @@ function PlaceDetails({ item, type }) {
           }
         );
         setEsFavorito(false);
+        showNotification("Lugar eliminado de favoritos");
       } else {
         await axios.post(
           "http://localhost:4000/api/favoritos",
@@ -91,6 +94,7 @@ function PlaceDetails({ item, type }) {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setEsFavorito(true);
+        showNotification("Lugar añadido a favoritos");
       }
     } catch (error) {
       console.error("Error al cambiar favorito:", error);
@@ -125,6 +129,7 @@ function PlaceDetails({ item, type }) {
       );
       setReservado(false);
       setShowConfirmModal(false);
+      showNotification("La reserva fue cancelada exitosamente");
     } catch (error) {
       console.error("Error al cancelar reserva:", error);
       setErrorReserva(
@@ -360,13 +365,13 @@ function PlaceDetails({ item, type }) {
       </div>
 
       {showReserveModal && (
-        <Reserve 
-          event={item} 
+        <Reserve
+          event={item}
           onClose={handleCloseModal}
           onReservaChange={handleReservaChange}
         />
       )}
-      
+
       {showConfirmModal && (
         <ConfirmModal
           isOpen={showConfirmModal}
@@ -382,7 +387,17 @@ function PlaceDetails({ item, type }) {
         <ConfirmModal
           isOpen={showSuccessAnimation}
           title="¡Reserva Exitosa!"
-          message={<ConfirmAnimation />}
+          message={
+            <>
+              <p>
+                Revisa la bandeja de entrada para obtener los
+                detalles de la reserva.
+              </p>
+              <div className="modal__animation-container">
+                <ConfirmAnimation />
+              </div>
+            </>
+          }
           onConfirm={handleCloseSuccessAnimation}
           showCancel={false}
         />

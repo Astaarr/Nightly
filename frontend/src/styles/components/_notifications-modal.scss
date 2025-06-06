@@ -1,0 +1,48 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.notifications-modal{
+    @include tag();
+    width: auto;
+    padding: 0.5rem 2rem;
+    position: fixed;
+    top: -100px;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out, top 0.4s ease-out;
+    visibility: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &--active {
+        opacity: 1;
+        transform: translateY(0);
+        top: 100px;
+        visibility: visible;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &__close{
+        cursor: pointer;
+    }
+
+    &__content{
+        @include flex(row, nowrap, center, center);
+        gap: 1rem;
+    }
+
+    &__icon{
+        font-size: 1.5rem;
+        color: $color-rating;
+    }
+
+    &__close-button{
+        @include reset-button();
+
+        &:hover{
+            color: $color-error;
+        }
+    }
+}

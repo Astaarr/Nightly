@@ -4,6 +4,7 @@ import axios from "axios";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import ConfirmModal from "../components/ConfirmModal";
 import { useAuth } from "../context/AuthContext";
+import { useNotification } from "../context/NotificationContext";
 
 function UserPreferences() {
   const [avatar, setAvatar] = useState("https://unavatar.io/substack/bankless");
@@ -19,6 +20,7 @@ function UserPreferences() {
 
   const navigate = useNavigate();
   const { updateUser } = useAuth();
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -84,6 +86,9 @@ function UserPreferences() {
         updatedUserData.avatar_url = avatarUrl;
       }
       updateUser(updatedUserData);
+
+      // Mostrar notificación
+      showNotification("Los cambios fueron guardados con éxito");
 
       setAvatarFile(null);
       setShowConfirmModal(false);
