@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-function Grid({ children }) {
+function Grid({ children, itemsPerPage = 12 }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 12;
-
+    
     // Convertir children a array si no lo es
     const childrenArray = Array.isArray(children) ? children : [children];
     

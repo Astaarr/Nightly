@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNotification } from "../context/NotificationContext";
 
 function ChangePasswordModal({ onClose }) {
   const [actual, setActual] = useState("");
   const [nueva, setNueva] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [exito, setExito] = useState(false);
+  const { showNotification } = useNotification();
 
   const handleConfirm = async () => {
     setMensaje("");
@@ -33,6 +35,14 @@ function ChangePasswordModal({ onClose }) {
       setExito(true);
       setActual("");
       setNueva("");
+      
+      // Mostrar notificación
+      showNotification("Contraseña actualizada con éxito");
+      
+      // Cerrar el modal después de 1 segundo
+      setTimeout(() => {
+        onClose();
+      }, 1000);
     } catch (error) {
       setMensaje(
         error.response?.data?.message || "Error al cambiar contraseña"

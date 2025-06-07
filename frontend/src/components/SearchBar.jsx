@@ -58,9 +58,7 @@ const handleCategoriaClick = (id) => {
               <i className="fa-solid fa-xmark"></i>
             </button>
           )}
-          <button className="search-bar__filtrer-button">
-            <i className="fa-solid fa-filter"></i> Filtrar
-          </button>
+
         </div>
       </div>
 

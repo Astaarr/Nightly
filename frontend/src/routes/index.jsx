@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import MyAccount from "../pages/MyAccount";
 import UserPreferences from "../pages/UserPreferences";
+import PlaceFinder from "../components/PlaceFinder";
 
 export default function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/account" element={<MyAccount />} />
       <Route path="/preferences" element={<UserPreferences />} />
+      <Route path="/place-finder" element={<PlaceFinder />} />
     </Routes>
   );
 }

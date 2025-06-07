@@ -117,7 +117,7 @@ function MyAccount() {
             <p className="account__message-empty"><Link to="/places" className="auth-form__link">¡Explora nuestros lugares!</Link></p>
           </div>
         ) : (
-          <PlaceGrid>
+          <PlaceGrid itemsPerPage={6}>
             {lugaresFavoritos.map((lugar) => (
               <PlaceCard 
                 key={lugar.id_lugar} 
@@ -144,7 +144,7 @@ function MyAccount() {
             <p className="account__message-empty"><Link to="/events" className="auth-form__link">¡Descubre nuestros eventos!</Link></p>
           </div>
         ) : (
-          <PlaceGrid>
+          <PlaceGrid itemsPerPage={6}>
             {eventosReservados.map((evento) => (
               <EventCard 
                 key={evento.id_evento} 

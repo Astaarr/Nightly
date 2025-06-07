@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import axios from 'axios';
 
 function Reserve({ event, onClose, onReservaChange }) {
   const { token, user } = useAuth();
+  const { showNotification } = useNotification();
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -49,10 +51,19 @@ function Reserve({ event, onClose, onReservaChange }) {
       if (response.status === 201) {
         setIsSuccess(true);
         setMessage("Reserva realizada con éxito");
-        // Esperar un momento para asegurar que el backend ha procesado todo
+        
+        // Notificar al componente padre para que muestre la animación
+        onReservaChange(event.id_evento);
+        
+        // Cerrar este modal
         setTimeout(() => {
-          onReservaChange(event.id_evento);
-        }, 1000);
+          onClose();
+          
+          // Mostrar notificación después de 2 segundos (tiempo suficiente para que se muestre la animación)
+          setTimeout(() => {
+            showNotification("¡Reserva realizada con éxito! Revisa tu correo para más detalles.");
+          }, 2000);
+        }, 500);
       }
     } catch (error) {
       setMessage(error.response?.data?.message || "Error al realizar la reserva");

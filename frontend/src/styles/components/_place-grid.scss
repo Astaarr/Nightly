@@ -5,28 +5,6 @@
   @include grid(repeat(3, 1fr), auto, 1rem);
 }
 
-.account {
-  .events {
-    @include flex(row, nowrap, flex-start, center);
-    overflow-x: auto;
-    @include max-width();
-
-    &__card {
-      flex: 0 0 33vw;
-      @include responsive-min($width-lg) {
-        flex: 0 0 33%;
-        flex-basis: 30vw;
-      }
-
-      @include responsive($width-md) {
-        flex: 0 0 50vw;
-      }
-      @include responsive($width-sm) {
-        flex: 0 0 80vw;
-      }
-    }
-  }
-}
 
 .pagination {
   width: 100%;

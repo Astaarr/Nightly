@@ -36,6 +36,14 @@ const Header = () => {
             Inicio
           </NavLink>
           <NavLink
+            to="/place-finder"
+            className={({ isActive }) =>
+              isActive ? "header__link header__link--active" : "header__link"
+            }
+          >
+            Para ti
+          </NavLink>
+          <NavLink
             to="/places"
             className={({ isActive }) =>
               isActive ? "header__link header__link--active" : "header__link"
