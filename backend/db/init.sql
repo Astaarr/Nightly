@@ -18,8 +18,6 @@ VALUES
 ('Juan Pérez', 'juan@dominio.com', '$2a$10$hashdeprueba1', '1995-04-20', 'avatars/user_1.png'), -- contraseña: prueba123
     ('Carlos García', 'carlos@dominio.com', '$2a$10$hashdeprueba2', '1998-06-15', 'avatars/user_2.png'), -- contraseña: prueba123
     ('Laura Jiménez', 'laura@dominio.com', '$2a$10$hashdeprueba3', '2000-12-05', 'avatars/user_3.png'); -- contraseña: prueba123
-    ('Daniel', 'dani@d.c', '$2a$10$9zOpwIG4fZXN.ZaT6V.4/O2A4/XgTpbtya.xeD7mPZz4aKRT.FHQu', '2000-12-05', 'avatars/user_4.png'); -- contraseña: prueba123
-
 
 -- Crear la tabla 'categorias' si no existe
 CREATE TABLE IF NOT EXISTS categorias (

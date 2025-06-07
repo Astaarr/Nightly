@@ -11,7 +11,9 @@ backend/dist/
 
 # 🔐 Variables de entorno
 .env
-.env.*.local
+.env.*
+.env.local
+.env.production
 *.local
 frontend/.env
 backend/.env
