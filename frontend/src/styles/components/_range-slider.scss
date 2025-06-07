@@ -1,0 +1,115 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.range-slider {
+  &__container {
+    width: 100%;
+    @include flex(column, nowrap, flex-start, center);
+    gap: 0.25rem;
+    padding-top: 10px;
+  }
+
+  &__title {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  &__slider {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    margin: 10px 0;
+  }
+
+  &__track {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: $color-border;
+    border-radius: 999px;
+    z-index: 1;
+    top: 0;
+  }
+
+  &__range {
+    position: absolute;
+    height: 6px;
+    background-color: $color-main;
+    border-radius: 999px;
+    z-index: 2;
+    top: 0;
+  }
+
+  &__thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    height: 0;
+    width: 100%;
+    outline: none;
+    background: $color-black;
+    pointer-events: none;
+    z-index: 3;
+    border: none;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    
+    // Eliminar cualquier estilo predeterminado
+    &::-webkit-slider-runnable-track {
+      -webkit-appearance: none;
+      height: 0;
+      background: transparent;
+      border: none;
+    }
+    
+    &::-moz-range-track {
+      -moz-appearance: none;
+      height: 0;
+      background: transparent;
+      border: none;
+    }
+    
+    // Estilizar los thumbs
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      pointer-events: all;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: $color-black;
+      border: 2px solid $color-main;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: -6px; // Centrar verticalmente (height/2)
+    }
+
+    &::-moz-range-thumb {
+      -moz-appearance: none;
+      appearance: none;
+      pointer-events: all;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: $color-black;
+      border: 2px solid $color-main;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__values {
+    width: 100%;
+    @include flex(row, nowrap, space-between, center);
+    margin-top: 5px;
+  }
+
+  &__value {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+} 

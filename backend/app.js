@@ -13,6 +13,7 @@ import usuariosRoutes from './routes/usuarios.routes.js';
 import reservasRoutes from "./routes/reservas.routes.js";
 import filtrosRoutes from './routes/filtros.routes.js';
 import categoriasRoutes from './routes/categorias.routes.js';
+import placeFinderRoutes from './routes/place-finder.js';
 
 
 
@@ -39,6 +40,7 @@ app.use('/avatars', express.static(path.join(__dirname, 'public', 'avatars')));
 app.use("/api/reservas", reservasRoutes);
 app.use('/api/filtros', filtrosRoutes);
 app.use('/api/categorias', categoriasRoutes);
+app.use('/api/place-finder', placeFinderRoutes);
 app.use('/qrs', express.static(path.join(__dirname, 'public', 'qrs')));
 
 

@@ -1,0 +1,212 @@
+// Estados de carga y error
+.place-finder__loading,
+.place-finder__error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+
+  p {
+    color: $text-muted;
+    font-size: 1.1rem;
+  }
+}
+
+.place-finder__error p {
+  color: $color-error;
+}
+
+// Sin resultados
+.place-finder__no-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 2rem;
+  text-align: center;
+
+  p {
+    color: $text-muted;
+    margin-bottom: 0.5rem;
+
+    &:first-child {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+}
+
+// Grid de lugares
+.place-finder__places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+// Tarjetas de lugar
+.place-finder__place-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.place-finder__place-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.place-finder__place-price {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.place-finder__price-badge {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  &--bajo {
+    background: $color-success;
+  }
+
+  &--medio {
+    background: $color-warning;
+  }
+
+  &--alto {
+    background: $color-error;
+  }
+}
+
+.place-finder__place-info {
+  padding: 1.5rem;
+}
+
+.place-finder__place-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 0.5rem;
+}
+
+.place-finder__place-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+
+  i {
+    color: $color-warning;
+    font-size: 0.9rem;
+  }
+
+  span {
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+.place-finder__place-description {
+  color: $text-muted;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.place-finder__place-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  i {
+    color: $color-main;
+    font-size: 0.9rem;
+  }
+
+  span {
+    color: $text-muted;
+    font-size: 0.85rem;
+  }
+}
+
+.place-finder__place-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.place-finder__tag {
+  background: $color-light;
+  color: $text-muted;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+
+  &--formality {
+    background: rgba($color-main, 0.1);
+    color: $color-main;
+  }
+
+  &--environment {
+    background: rgba($color-secondary, 0.1);
+    color: $color-secondary;
+  }
+
+  &--group {
+    background: rgba($color-accent, 0.1);
+    color: $color-accent;
+  }
+}
+
+.place-finder__place-age {
+  font-size: 0.8rem;
+  color: $text-muted;
+  
+  span {
+    background: $color-light;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .place-finder__places-grid {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+    gap: 1rem;
+  }
+
+  .place-finder__place-card {
+    margin: 0 0.5rem;
+  }
+} 
