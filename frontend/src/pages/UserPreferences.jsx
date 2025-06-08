@@ -28,7 +28,7 @@ function UserPreferences() {
       setNombre(userData.nombre || "");
       setCorreo(userData.email || "");
       if (userData.avatar_url) {
-        setAvatar(`${import.meta.env.VITE_API_URL}/${userData.avatar_url}`);
+        setAvatar(`${import.meta.env.VITE_STATIC_URL}/${userData.avatar_url}`);
       }
     }
   }, []);
@@ -77,7 +77,7 @@ function UserPreferences() {
         });
 
         avatarUrl = response.data.avatarUrl;
-        const fullUrl = `${import.meta.env.VITE_API_URL}/${avatarUrl}`;
+        const fullUrl = `${import.meta.env.VITE_STATIC_URL}/${avatarUrl}`;
         setAvatar(fullUrl);
       }
 

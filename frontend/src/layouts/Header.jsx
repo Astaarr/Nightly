@@ -72,11 +72,12 @@ const Header = () => {
                   className="header__auth-avatar"
                   src={
                     user.avatar_url
-                      ? `${import.meta.env.VITE_API_URL}/${user.avatar_url}`
+                      ? `${import.meta.env.VITE_STATIC_URL}/${user.avatar_url}`
                       : "https://unavatar.io/substack/bankless"
                   }
                   alt="Avatar usuario"
                 />
+
 
                 <span className="header__auth-text"> {user.nombre}</span>
               </button>

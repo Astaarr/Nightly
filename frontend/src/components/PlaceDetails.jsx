@@ -160,8 +160,7 @@ function PlaceDetails({ item, type }) {
 
       <img
         className="place__image"
-        src={`${import.meta.env.VITE_API_URL}/images/${type === "place" ? item.url_imagen : item.imagen_evento
-          }`}
+        src={`${import.meta.env.VITE_STATIC_URL}/images/${type === "place" ? item.url_imagen : item.imagen_evento}`}
         alt={type === "place" ? item.nombre : item.nombre_evento}
         onError={(e) => {
           e.target.onerror = null;

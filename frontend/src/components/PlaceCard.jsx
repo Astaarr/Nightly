@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import EventCard from "../components/EventCard";
 
 function PlaceCard({ place, onFavoritoChange = () => { } }) {
-  const imagenUrl = `${import.meta.env.VITE_API_URL}/images/${place.url_imagen}`;
+  const imagenUrl = `${import.meta.env.VITE_STATIC_URL}/images/${place.url_imagen}`;
   const valoracionNumerica = Number(place.valoracion).toFixed(1);
   const { token, isAuthenticated } = useAuth();
   const [esFavorito, setEsFavorito] = useState(place.esFavorito || false);

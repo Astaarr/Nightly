@@ -102,7 +102,11 @@ function MyAccount() {
         <UserCard
           username={user.nombre}
           email={user.email}
-          avatar={user.avatar_url ? `${import.meta.env.VITE_API_URL}/${user.avatar_url}` : "https://unavatar.io/substack/bankless"}
+          avatar={
+            user.avatar_url
+              ? `${import.meta.env.VITE_STATIC_URL}/${user.avatar_url}`
+              : "https://unavatar.io/substack/bankless"
+          }
         />
       </section>
 
