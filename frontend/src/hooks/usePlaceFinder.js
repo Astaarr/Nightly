@@ -1,18 +1,15 @@
 import { useState, useCallback } from 'react';
+import api from '../api/axios';
 
-// Pasos del PlaceFinder
 export const PLACE_FINDER_STEPS = {
   CATEGORIES: 'categories',
-  SUBCATEGORIES: 'subcategories', 
+  SUBCATEGORIES: 'subcategories',
   FILTERS: 'filters',
   RESULTS: 'results'
 };
 
 const usePlaceFinder = () => {
-  // Estado del paso actual
   const [currentStep, setCurrentStep] = useState(PLACE_FINDER_STEPS.CATEGORIES);
-  
-  // Estado de los datos seleccionados
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [filters, setFilters] = useState({
@@ -21,15 +18,13 @@ const usePlaceFinder = () => {
     environment: null,
     formality: null
   });
-  
-  // Estado de los datos cargados
+
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Funciones de navegación
   const goToStep = useCallback((step) => {
     setCurrentStep(step);
     setError(null);
@@ -55,7 +50,6 @@ const usePlaceFinder = () => {
     }
   }, [currentStep]);
 
-  // Funciones para manejar selecciones
   const selectCategory = useCallback((category) => {
     setSelectedCategory(category);
     setCurrentStep(PLACE_FINDER_STEPS.SUBCATEGORIES);
@@ -63,7 +57,6 @@ const usePlaceFinder = () => {
 
   const selectSubcategory = useCallback((subcategory) => {
     setSelectedSubcategory(subcategory);
-    // No cambiar de paso automáticamente
   }, []);
 
   const updateFilters = useCallback((newFilters) => {
@@ -74,19 +67,15 @@ const usePlaceFinder = () => {
     setCurrentStep(PLACE_FINDER_STEPS.FILTERS);
   }, []);
 
-  // Función para cargar categorías
   const loadCategories = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch('http://localhost:4000/api/place-finder/categories');
-      const data = await response.json();
-      
-      if (data.success) {
-        setCategories(data.data);
+      const response = await api.get('/place-finder/categories');
+      if (response.data.success) {
+        setCategories(response.data.data);
       } else {
-        throw new Error(data.message || 'Error al cargar categorías');
+        throw new Error(response.data.message || 'Error al cargar categorías');
       }
     } catch (err) {
       setError(err.message);
@@ -96,19 +85,15 @@ const usePlaceFinder = () => {
     }
   }, []);
 
-  // Función para cargar subcategorías
   const loadSubcategories = useCallback(async (categoryId) => {
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch(`http://localhost:4000/api/place-finder/categories/${categoryId}/subcategories`);
-      const data = await response.json();
-      
-      if (data.success) {
-        setSubcategories(data.data);
+      const response = await api.get(`/place-finder/categories/${categoryId}/subcategories`);
+      if (response.data.success) {
+        setSubcategories(response.data.data);
       } else {
-        throw new Error(data.message || 'Error al cargar subcategorías');
+        throw new Error(response.data.message || 'Error al cargar subcategorías');
       }
     } catch (err) {
       setError(err.message);
@@ -118,12 +103,11 @@ const usePlaceFinder = () => {
     }
   }, []);
 
-  // Función para buscar lugares
   const searchPlaces = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const searchParams = {
         categoryId: selectedSubcategory?.id_categoria,
         minAge: filters.ageRange.min,
@@ -133,21 +117,13 @@ const usePlaceFinder = () => {
         formality: filters.formality
       };
 
-      const response = await fetch('http://localhost:4000/api/place-finder/places/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(searchParams)
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        setPlaces(data.data);
+      const response = await api.post('/place-finder/places/search', searchParams);
+
+      if (response.data.success) {
+        setPlaces(response.data.data);
         setCurrentStep(PLACE_FINDER_STEPS.RESULTS);
       } else {
-        throw new Error(data.message || 'Error al buscar lugares');
+        throw new Error(response.data.message || 'Error al buscar lugares');
       }
     } catch (err) {
       setError(err.message);
@@ -157,7 +133,6 @@ const usePlaceFinder = () => {
     }
   }, [selectedSubcategory, filters]);
 
-  // Función para resetear todo
   const reset = useCallback(() => {
     setCurrentStep(PLACE_FINDER_STEPS.CATEGORIES);
     setSelectedCategory(null);
@@ -174,7 +149,6 @@ const usePlaceFinder = () => {
   }, []);
 
   return {
-    // Estado
     currentStep,
     selectedCategory,
     selectedSubcategory,
@@ -184,8 +158,6 @@ const usePlaceFinder = () => {
     places,
     loading,
     error,
-    
-    // Acciones
     goToStep,
     goBack,
     selectCategory,
@@ -199,4 +171,4 @@ const usePlaceFinder = () => {
   };
 };
 
-export default usePlaceFinder; 
+export default usePlaceFinder;

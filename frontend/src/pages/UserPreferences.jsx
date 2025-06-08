@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios"; // usa instancia con baseURL
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import ConfirmModal from "../components/ConfirmModal";
 import { useAuth } from "../context/AuthContext";
@@ -28,7 +28,7 @@ function UserPreferences() {
       setNombre(userData.nombre || "");
       setCorreo(userData.email || "");
       if (userData.avatar_url) {
-        setAvatar(`http://localhost:4000/${userData.avatar_url}`);
+        setAvatar(`${import.meta.env.VITE_API_URL}/${userData.avatar_url}`);
       }
     }
   }, []);
@@ -53,9 +53,9 @@ function UserPreferences() {
     try {
       const token = localStorage.getItem("token");
 
-      // Solo actualizamos el nombre
-      await axios.put(
-        "http://localhost:4000/api/usuarios/perfil",
+      // Actualizar nombre
+      await api.put(
+        "/usuarios/perfil",
         { nombre },
         {
           headers: {
@@ -69,7 +69,7 @@ function UserPreferences() {
         const formData = new FormData();
         formData.append("avatar", avatarFile);
 
-        const response = await axios.post("http://localhost:4000/api/usuarios/avatar", formData, {
+        const response = await api.post("/usuarios/avatar", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -77,7 +77,7 @@ function UserPreferences() {
         });
 
         avatarUrl = response.data.avatarUrl;
-        const fullUrl = `http://localhost:4000/${avatarUrl}`;
+        const fullUrl = `${import.meta.env.VITE_API_URL}/${avatarUrl}`;
         setAvatar(fullUrl);
       }
 
@@ -87,9 +87,7 @@ function UserPreferences() {
       }
       updateUser(updatedUserData);
 
-      // Mostrar notificación
       showNotification("Los cambios fueron guardados con éxito");
-
       setAvatarFile(null);
       setShowConfirmModal(false);
       navigate("/account");

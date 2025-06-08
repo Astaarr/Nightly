@@ -1,11 +1,11 @@
-import axios from "axios";
+import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import EventCard from "../components/EventCard";
 
 function PlaceCard({ place, onFavoritoChange = () => { } }) {
-  const imagenUrl = `http://localhost:4000/images/${place.url_imagen}`;
+  const imagenUrl = `${import.meta.env.VITE_API_URL}/images/${place.url_imagen}`;
   const valoracionNumerica = Number(place.valoracion).toFixed(1);
   const { token, isAuthenticated } = useAuth();
   const [esFavorito, setEsFavorito] = useState(place.esFavorito || false);
@@ -26,14 +26,14 @@ function PlaceCard({ place, onFavoritoChange = () => { } }) {
 
     try {
       if (esFavorito) {
-        await axios.delete(`http://localhost:4000/api/favoritos/lugar/${place.id_lugar}`, {
+        await api.delete(`/favoritos/lugar/${place.id_lugar}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEsFavorito(false);
         onFavoritoChange(place.id_lugar, false);
       } else {
-        await axios.post(
-          "http://localhost:4000/api/favoritos",
+        await api.post(
+          "/favoritos",
           { id_lugar: place.id_lugar },
           { headers: { Authorization: `Bearer ${token}` } }
         );

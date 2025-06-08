@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 function EventCard({ event }) {
   const navigate = useNavigate();
-    const imagenUrl = `http://localhost:4000/images/${event.imagen_evento}`;
+  const imagenUrl = `${import.meta.env.VITE_API_URL}/images/${event.imagen_evento}`;
   
     return (
       <div className="events__card" onClick={() => navigate(`/event/${event.id_evento}`)}>

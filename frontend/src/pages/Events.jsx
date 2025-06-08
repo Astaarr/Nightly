@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import api from "../api/axios"; 
 import EventCard from "../components/EventCard";
 import PlaceGrid from "../components/PlaceGrid";
 import SearchBar from "../components/SearchBar";
@@ -11,9 +12,8 @@ function Events() {
   useEffect(() => {
     async function fetchEventos() {
       try {
-        const response = await fetch("http://localhost:4000/api/eventos");
-        const data = await response.json();
-        setEventos(data);
+        const response = await api.get("/eventos");
+        setEventos(response.data);
       } catch (error) {
         console.error("Error al cargar eventos:", error);
       } finally {

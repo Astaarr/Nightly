@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useNotification } from "../context/NotificationContext";
 
 function ChangePasswordModal({ onClose }) {
@@ -21,8 +21,8 @@ function ChangePasswordModal({ onClose }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.put(
-        "http://localhost:4000/api/usuarios/cambiar-password",
+      const response = await api.put(
+        "/usuarios/cambiar-password",
         { actual, nueva },
         {
           headers: {
@@ -30,6 +30,7 @@ function ChangePasswordModal({ onClose }) {
           },
         }
       );
+      
 
       setMensaje(response.data.message);
       setExito(true);

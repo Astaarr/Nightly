@@ -3,7 +3,7 @@ import PlaceCard from "../components/PlaceCard";
 import PlaceGrid from "../components/PlaceGrid";
 import SearchBar from "../components/SearchBar";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import api from "../api/axios";
 
 function Places() {
   const { isAuthenticated, token, isLoading: authLoading } = useAuth();
@@ -22,25 +22,22 @@ function Places() {
         setError(null);
 
         // Construir la URL con query param si hay categoría seleccionada
-        let url = "http://localhost:4000/api/lugares";
+        let url = "/lugares";
         if (categoriaSeleccionada) {
           url += `?categoria=${categoriaSeleccionada}`;
         }
 
-        const lugaresResponse = await axios.get(url);
+        const lugaresResponse = await api.get(url);
         let lugaresData = lugaresResponse.data;
 
         // Marcar favoritos si el usuario está logueado
         if (isAuthenticated && token) {
           try {
-            const favoritosResponse = await axios.get(
-              "http://localhost:4000/api/favoritos",
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+            const favoritosResponse = await api.get("/favoritos", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
 
             const favoritosIds = favoritosResponse.data.map(
               (fav) => fav.id_lugar

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../context/NotificationContext";
 import Reserve from "./Reserve";
@@ -29,10 +29,9 @@ function PlaceDetails({ item, type }) {
       if (type === "place") {
         const checkFavoritoStatus = async () => {
           try {
-            const response = await axios.get(
-              `http://localhost:4000/api/favoritos`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
+            const response = await api.get("/favoritos", {
+              headers: { Authorization: `Bearer ${token}` }
+            });
             const favoritosIds = response.data.map((fav) => fav.id_lugar);
             setEsFavorito(favoritosIds.includes(item.id_lugar));
           } catch (error) {
@@ -43,10 +42,9 @@ function PlaceDetails({ item, type }) {
       } else if (type === "event") {
         const checkReservaStatus = async () => {
           try {
-            const response = await axios.get(
-              `http://localhost:4000/api/reservas`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
+            const response = await api.get("/reservas", {
+              headers: { Authorization: `Bearer ${token}` }
+            });
             const reservasIds = response.data.map((res) => res.id_evento);
             setReservado(reservasIds.includes(item.id_evento));
           } catch (error) {
@@ -79,17 +77,14 @@ function PlaceDetails({ item, type }) {
 
     try {
       if (esFavorito) {
-        await axios.delete(
-          `http://localhost:4000/api/favoritos/lugar/${item.id_lugar}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await api.delete(`/favoritos/lugar/${item.id_lugar}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setEsFavorito(false);
         showNotification("Lugar eliminado de favoritos");
       } else {
-        await axios.post(
-          "http://localhost:4000/api/favoritos",
+        await api.post(
+          "/favoritos",
           { id_lugar: item.id_lugar },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -100,7 +95,7 @@ function PlaceDetails({ item, type }) {
       console.error("Error al cambiar favorito:", error);
       setErrorFavorito(
         error.response?.data?.message ||
-          "Error al actualizar favoritos. Inténtalo de nuevo."
+        "Error al actualizar favoritos. Inténtalo de nuevo."
       );
     } finally {
       setLoadingFavorito(false);
@@ -123,10 +118,9 @@ function PlaceDetails({ item, type }) {
     try {
       setLoadingReserva(true);
       setErrorReserva(null);
-      await axios.delete(
-        `http://localhost:4000/api/reservas/${item.id_evento}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.delete(`/reservas/${item.id_evento}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setReservado(false);
       setShowConfirmModal(false);
       showNotification("La reserva fue cancelada exitosamente");
@@ -134,7 +128,7 @@ function PlaceDetails({ item, type }) {
       console.error("Error al cancelar reserva:", error);
       setErrorReserva(
         error.response?.data?.message ||
-          "Error al cancelar la reserva. Inténtalo de nuevo."
+        "Error al cancelar la reserva. Inténtalo de nuevo."
       );
     } finally {
       setLoadingReserva(false);
@@ -166,15 +160,15 @@ function PlaceDetails({ item, type }) {
 
       <img
         className="place__image"
-        src={`http://localhost:4000/images/${
-          type === "place" ? item.url_imagen : item.imagen_evento
-        }`}
+        src={`${import.meta.env.VITE_API_URL}/images/${type === "place" ? item.url_imagen : item.imagen_evento
+          }`}
         alt={type === "place" ? item.nombre : item.nombre_evento}
         onError={(e) => {
           e.target.onerror = null;
           e.target.src = "https://placehold.co/300x200?text=Sin+Imagen";
         }}
       />
+
 
       <div className="place__actions">
         <button className="place__action" onClick={handleBack}>
@@ -327,9 +321,8 @@ function PlaceDetails({ item, type }) {
 
           {type === "place" ? (
             <button
-              className={`place__fav-button ${
-                esFavorito ? "place__fav-button--active" : ""
-              }`}
+              className={`place__fav-button ${esFavorito ? "place__fav-button--active" : ""
+                }`}
               onClick={handleToggleFavorito}
               disabled={loadingFavorito}
             >
@@ -342,9 +335,8 @@ function PlaceDetails({ item, type }) {
             </button>
           ) : (
             <button
-              className={`place__fav-button ${
-                reservado ? "place__fav-button--active" : ""
-              }`}
+              className={`place__fav-button ${reservado ? "place__fav-button--active" : ""
+                }`}
               onClick={handleReserveClick}
               disabled={loadingReserva}
             >

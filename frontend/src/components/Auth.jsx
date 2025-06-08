@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../context/NotificationContext";
 
@@ -74,10 +74,10 @@ function AuthForm({ type = "login" }) {
         ? { email, password }
         : { nombre, email, password, fecha_nacimiento };
 
-      const response = await axios.post(
-        `http://localhost:4000/api/auth${endpoint}`,
-        payload
-      );
+        const response = await api.post(
+          `/auth${endpoint}`,
+          payload
+        );        
 
       if (isLogin) {
         const { token, user } = response.data;

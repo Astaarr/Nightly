@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
-import axios from 'axios';
+import api from "../api/axios";
 
 function Reserve({ event, onClose, onReservaChange }) {
   const { token, user } = useAuth();
@@ -38,14 +38,16 @@ function Reserve({ event, onClose, onReservaChange }) {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/reservas",
+      const response = await api.post(
+        "/reservas",
         {
           id_evento: event.id_evento,
           usuario_reserva: nombre,
-          email_reserva: email
+          email_reserva: email,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
 
       if (response.status === 201) {

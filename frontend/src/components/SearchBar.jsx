@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 function SearchBar({ 
   value, 
@@ -17,19 +17,18 @@ function SearchBar({
     const obtenerCategorias = async () => {
       if (type !== "place") return;
 
+
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(
-          "http://localhost:4000/api/categorias/principales"
-        );
+        const response = await api.get("/categorias/principales");
         setCategorias(response.data);
       } catch (error) {
         console.error("Error al obtener categorías:", error);
         setError("Error al cargar las categorías");
       } finally {
         setLoading(false);
-      }
+      }      
     };
 
     obtenerCategorias();
