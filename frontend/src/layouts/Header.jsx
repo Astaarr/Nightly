@@ -1,11 +1,15 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth(); // Ahora usa el contexto
+  
+  // Referencias para detectar clics fuera de los modales
+  const authModalRef = useRef(null);
+  const navModalRef = useRef(null);
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
@@ -15,14 +19,40 @@ const Header = () => {
     setAuthOpen(!authOpen);
   };
 
+  // Effect para manejar clics fuera de los modales
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Cerrar modal de autenticación si se hace clic fuera
+      if (authModalRef.current && !authModalRef.current.contains(event.target) && authOpen) {
+        setAuthOpen(false);
+      }
+      
+      // Cerrar modal de navegación si se hace clic fuera
+      if (navModalRef.current && !navModalRef.current.contains(event.target) && menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+
+    // Agregar event listener cuando algún modal esté abierto
+    if (authOpen || menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Cleanup del event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [authOpen, menuOpen]);
+
   return (
-    <header className={`header ${menuOpen ? "header--black" : ""}`}>
+    <header className={`header ${menuOpen || authOpen ? "header--black" : ""}`}>
       <div className="header__navbar">
         <NavLink to="/" end className="header__logo">
           <img className="header__img" src="/logo/logoW.svg" alt="Logo" />
         </NavLink>
 
         <nav
+          ref={navModalRef}
           className={`header__nav ${menuOpen ? "header__nav--open" : ""}`}
           onClick={handleMenuToggle}
         >
@@ -63,7 +93,7 @@ const Header = () => {
 
         <div className="header__actions">
           {isAuthenticated ? (
-            <div className="header__auth">
+            <div className="header__auth" ref={authModalRef}>
               <button
                 className="header__auth-logged"
                 onClick={handleAuthToggle}
@@ -84,7 +114,6 @@ const Header = () => {
                 className={`header__auth-info ${
                   authOpen ? "header__auth-info--visible" : ""
                 }`}
-                onClick={handleAuthToggle}
               >
                 <div className="header__auth-details">
                   <span className="header__auth-username">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import PlaceCard from "../components/PlaceCard";
 import PlaceGrid from "../components/PlaceGrid";
 import SearchBar from "../components/SearchBar";
@@ -7,11 +8,20 @@ import axios from "axios";
 
 function Places() {
   const { isAuthenticated, token, isLoading: authLoading } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [lugares, setLugares] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [error, setError] = useState(null);
+
+  // Leer el parámetro de categoría de la URL al cargar el componente
+  useEffect(() => {
+    const categoria = searchParams.get('categoria');
+    if (categoria) {
+      setCategoriaSeleccionada(parseInt(categoria));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -89,6 +99,12 @@ function Places() {
         onCategoriaChange={(idCategoria) => {
           console.log("Categoría seleccionada:", idCategoria);
           setCategoriaSeleccionada(idCategoria);
+          // Actualizar la URL cuando se cambie la categoría
+          if (idCategoria) {
+            setSearchParams({ categoria: idCategoria });
+          } else {
+            setSearchParams({});
+          }
         }}
         categoriaSeleccionada={categoriaSeleccionada}
       />

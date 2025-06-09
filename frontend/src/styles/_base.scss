@@ -132,6 +132,28 @@ input {
       content: "\f002";
     }
   }
+
+  // Para inputs de contraseña, agregar padding derecho para el icono del ojo
+  &--password {
+    padding-right: 2.5em;
+  }
+}
+
+// Estilo para el icono de toggle de contraseña
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: $color-grey;
+  font-size: 1em;
+  transition: color $transition-time;
+  z-index: 2;
+
+  &:hover {
+    color: $color-main;
+  }
 }
 
 // Scroll Bar

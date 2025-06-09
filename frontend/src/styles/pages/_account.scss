@@ -5,16 +5,17 @@
   width: 100%;
   @include flex(column, nowrap, center, center);
   padding: 2em 0;
+  margin-bottom: 2rem;
 
   &__title-section {
     margin: 1em 0;
   }
 
-  &__message-empty{
+  &__message-empty {
     text-align: center;
   }
 
-  &__place-box{
+  &__place-box {
     @include flex(row, nowrap, center, center);
     background-color: red;
   }
@@ -32,6 +33,7 @@
   gap: 12rem;
   padding: 0.5em 1em;
   border-radius: $radius-border;
+  transition: box-shadow $transition-time;
 
   &__header {
     @include flex(row, nowrap, space-between, center);
@@ -42,6 +44,16 @@
     @include flex(column, nowrap, center, flex-start);
   }
 
+  &__email {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include responsive($width-sm) {
+      max-width: 150px;
+    }
+  }
+
   &__avatar {
     width: 4em;
     height: 4em;
@@ -50,8 +62,7 @@
   }
 
   &:hover {
-    transition: border $transition-time * 2;
-    border: 1px solid $color-secondary;
+    box-shadow: $shadow-main;
   }
 
   @include responsive($width-md) {

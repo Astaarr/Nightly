@@ -3,6 +3,7 @@
 
 .notifications-modal{
     @include tag();
+    backdrop-filter: $blur-high;
     width: auto;
     padding: 0.5rem 2rem;
     position: fixed;
@@ -14,6 +15,10 @@
     visibility: hidden;
     left: 50%;
     transform: translateX(-50%);
+
+    @include responsive($width-sm){
+        width: 80%;
+    }
 
     &--active {
         opacity: 1;

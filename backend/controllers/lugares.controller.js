@@ -12,12 +12,19 @@ function mapPrecio(precioDecimal) {
 export const getLugares = async (req, res) => {
   const { categoria } = req.query;
 
-  let query = "SELECT * FROM lugares";
+  let query = "SELECT DISTINCT l.* FROM lugares l";
   const params = [];
 
   if (categoria) {
-    query += " WHERE id_categoria = ?";
-    params.push(categoria);
+    // Si se especifica una categoría, incluir tanto:
+    // 1. Lugares que pertenecen directamente a esa categoría (l.id_categoria = categoria)
+    // 2. Lugares que pertenecen a subcategorías de esa categoría (c.parent_id = categoria)
+    // Esto permite mostrar lugares de categorías principales (1-5) junto con sus subcategorías (6-23)
+    query += `
+      LEFT JOIN categorias c ON l.id_categoria = c.id_categoria
+      WHERE (l.id_categoria = ? OR c.parent_id = ?)
+    `;
+    params.push(categoria, categoria);
   }
 
   try {

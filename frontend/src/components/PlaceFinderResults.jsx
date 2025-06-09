@@ -1,7 +1,38 @@
 import PlaceGrid from "./PlaceGrid";
 import PlaceCard from "./PlaceCard";
 
-function PlaceFinderResults({ places, loading, error, onBackClick }) {
+function PlaceFinderResults({ places, loading, error, onBackClick, selectedCategory, selectedSubcategory }) {
+  // Función para generar el texto del título con la información de categoría/subcategoría
+  const generateResultsTitle = () => {
+    const resultsCount = places.length;
+    
+    if (!selectedCategory && !selectedSubcategory) {
+      return `Resultados (${resultsCount})`;
+    }
+    
+    return (
+      <>
+        {resultsCount} resultado{resultsCount !== 1 ? 's' : ''} encontrado{resultsCount !== 1 ? 's' : ''}
+        {selectedSubcategory && (
+          <>
+            {' para '}
+            <span className="place-finder__results-highlight">
+              {selectedSubcategory.nombre_categoria.toLowerCase()}
+            </span>
+          </>
+        )}
+        {selectedCategory && (
+          <>
+            {' en la categoría '}
+            <span className="place-finder__results-highlight">
+              {selectedCategory.nombre_categoria.toLowerCase()}
+            </span>
+          </>
+        )}
+      </>
+    );
+  };
+
   if (loading) {
     return (
       <div className="place-finder__results">
@@ -41,7 +72,7 @@ function PlaceFinderResults({ places, loading, error, onBackClick }) {
           <i className="fa-solid fa-arrow-left"></i>
         </button>
         <h3 className="place-finder__results-title">
-          Resultados ({places.length})
+          {generateResultsTitle()}
         </h3>
       </div>
       

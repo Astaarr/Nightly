@@ -94,6 +94,8 @@
   }
 
   @include responsive($width-md) {
+    margin-top: 1rem;
+    top: 1em;
     width: 100%;
     transition: background-color $transition-time;
 

@@ -6,6 +6,10 @@
     width: 100%;
     height: calc(100vh - $header-height);
 
+    @include responsive($width-md){
+        height: 80vh;
+    }
+
     @include flex(column, nowrap, center, center);
     gap: 1rem;
 

@@ -17,8 +17,13 @@ function AuthForm({ type = "login" }) {
   const [message, setMessage] = useState("");
   const [errorField, setErrorField] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async () => {
     setErrorField("");
@@ -151,15 +156,21 @@ function AuthForm({ type = "login" }) {
 
       <div className="auth-form__input-container">
         <label htmlFor="password" className="auth-form__label">Contraseña</label>
-        <div className="input__container input__container--password">
+        <div className={`input__container input__container--password ${showPassword ? 'show-password' : ''}`}>
           <input
             id="password"
-            className={`${getInputClassName("password")} input`}
-            type="password"
+            className={`${getInputClassName("password")} input input--password`}
+            type={showPassword ? "text" : "password"}
             placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <span 
+            className="password-toggle-icon"
+            onClick={togglePasswordVisibility}
+          >
+            <i className={`fa-solid ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
+          </span>
         </div>
       </div>
 

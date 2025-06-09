@@ -87,6 +87,11 @@
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       margin-top: -6px;
+      transition: box-shadow $transition-time;
+
+      &:hover {
+        box-shadow: 0 0 30px rgba(231, 47, 169, 1);
+      }
     }
 
     &::-moz-range-thumb {
@@ -100,6 +105,11 @@
       border: 2px solid $color-main;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow $transition-time;
+
+      &:hover {
+        box-shadow: 0 0 30px rgba(231, 47, 169, 1);
+      }
     }
   }
 

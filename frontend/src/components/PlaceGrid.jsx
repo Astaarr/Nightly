@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Grid({ children, itemsPerPage = 12 }) {
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,9 +14,24 @@ function Grid({ children, itemsPerPage = 12 }) {
     const endIndex = startIndex + itemsPerPage;
     const currentItems = childrenArray.slice(startIndex, endIndex);
 
+    // Función para scroll suave hacia arriba
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+        // Scroll hacia arriba cuando cambie la página
+        scrollToTop();
     };
+
+    // Effect para resetear la página actual cuando cambien los children
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [children]);
 
     return (
         <div className="events-container">

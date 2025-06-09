@@ -20,6 +20,10 @@
   height: 100vh;
   gap: 1em;
 
+  @include responsive($width-sm){
+    padding: 0 1rem;
+  }
+
   &--animation {
     max-width: 400px;
     height: auto;
@@ -70,16 +74,12 @@
 
   &__back {
     background: transparent;
-    border: 1px solid $color-grey;
     color: $color-white;
-    width: 3em;
-    height: 3em;
     font-size: 1em;
-    transition: border-color $transition-time;
+    transition: color $transition-time;
 
     &:hover {
-      background: transparent;
-      border-color: $color-white;
+      color: $color-main;
     }
   }
 

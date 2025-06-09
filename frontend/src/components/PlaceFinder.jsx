@@ -107,6 +107,8 @@ function PlaceFinder() {
             loading={loading}
             error={error}
             onBackClick={goBack}
+            selectedCategory={selectedCategory}
+            selectedSubcategory={selectedSubcategory}
           />
         )}
       </div>

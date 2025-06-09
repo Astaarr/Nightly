@@ -7,7 +7,17 @@ function ChangePasswordModal({ onClose }) {
   const [nueva, setNueva] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [exito, setExito] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const { showNotification } = useNotification();
+
+  const toggleCurrentPasswordVisibility = () => {
+    setShowCurrentPassword(!showCurrentPassword);
+  };
+
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
+  };
 
   const handleConfirm = async () => {
     setMensaje("");
@@ -59,22 +69,40 @@ function ChangePasswordModal({ onClose }) {
 
         <div className="modal__field">
           <label>Contraseña actual</label>
-          <input
-            type="password"
-            placeholder="Contraseña actual"
-            value={actual}
-            onChange={(e) => setActual(e.target.value)}
-          />
+          <div className="input__container input__container--password">
+            <input
+              className="input input--password"
+              type={showCurrentPassword ? "text" : "password"}
+              placeholder="Contraseña actual"
+              value={actual}
+              onChange={(e) => setActual(e.target.value)}
+            />
+            <span 
+              className="password-toggle-icon"
+              onClick={toggleCurrentPasswordVisibility}
+            >
+              <i className={`fa-solid ${showCurrentPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
+            </span>
+          </div>
         </div>
 
         <div className="modal__field">
           <label>Nueva contraseña</label>
-          <input
-            type="password"
-            placeholder="Nueva contraseña"
-            value={nueva}
-            onChange={(e) => setNueva(e.target.value)}
-          />
+          <div className="input__container input__container--password">
+            <input
+              className="input input--password"
+              type={showNewPassword ? "text" : "password"}
+              placeholder="Nueva contraseña"
+              value={nueva}
+              onChange={(e) => setNueva(e.target.value)}
+            />
+            <span 
+              className="password-toggle-icon"
+              onClick={toggleNewPasswordVisibility}
+            >
+              <i className={`fa-solid ${showNewPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
+            </span>
+          </div>
         </div>
 
         {mensaje && (
