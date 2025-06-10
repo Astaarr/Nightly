@@ -1,11 +1,11 @@
 import { db } from '../db/connection.js';
 
-// Utilidad para formatear el precio según su valor numérico
-function mapPrecio(precioDecimal) {
-  const precio = parseFloat(precioDecimal);
-  if (precio < 15) return '€';
-  if (precio <= 20) return '€€';
-  return '€€€';
+// Utilidad para formatear el precio según su valor enum
+function mapPrecio(precioEnum) {
+  if (precioEnum === 'bajo') return '€';
+  if (precioEnum === 'medio') return '€€';
+  if (precioEnum === 'alto') return '€€€';
+  return '€€'; // valor por defecto
 }
 
 // Función para traer todos los locales
@@ -59,12 +59,31 @@ export const getLugarById = async (req, res) => {
     // Formatear precio
     lugar.precio = mapPrecio(lugar.precio);
 
-    // Categorías del lugar
+    // Categorías del lugar (subcategoría y categoría principal)
     const [categorias] = await db.query(
-      `SELECT nombre_categoria FROM categorias WHERE id_categoria = ?`,
+      `SELECT 
+         c.nombre_categoria as subcategoria,
+         cp.nombre_categoria as categoria_principal
+       FROM categorias c
+       LEFT JOIN categorias cp ON c.parent_id = cp.id_categoria
+       WHERE c.id_categoria = ?`,
       [lugar.id_categoria]
     );
-    lugar.categorias = categorias.map(c => c.nombre_categoria);
+    
+    if (categorias.length > 0) {
+      const categoriaInfo = categorias[0];
+      lugar.categorias = [];
+      
+      // Añadir categoría principal si existe
+      if (categoriaInfo.categoria_principal) {
+        lugar.categorias.push(categoriaInfo.categoria_principal);
+      }
+      
+      // Añadir subcategoría
+      lugar.categorias.push(categoriaInfo.subcategoria);
+    } else {
+      lugar.categorias = [];
+    }
 
     // Horarios del lugar
     const [horarios] = await db.query(

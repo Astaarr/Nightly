@@ -424,7 +424,7 @@ CREATE TABLE IF NOT EXISTS favoritos_lugares (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (id_lugar) REFERENCES lugares(id_lugar) ON DELETE CASCADE
 );
-INSERT INTO favoritos_lugares (id_usuario, id_lugar) VALUES
+INSERT IGNORE INTO favoritos_lugares (id_usuario, id_lugar) VALUES
 -- Marta Fernández (id_usuario = 1)
 (1, 33),  -- Nebula Club
 (1, 91),  -- Ginkgo Sky Bar
@@ -471,7 +471,7 @@ CREATE TABLE IF NOT EXISTS reservas_eventos (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
 );
-INSERT INTO reservas_eventos (id_usuario, id_evento, usuario_reserva, email_reserva, fecha_reserva, cantidad, estado) VALUES
+INSERT IGNORE INTO reservas_eventos (id_usuario, id_evento, usuario_reserva, email_reserva, fecha_reserva, cantidad, estado) VALUES
 -- Marta Fernández
 (1, 6, 'Marta Fernández', 'marta.fernandez@gmail.com', DEFAULT, 2, 'confirmada'),
 (1, 12, 'Marta Fernández', 'marta.fernandez@gmail.com', DEFAULT, 1, 'confirmada'),

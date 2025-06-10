@@ -185,9 +185,42 @@ function PlaceDetails({ item, type }) {
                 </div>
               ))
             ) : (
-              <div className="place__tag events__tag--music">
-                <i className="fa-solid fa-music"></i> {item.tipo_musica}
-              </div>
+              <>
+                <div className="place__tag events__tag--music">
+                  <i className="fa-solid fa-music"></i> {item.tipo_musica}
+                </div>
+                {item.dress_code && (
+                  <div className="place__tag events__tag--dress">
+                    <i className="fa-solid fa-shirt"></i> {item.dress_code}
+                  </div>
+                )}
+                {item.nivel_formalidad && (
+                  <div className="place__tag events__tag--formality">
+                    <i className="fa-solid fa-user-tie"></i> {item.nivel_formalidad}
+                  </div>
+                )}
+                {item.ambiente && (
+                  <div className="place__tag events__tag--ambiente">
+                    <i className="fa-solid fa-heart"></i> {item.ambiente}
+                  </div>
+                )}
+                {item.tamano_grupo && (
+                  <div className="place__tag events__tag--group">
+                    <i className="fa-solid fa-users"></i> {item.tamano_grupo}
+                  </div>
+                )}
+                {(item.edad_minima || item.edad_maxima) && (
+                  <div className="place__tag events__tag--age">
+                    <i className="fa-solid fa-calendar-check"></i> 
+                    {item.edad_minima && item.edad_maxima 
+                      ? `${item.edad_minima}-${item.edad_maxima} años`
+                      : item.edad_minima 
+                        ? `+${item.edad_minima} años`
+                        : `${item.edad_maxima} años máx`
+                    }
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -280,9 +313,7 @@ function PlaceDetails({ item, type }) {
                   <h3 className="place__details-name">Precio Medio</h3>
                   <span className="place__price">
                     {type === "place" ? (
-                      [...item.precio].map((_, i) => (
-                        <i key={i} className="fa-solid fa-euro-sign"></i>
-                      ))
+                      item.precio
                     ) : (
                       <span>{item.precio_entrada} €</span>
                     )}
@@ -290,31 +321,29 @@ function PlaceDetails({ item, type }) {
                 </div>
               </div>
 
-              <div className="place__item">
-                <i className="place__icon fa-solid fa-face-smile"></i>
-                <div className="place__details">
-                  <h3 className="place__details-name">Valoración</h3>
-                  <span className="place__rating">
-                    {type === "place" && (
-                      <>
-                        {Array(Math.floor(item.valoracion))
-                          .fill()
-                          .map((_, i) => (
-                            <i key={i} className="fa-solid fa-star"></i>
-                          ))}
-                        {item.valoracion % 1 >= 0.5 && (
-                          <i className="fa-solid fa-star-half-stroke"></i>
-                        )}
-                        {Array(5 - Math.ceil(item.valoracion))
-                          .fill()
-                          .map((_, i) => (
-                            <i key={i} className="fa-regular fa-star"></i>
-                          ))}
-                      </>
-                    )}
-                  </span>
+              {type === "place" && (
+                <div className="place__item">
+                  <i className="place__icon fa-solid fa-face-smile"></i>
+                  <div className="place__details">
+                    <h3 className="place__details-name">Valoración</h3>
+                    <span className="place__rating">
+                      {Array(Math.floor(item.valoracion))
+                        .fill()
+                        .map((_, i) => (
+                          <i key={i} className="fa-solid fa-star"></i>
+                        ))}
+                      {item.valoracion % 1 >= 0.5 && (
+                        <i className="fa-solid fa-star-half-stroke"></i>
+                      )}
+                      {Array(5 - Math.ceil(item.valoracion))
+                        .fill()
+                        .map((_, i) => (
+                          <i key={i} className="fa-regular fa-star"></i>
+                        ))}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
             </article>
           </div>
 
