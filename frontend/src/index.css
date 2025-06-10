@@ -1183,7 +1183,7 @@ input {
   content: "";
   position: absolute;
   top: 0;
-  width: 150px;
+  width: 100px;
   height: 100%;
   z-index: 2;
   pointer-events: none;
