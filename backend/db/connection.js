@@ -1,12 +1,20 @@
 // backend/db/connection.js
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
-dotenv.config();
+import fs from 'fs';
+
+// Detectar si usar `.env.local` o `.env.production`
+const envPath = fs.existsSync('.env.local') ? '.env.local' : '.env.production';
+dotenv.config({ path: envPath });
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
-// Crear un pool de conexiones a la base de datos
-// Esto es más eficiente que crear una conexión cada vez
+// Validar variables críticas
+if (!DB_HOST || !DB_USER || !DB_NAME) {
+  throw new Error('❌ Faltan variables de entorno para la conexión a la base de datos');
+}
+
+// Crear un pool de conexiones
 const db = await mysql.createPool({
   host: DB_HOST,
   user: DB_USER,

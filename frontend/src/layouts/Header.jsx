@@ -102,18 +102,20 @@ const Header = () => {
                   className="header__auth-avatar"
                   src={
                     user.avatar_url
-                      ? `http://localhost:4000/${user.avatar_url}`
+                      ? `${import.meta.env.VITE_STATIC_URL}/${user.avatar_url}`
                       : "https://unavatar.io/substack/bankless"
                   }
                   alt="Avatar usuario"
                 />
+
+
                 <span className="header__auth-text"> {user.nombre}</span>
               </button>
 
               <div
-                className={`header__auth-info ${
-                  authOpen ? "header__auth-info--visible" : ""
-                }`}
+                className={`header__auth-info ${authOpen ? "header__auth-info--visible" : ""
+                  }`}
+                onClick={handleAuthToggle}
               >
                 <div className="header__auth-details">
                   <span className="header__auth-username">
@@ -139,18 +141,16 @@ const Header = () => {
           )}
 
           <button
-            className={`header__action ${
-              menuOpen ? "header__action--visible" : "header__action--hidden"
-            }`}
+            className={`header__action ${menuOpen ? "header__action--visible" : "header__action--hidden"
+              }`}
             onClick={handleMenuToggle}
           >
             <i className="fas fa-times"></i>
           </button>
 
           <button
-            className={`header__action ${
-              menuOpen ? "header__action--hidden" : "header__action--visible"
-            }`}
+            className={`header__action ${menuOpen ? "header__action--hidden" : "header__action--visible"
+              }`}
             onClick={handleMenuToggle}
           >
             <i className="fas fa-bars"></i>

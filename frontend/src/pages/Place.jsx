@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from "../api/axios";
 import PlaceDetails from '../components/PlaceDetails';
 
 function Place() {
@@ -12,7 +12,7 @@ function Place() {
   useEffect(() => {
     async function fetchPlace() {
       try {
-        const response = await axios.get(`http://localhost:4000/api/lugares/${id}`);
+        const response = await api.get(`/lugares/${id}`);
         setPlace(response.data);
       } catch (error) {
         console.error('Error al cargar el lugar:', error);

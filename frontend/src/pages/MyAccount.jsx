@@ -5,7 +5,7 @@ import EventCard from "../components/EventCard";
 import PlaceGrid from "../components/PlaceGrid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 
 function MyAccount() {
   const { user, isAuthenticated, isLoading, token } = useAuth();
@@ -22,20 +22,20 @@ function MyAccount() {
       try {
         setLoading(true);
         setError(null);
-        
-        const favoritosResponse = await axios.get("http://localhost:4000/api/favoritos", {
+
+        const favoritosResponse = await api.get("/favoritos", {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         const favoritosIds = favoritosResponse.data.map(f => f.id_lugar);
-        
+
         if (favoritosIds.length === 0) {
           setLugaresFavoritos([]);
           return;
         }
 
-        const lugaresResponse = await axios.get("http://localhost:4000/api/lugares");
-        const lugaresCompletos = lugaresResponse.data.filter(lugar => 
+        const lugaresResponse = await api.get("/lugares");
+        const lugaresCompletos = lugaresResponse.data.filter(lugar =>
           favoritosIds.includes(lugar.id_lugar)
         );
 
@@ -57,11 +57,11 @@ function MyAccount() {
       try {
         setLoadingReservas(true);
         setErrorReservas(null);
-        
-        const reservasResponse = await axios.get("http://localhost:4000/api/reservas", {
+
+        const reservasResponse = await api.get("/reservas", {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         if (reservasResponse.data.length === 0) {
           setEventosReservados([]);
           return;
@@ -99,16 +99,20 @@ function MyAccount() {
     <>
       <section className="account">
         <h2 className="account__title-section">Mi cuenta</h2>
-        <UserCard 
-          username={user.nombre} 
-          email={user.email} 
-          avatar={user.avatar_url ? `http://localhost:4000/${user.avatar_url}` : "https://unavatar.io/substack/bankless"}
+        <UserCard
+          username={user.nombre}
+          email={user.email}
+          avatar={
+            user.avatar_url
+              ? `${import.meta.env.VITE_STATIC_URL}/${user.avatar_url}`
+              : "https://unavatar.io/substack/bankless"
+          }
         />
       </section>
 
       <section className="account">
         <h2 className="account__title-section">Mis lugares favoritos</h2>
-        
+
         {error ? (
           <div className="error-message">{error}</div>
         ) : lugaresFavoritos.length === 0 ? (
@@ -119,8 +123,8 @@ function MyAccount() {
         ) : (
           <PlaceGrid itemsPerPage={6}>
             {lugaresFavoritos.map((lugar) => (
-              <PlaceCard 
-                key={lugar.id_lugar} 
+              <PlaceCard
+                key={lugar.id_lugar}
                 place={lugar}
                 onFavoritoChange={(id, estado) => {
                   if (!estado) {
@@ -135,7 +139,7 @@ function MyAccount() {
 
       <section className="account">
         <h2 className="account__title-section">Mis eventos reservados</h2>
-        
+
         {errorReservas ? (
           <div className="error-message">{errorReservas}</div>
         ) : eventosReservados.length === 0 ? (
@@ -146,8 +150,8 @@ function MyAccount() {
         ) : (
           <PlaceGrid itemsPerPage={6}>
             {eventosReservados.map((evento) => (
-              <EventCard 
-                key={evento.id_evento} 
+              <EventCard
+                key={evento.id_evento}
                 event={evento}
                 onReservaChange={(id) => {
                   setEventosReservados(prev => prev.filter(e => e.id_evento !== id));

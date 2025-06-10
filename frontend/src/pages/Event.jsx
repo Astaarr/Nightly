@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from "../api/axios";
 import PlaceDetails from '../components/PlaceDetails';
 
 function Event() {
@@ -12,7 +12,7 @@ function Event() {
   useEffect(() => {
     async function fetchEvent() {
       try {
-        const response = await axios.get(`http://localhost:4000/api/eventos/${id}`);
+        const response = await api.get(`/eventos/${id}`);
         setEvent(response.data);
       } catch (error) {
         console.error('Error al cargar el evento:', error);
