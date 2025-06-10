@@ -94,7 +94,9 @@ function RangeSlider({
       </div>
       <div className="range-slider__values">
         <div className="range-slider__value">{prefix}{minVal}{suffix}</div>
-        <div className="range-slider__value">{prefix}{maxVal}{suffix}</div>
+        <div className="range-slider__value">
+          {prefix}{maxVal}{maxVal === max && max === 65 ? '+' : ''}{suffix}
+        </div>
       </div>
     </div>
   );

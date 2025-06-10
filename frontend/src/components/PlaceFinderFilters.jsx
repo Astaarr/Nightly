@@ -44,7 +44,7 @@ function PlaceFinderFilters({
         <div className="place-finder__filters-item">
           <RangeSlider 
             min={18} 
-            max={100} 
+            max={65} 
             initialMin={filters.ageRange.min} 
             initialMax={filters.ageRange.max} 
             step={1}

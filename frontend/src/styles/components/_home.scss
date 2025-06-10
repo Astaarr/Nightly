@@ -11,6 +11,32 @@
     overflow: hidden;
     text-align: center;
 
+    // Fade gradients para los bordes
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 150px;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+
+      @include responsive($width-md) {
+        width: 80px;
+      }
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(to right, $color-black 0%, transparent 100%);
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(to left, $color-black 0%, transparent 100%);
+    }
+
     &-video {
       position: absolute;
       top: 0;
@@ -47,7 +73,7 @@
       @include max-width;
       @include flex(column, nowrap, center, center);
       gap: 2rem;
-      z-index: 3;
+      z-index: 4;
       margin: 0 auto;
       padding: 0 2rem;
     }
@@ -463,12 +489,16 @@
   &__stat-icon {
     width: 60px;
     height: 60px;
+    min-width: 60px;
+    min-height: 60px;
     border-radius: 50%;
     background: $color-main;
     @include flex(row, nowrap, center, center);
     font-size: 1.5rem;
     color: $color-white;
     margin-bottom: 1.5rem;
+    flex-shrink: 0;
+    aspect-ratio: 1;
   }
 
   &__stat-number {
