@@ -37,7 +37,7 @@ function Place() {
     return <div className="error">No se encontró el lugar</div>;
   }
 
-  return <PlaceDetails item={place} type="place" />;
+  return <PlaceDetails place={place} />;
 }
 
 export default Place;

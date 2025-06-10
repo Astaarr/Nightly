@@ -92,7 +92,7 @@ function PlaceCard({ place, onFavoritoChange = () => { } }) {
       <div className="events__info">
         <h2 className="events__title">{place.nombre}</h2>
         <p className="events__location">
-          <i className="fa-solid fa-location-dot"></i> {place.ciudad}
+          <i className="fa-solid fa-location-dot"></i> {place.direccion}
         </p>
         <p className="events__description">{place.descripcion}</p>
       </div>

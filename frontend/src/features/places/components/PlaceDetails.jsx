@@ -3,65 +3,40 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../core/config/axios";
 import { useAuth } from "../../authentication/context/AuthContext";
 import { useNotification } from "../../../core/context/NotificationContext";
-import Reserve from "./Reserve";
-import ConfirmModal from "../../../shared/components/ConfirmModal";
-import ConfirmAnimation from "../../../shared/components/confirmAnimation";
 
-function PlaceDetails({ item, type }) {
+function PlaceDetails({ place }) {
   const [showTimetable, setShowTimetable] = useState(false);
   const [esFavorito, setEsFavorito] = useState(false);
   const [loadingFavorito, setLoadingFavorito] = useState(false);
   const [errorFavorito, setErrorFavorito] = useState(null);
-  const [loadingReserva, setLoadingReserva] = useState(false);
-  const [errorReserva, setErrorReserva] = useState(null);
-  const [reservado, setReservado] = useState(false);
+  
   const navigate = useNavigate();
   const { isAuthenticated, token } = useAuth();
   const { showNotification } = useNotification();
 
-  const [showReserveModal, setShowReserveModal] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  // Nuevo estado para mostrar la animación de confirmación
-  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
-
   useEffect(() => {
     if (isAuthenticated && token) {
-      if (type === "place") {
-        const checkFavoritoStatus = async () => {
-          try {
-            const response = await api.get("/favoritos", {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            const favoritosIds = response.data.map((fav) => fav.id_lugar);
-            setEsFavorito(favoritosIds.includes(item.id_lugar));
-          } catch (error) {
-            console.error("Error al verificar estado de favorito:", error);
-          }
-        };
-        checkFavoritoStatus();
-      } else if (type === "event") {
-        const checkReservaStatus = async () => {
-          try {
-            const response = await api.get("/reservas", {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            const reservasIds = response.data.map((res) => res.id_evento);
-            setReservado(reservasIds.includes(item.id_evento));
-          } catch (error) {
-            console.error("Error al verificar estado de reserva:", error);
-          }
-        };
-        checkReservaStatus();
-      }
+      const checkFavoritoStatus = async () => {
+        try {
+          const response = await api.get("/favoritos", {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const favoritosIds = response.data.map((fav) => fav.id_lugar);
+          setEsFavorito(favoritosIds.includes(place.id_lugar));
+        } catch (error) {
+          console.error("Error al verificar estado de favorito:", error);
+        }
+      };
+      checkFavoritoStatus();
     }
-  }, [isAuthenticated, token, item.id_lugar, item.id_evento, type]);
+  }, [isAuthenticated, token, place.id_lugar]);
 
   const toggleTimetable = () => {
     setShowTimetable(!showTimetable);
   };
 
   const handleBack = () => {
-    navigate(type === "place" ? "/places" : "/events");
+    navigate("/places");
   };
 
   const handleToggleFavorito = async (e) => {
@@ -77,7 +52,7 @@ function PlaceDetails({ item, type }) {
 
     try {
       if (esFavorito) {
-        await api.delete(`/favoritos/lugar/${item.id_lugar}`, {
+        await api.delete(`/favoritos/lugar/${place.id_lugar}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEsFavorito(false);
@@ -85,7 +60,7 @@ function PlaceDetails({ item, type }) {
       } else {
         await api.post(
           "/favoritos",
-          { id_lugar: item.id_lugar },
+          { id_lugar: place.id_lugar },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setEsFavorito(true);
@@ -102,72 +77,19 @@ function PlaceDetails({ item, type }) {
     }
   };
 
-  const handleReserveClick = () => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-    if (reservado) {
-      setShowConfirmModal(true);
-    } else {
-      setShowReserveModal(true);
-    }
-  };
-
-  const handleCancelReserva = async () => {
-    try {
-      setLoadingReserva(true);
-      setErrorReserva(null);
-      await api.delete(`/reservas/${item.id_evento}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setReservado(false);
-      setShowConfirmModal(false);
-      showNotification("La reserva fue cancelada exitosamente");
-    } catch (error) {
-      console.error("Error al cancelar reserva:", error);
-      setErrorReserva(
-        error.response?.data?.message ||
-        "Error al cancelar la reserva. Inténtalo de nuevo."
-      );
-    } finally {
-      setLoadingReserva(false);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setShowReserveModal(false);
-  };
-
-  const handleReservaChange = (id_evento) => {
-    setReservado(true);
-    // Cerrar el modal de reserva
-    setShowReserveModal(false);
-    // Mostrar la animación de éxito
-    setShowSuccessAnimation(true);
-  };
-
-  // Función para cerrar la animación de éxito
-  const handleCloseSuccessAnimation = () => {
-    setShowSuccessAnimation(false);
-  };
-
   return (
     <section className="place">
-      <h1 className="place__title">
-        {type === "place" ? item.nombre : item.nombre_evento}
-      </h1>
+      <h1 className="place__title">{place.nombre}</h1>
 
       <img
         className="place__image"
-        src={`${import.meta.env.VITE_STATIC_URL}/images/${type === "place" ? item.url_imagen : item.imagen_evento}`}
-        alt={type === "place" ? item.nombre : item.nombre_evento}
+        src={`${import.meta.env.VITE_STATIC_URL}/images/${place.url_imagen}`}
+        alt={place.nombre}
         onError={(e) => {
           e.target.onerror = null;
           e.target.src = "https://placehold.co/300x200?text=Sin+Imagen";
         }}
       />
-
 
       <div className="place__actions">
         <button className="place__action" onClick={handleBack}>
@@ -178,53 +100,14 @@ function PlaceDetails({ item, type }) {
       <div className="place__overlay">
         <section className="place__content">
           <div className="place__tags">
-            {type === "place" ? (
-              item.categorias?.map((categoria, index) => (
-                <div key={index} className="place__tag">
-                  {categoria}
-                </div>
-              ))
-            ) : (
-              <>
-                <div className="place__tag events__tag--music">
-                  <i className="fa-solid fa-music"></i> {item.tipo_musica}
-                </div>
-                {item.dress_code && (
-                  <div className="place__tag events__tag--dress">
-                    <i className="fa-solid fa-shirt"></i> {item.dress_code}
-                  </div>
-                )}
-                {item.nivel_formalidad && (
-                  <div className="place__tag events__tag--formality">
-                    <i className="fa-solid fa-user-tie"></i> {item.nivel_formalidad}
-                  </div>
-                )}
-                {item.ambiente && (
-                  <div className="place__tag events__tag--ambiente">
-                    <i className="fa-solid fa-heart"></i> {item.ambiente}
-                  </div>
-                )}
-                {item.tamano_grupo && (
-                  <div className="place__tag events__tag--group">
-                    <i className="fa-solid fa-users"></i> {item.tamano_grupo}
-                  </div>
-                )}
-                {(item.edad_minima || item.edad_maxima) && (
-                  <div className="place__tag events__tag--age">
-                    <i className="fa-solid fa-calendar-check"></i> 
-                    {item.edad_minima && item.edad_maxima 
-                      ? `${item.edad_minima}-${item.edad_maxima} años`
-                      : item.edad_minima 
-                        ? `+${item.edad_minima} años`
-                        : `${item.edad_maxima} años máx`
-                    }
-                  </div>
-                )}
-              </>
-            )}
+            {place.categorias?.map((categoria, index) => (
+              <div key={index} className="place__tag">
+                {categoria}
+              </div>
+            ))}
           </div>
 
-          <p className="place__description">{item.descripcion}</p>
+          <p className="place__description">{place.descripcion}</p>
 
           <div className="place__sections">
             <article className="place__section">
@@ -233,9 +116,7 @@ function PlaceDetails({ item, type }) {
                 <div className="place__details">
                   <h3 className="place__details-name">Dirección</h3>
                   <span className="place__address">
-                    {type === "place"
-                      ? `${item.direccion}, ${item.ciudad}`
-                      : item.nombre_lugar}
+                    {place.direccion}, {place.ciudad}
                   </span>
                 </div>
               </div>
@@ -244,63 +125,31 @@ function PlaceDetails({ item, type }) {
                 <i className="place__icon fa-solid fa-calendar-days"></i>
                 <div className="place__details">
                   <h3 className="place__details-name">Horario</h3>
-                  {type === "place" ? (
-                    <>
-                      <span
-                        className="place__view-timetable"
-                        onClick={toggleTimetable}
-                      >
-                        Ver horarios{" "}
-                        <i
-                          className="place__view-timetable-icon fa-solid fa-angle-down"
-                          style={{
-                            transform: showTimetable
-                              ? "rotate(180deg)"
-                              : "rotate(0deg)",
-                          }}
-                        ></i>
-                      </span>
-                      {showTimetable && (
-                        <div className="place__timetable">
-                          {type === "place" ? (
-                            item.horarios?.map((horario, index) => (
-                              <span key={index} className="place__day">
-                                {horario.dia}{" "}
-                                <span className="place__time">
-                                  {horario.hora_apertura} -{" "}
-                                  {horario.hora_cierre}
-                                </span>
-                              </span>
-                            ))
-                          ) : (
-                            <span className="place__day">
-                              {new Date(item.fecha_evento).toLocaleDateString(
-                                "es-ES",
-                                {
-                                  weekday: "long",
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                }
-                              )}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <span className="place__view-time">
-                      {new Date(item.fecha_evento).toLocaleDateString("es-ES", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
+                  <span
+                    className="place__view-timetable"
+                    onClick={toggleTimetable}
+                  >
+                    Ver horarios{" "}
+                    <i
+                      className="place__view-timetable-icon fa-solid fa-angle-down"
+                      style={{
+                        transform: showTimetable
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                      }}
+                    ></i>
+                  </span>
+                  {showTimetable && (
+                    <div className="place__timetable">
+                      {place.horarios?.map((horario, index) => (
+                        <span key={index} className="place__day">
+                          {horario.dia}{" "}
+                          <span className="place__time">
+                            {horario.hora_apertura} - {horario.hora_cierre}
+                          </span>
+                        </span>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>
@@ -311,117 +160,48 @@ function PlaceDetails({ item, type }) {
                 <i className="place__icon fa-solid fa-tag"></i>
                 <div className="place__details">
                   <h3 className="place__details-name">Precio Medio</h3>
-                  <span className="place__price">
-                    {type === "place" ? (
-                      item.precio
-                    ) : (
-                      <span>{item.precio_entrada} €</span>
+                  <span className="place__price">{place.precio}</span>
+                </div>
+              </div>
+
+              <div className="place__item">
+                <i className="place__icon fa-solid fa-face-smile"></i>
+                <div className="place__details">
+                  <h3 className="place__details-name">Valoración</h3>
+                  <span className="place__rating">
+                    {Array(Math.floor(place.valoracion))
+                      .fill()
+                      .map((_, i) => (
+                        <i key={i} className="fa-solid fa-star"></i>
+                      ))}
+                    {place.valoracion % 1 >= 0.5 && (
+                      <i className="fa-solid fa-star-half-stroke"></i>
                     )}
+                    {Array(5 - Math.ceil(place.valoracion))
+                      .fill()
+                      .map((_, i) => (
+                        <i key={i} className="fa-regular fa-star"></i>
+                      ))}
                   </span>
                 </div>
               </div>
-
-              {type === "place" && (
-                <div className="place__item">
-                  <i className="place__icon fa-solid fa-face-smile"></i>
-                  <div className="place__details">
-                    <h3 className="place__details-name">Valoración</h3>
-                    <span className="place__rating">
-                      {Array(Math.floor(item.valoracion))
-                        .fill()
-                        .map((_, i) => (
-                          <i key={i} className="fa-solid fa-star"></i>
-                        ))}
-                      {item.valoracion % 1 >= 0.5 && (
-                        <i className="fa-solid fa-star-half-stroke"></i>
-                      )}
-                      {Array(5 - Math.ceil(item.valoracion))
-                        .fill()
-                        .map((_, i) => (
-                          <i key={i} className="fa-regular fa-star"></i>
-                        ))}
-                    </span>
-                  </div>
-                </div>
-              )}
             </article>
           </div>
 
-          {type === "place" ? (
-            <button
-              className={`place__fav-button ${esFavorito ? "place__fav-button--active" : ""
-                }`}
-              onClick={handleToggleFavorito}
-              disabled={loadingFavorito}
-            >
-              <i
-                className={
-                  esFavorito ? "fa-solid fa-heart" : "fa-regular fa-heart"
-                }
-              ></i>
-              {esFavorito ? " Guardado" : " Favoritos"}
-            </button>
-          ) : (
-            <button
-              className={`place__fav-button ${reservado ? "place__fav-button--active" : ""
-                }`}
-              onClick={handleReserveClick}
-              disabled={loadingReserva}
-            >
-              <i
-                className={
-                  reservado
-                    ? "fa-solid fa-calendar-check"
-                    : "fa-regular fa-calendar-check"
-                }
-              ></i>
-              {reservado ? " Cancelar reserva" : " Reservar"}
-            </button>
-          )}
+          <button
+            className={`place__fav-button ${esFavorito ? "place__fav-button--active" : ""}`}
+            onClick={handleToggleFavorito}
+            disabled={loadingFavorito}
+          >
+            <i
+              className={esFavorito ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+            ></i>
+            {esFavorito ? " Guardado" : " Favoritos"}
+          </button>
 
           {errorFavorito && <div className="place__error">{errorFavorito}</div>}
-          {errorReserva && <div className="place__error">{errorReserva}</div>}
         </section>
       </div>
-
-      {showReserveModal && (
-        <Reserve
-          event={item}
-          onClose={handleCloseModal}
-          onReservaChange={handleReservaChange}
-        />
-      )}
-
-      {showConfirmModal && (
-        <ConfirmModal
-          isOpen={showConfirmModal}
-          title="Cancelar Reserva"
-          message="¿Estás seguro de que deseas cancelar tu reserva para este evento?"
-          onConfirm={handleCancelReserva}
-          onCancel={() => setShowConfirmModal(false)}
-        />
-      )}
-
-      {/* Modal con animación de confirmación de reserva exitosa */}
-      {showSuccessAnimation && (
-        <ConfirmModal
-          isOpen={showSuccessAnimation}
-          title="¡Reserva Exitosa!"
-          message={
-            <>
-              <p>
-                Revisa la bandeja de entrada para obtener los
-                detalles de la reserva.
-              </p>
-              <div className="modal__animation-container">
-                <ConfirmAnimation />
-              </div>
-            </>
-          }
-          onConfirm={handleCloseSuccessAnimation}
-          showCancel={false}
-        />
-      )}
     </section>
   );
 }

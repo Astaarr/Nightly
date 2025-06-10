@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import api from "../../../core/config/axios";
-import PlaceDetails from '../../places/components/PlaceDetails';
+import EventDetails from '../components/EventDetails';
 
 function Event() {
   const { id } = useParams();
@@ -37,7 +37,7 @@ function Event() {
     return <div className="error">No se encontró el evento</div>;
   }
 
-  return <PlaceDetails item={event} type="event" />;
+  return <EventDetails event={event} />;
 }
 
 export default Event;
