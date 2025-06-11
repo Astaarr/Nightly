@@ -1,0 +1,41 @@
+<mjml>
+  <mj-head>
+    <mj-title>Reserva cancelada</mj-title>
+    <mj-preview>Tu reserva para {{evento}} ha sido cancelada</mj-preview>
+  </mj-head>
+
+  <mj-body background-color="#ffffff" font-family="Helvetica, Arial, sans-serif">
+    <mj-section>
+      <mj-column>
+        <mj-image src="{{imagen_evento}}" alt="Imagen del evento" width="600px" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold">
+          ❌ Reserva cancelada: {{evento}}
+        </mj-text>
+
+        <mj-text font-size="16px">
+          Hola {{name}},<br/>
+          Lamentamos informarte que tu reserva para el evento <strong>{{evento}}</strong> ha sido cancelada.
+        </mj-text>
+
+        <mj-text font-size="14px" color="#555">
+          <strong>Fecha del evento:</strong> {{fecha}}<br />
+          <strong>Lugar:</strong> {{lugar}} - {{ciudad}}<br />
+        </mj-text>
+
+        <mj-text font-size="16px">
+          Si has realizado un pago, será reembolsado en los próximos días.
+        </mj-text>
+
+        <mj-divider border-color="#cccccc" />
+        <mj-text font-size="13px" color="#999">
+          Sentimos las molestias. Para más información, contáctanos a través de nuestra plataforma.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
