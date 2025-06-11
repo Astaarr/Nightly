@@ -1,50 +1,57 @@
 <mjml>
   <mj-head>
     <mj-title>Confirmación de tu reserva</mj-title>
-    <mj-preview>Tu entrada para {{evento}} está confirmada</mj-preview>
+    <mj-preview>Tu reserva para {{evento}} está confirmada 🎉</mj-preview>
+    <mj-style>
+      .footer-link { color: #999999; text-decoration: none; font-size: 12px; }
+    </mj-style>
   </mj-head>
 
-  <mj-body background-color="#ffffff" font-family="Helvetica, Arial, sans-serif">
-    <mj-section>
+  <mj-body background-color="#f4f4f4" font-family="Helvetica, Arial, sans-serif">
+    <mj-section background-color="#ffffff" padding="20px">
       <mj-column>
-        <mj-image src="{{imagen_evento}}" alt="Imagen del evento" width="600px" />
+        <mj-text font-size="24px" font-weight="bold" color="#333333">
+          🎟️ Confirmación: {{evento}}
+        </mj-text>
+        <mj-divider border-color="#eeeeee" />
+        <mj-text font-size="16px" color="#555555">
+          ¡Hola, <strong>{{name}}</strong>!<br/>
+          Tu reserva para el evento <strong>{{evento}}</strong> el <strong>{{fecha}}</strong> ha sido confirmada con éxito.
+        </mj-text>
+
+        <mj-table font-size="14px" color="#555555" cellpadding="5">
+          <tr><td><strong>📍 Lugar:</strong></td><td>{{lugar}}, {{ciudad}}</td></tr>
+          <tr><td><strong>🎫 Precio:</strong></td><td>{{precio}} €</td></tr>
+        </mj-table>
+
+        <mj-text font-size="16px" color="#555555" padding-top="10px">
+          Presenta este código QR en la entrada:
+        </mj-text>
+        <mj-image src="{{qr}}" alt="Código QR" width="150px" align="left" padding="10px 0" />
+
+        <mj-divider border-color="#eeeeee" padding-top="20px" />
+        <mj-text font-size="12px" color="#999999">
+          Este QR es único y no debe compartirse.<br/>
+          Puedes mostrarlo desde tu correo o imprimirlo.
+        </mj-text>
       </mj-column>
     </mj-section>
 
-    <mj-section>
+    <mj-section background-color="#ffffff" padding="20px">
       <mj-column>
-        <mj-text font-size="20px" font-weight="bold">
-          🎟️ Confirmación de tu reserva: {{evento}}
+        <mj-text font-size="14px" color="#999999">
+          ¿Preguntas? Visita nuestro <a href="https://nightly.it.com" class="footer-link">sitio web</a> o contáctanos directamente.
         </mj-text>
+      </mj-column>
+    </mj-section>
 
-        <mj-text font-size="16px">
-          ¡Hola, {{name}}!
-          <br />
-          Tu reserva para <strong>{{evento}}</strong> el <strong>{{fecha}}</strong> ha sido confirmada.
-        </mj-text>
-
-        <mj-text font-size="14px" color="#555">
-          <strong>Dirección:</strong> {{direccion}}<br />
-          <strong>Lugar:</strong> {{lugar}}<br />
-          <strong>Ciudad:</strong> {{ciudad}}<br />
-          <strong>Precio entrada:</strong> {{precio}} €
-        </mj-text>
-
-        <mj-text font-size="16px">
-          Presenta este código QR en la entrada:
-        </mj-text>
-
-            <mj-image src="{{qr}}" alt="Código QR" width="150px" />
-
-        <mj-divider border-color="#cccccc" />
-        <mj-text font-size="13px" color="#999">
-          Este QR es único y no debe compartirse.
-          <br />
-          Puedes mostrarlo desde tu correo o imprimirlo.
+    <mj-section background-color="#ffffff">
+      <mj-column>
+        <mj-text font-size="12px" color="#cccccc">
+          Nightly · Tu guía a planes inolvidables<br/>
+          © 2025 Nightly, todos los derechos reservados.
         </mj-text>
       </mj-column>
     </mj-section>
   </mj-body>
 </mjml>
-
-

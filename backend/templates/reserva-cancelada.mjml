@@ -1,7 +1,7 @@
 <mjml>
   <mj-head>
-    <mj-title>Bienvenido a Nightly</mj-title>
-    <mj-preview>Gracias por registrarte en Nightly 🎉</mj-preview>
+    <mj-title>Reserva cancelada</mj-title>
+    <mj-preview>Tu reserva para {{evento}} ha sido cancelada ❌</mj-preview>
     <mj-style>
       .footer-link { color: #999999; text-decoration: none; font-size: 12px; }
     </mj-style>
@@ -11,15 +11,26 @@
     <mj-section background-color="#ffffff" padding="20px">
       <mj-column>
         <mj-text font-size="24px" font-weight="bold" color="#333333">
-          👋 ¡Hola, {{name}}!
+          ❌ Reserva cancelada: {{evento}}
         </mj-text>
         <mj-divider border-color="#eeeeee" />
         <mj-text font-size="16px" color="#555555">
-          Gracias por registrarte en <strong>Nightly</strong>. Estamos encantados de tenerte con nosotros.
+          Hola <strong>{{name}}</strong>,<br/>
+          Te informamos que tu reserva para el evento <strong>{{evento}}</strong> ha sido cancelada.
         </mj-text>
 
-        <mj-text font-size="14px" color="#999999" padding-top="20px">
-          Si no fuiste tú quien se registró, puedes ignorar este correo.
+        <mj-table font-size="14px" color="#555555" cellpadding="5">
+          <tr><td><strong>📅 Fecha:</strong></td><td>{{fecha}}</td></tr>
+          <tr><td><strong>📍 Lugar:</strong></td><td>{{lugar}}, {{ciudad}}</td></tr>
+        </mj-table>
+
+        <mj-text font-size="16px" color="#555555" padding-top="10px">
+          Si realizaste un pago, será reembolsado en los próximos días.
+        </mj-text>
+
+        <mj-divider border-color="#eeeeee" padding-top="20px" />
+        <mj-text font-size="12px" color="#999999">
+          Sentimos las molestias. Para más información, contáctanos desde tu perfil en la plataforma.
         </mj-text>
       </mj-column>
     </mj-section>
