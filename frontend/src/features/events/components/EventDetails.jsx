@@ -37,7 +37,7 @@ function EventDetails({ event }) {
   }, [isAuthenticated, token, event.id_evento]);
 
   const handleBack = () => {
-    navigate("/events");
+    navigate(-1);
   };
 
   const handleReserveClick = () => {
@@ -85,6 +85,12 @@ function EventDetails({ event }) {
 
   const handleCloseSuccessAnimation = () => {
     setShowSuccessAnimation(false);
+  };
+
+  const handlePlaceClick = () => {
+    if (event.id_lugar) {
+      navigate(`/place/${event.id_lugar}`);
+    }
   };
 
   return (
@@ -154,7 +160,12 @@ function EventDetails({ event }) {
                 <i className="place__icon fa-solid fa-location-dot"></i>
                 <div className="place__details">
                   <h3 className="place__details-name">Dirección</h3>
-                  <span className="place__address">{event.nombre_lugar}</span>
+                  <span 
+                    className="place__address place__address--link" 
+                    onClick={handlePlaceClick}
+                  >
+                    {event.nombre_lugar}
+                  </span>
                 </div>
               </div>
 

@@ -31,8 +31,9 @@ app.use(cors({
   credentials: true,
 }));
 
-// Middleware para parsear JSON
-app.use(express.json());
+// Middleware para parsear JSON y form data con límites aumentados
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Servir archivos estáticos
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));

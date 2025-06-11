@@ -44,6 +44,20 @@ function UserPreferences() {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    
+    // Validar tipo de archivo
+    if (!file.type.startsWith('image/')) {
+      showNotification('Solo se permiten archivos de imagen', 'error');
+      return;
+    }
+    
+    // Validar tamaño de archivo (5MB = 5 * 1024 * 1024 bytes)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      showNotification('El archivo es demasiado grande. El tamaño máximo permitido es 5MB', 'error');
+      return;
+    }
+    
     setAvatarFile(file);
     const objectUrl = URL.createObjectURL(file);
     setTempAvatar(objectUrl);
@@ -93,6 +107,21 @@ function UserPreferences() {
       navigate("/account");
     } catch (error) {
       console.error("Error al guardar cambios:", error);
+      let errorMessage = "Error al guardar los cambios";
+      
+      if (error.response) {
+        // Error del servidor con respuesta
+        if (error.response.status === 413) {
+          errorMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 5MB";
+        } else if (error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (error.request) {
+        // Error de red
+        errorMessage = "Error de conexión. Verifica tu conexión a internet";
+      }
+      
+      showNotification(errorMessage, 'error');
     }
   };
 

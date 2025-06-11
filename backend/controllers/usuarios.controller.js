@@ -67,11 +67,35 @@ const storage = multer.diskStorage({
   }
 });
 
-export const uploadAvatar = multer({ storage }).single('avatar');
+// Filtro de archivos para permitir solo imágenes
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Solo se permiten archivos de imagen'), false);
+  }
+};
+
+// Configuración de multer con límite de tamaño (5MB)
+export const uploadAvatar = multer({ 
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB en bytes
+  },
+  fileFilter
+}).single('avatar');
 
 // Subir avatar y actualizar en la base de datos
 export const subirAvatar = async (req, res) => {
   const { id } = req.user;
+  
+  // Verificar si el archivo fue subido correctamente
+  if (!req.file) {
+    return res.status(400).json({ 
+      message: 'No se pudo procesar el archivo. Asegúrate de que sea una imagen válida y no supere los 5MB.' 
+    });
+  }
+
   const fileName = req.file.filename;
 
   try {

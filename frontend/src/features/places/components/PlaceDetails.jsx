@@ -36,7 +36,7 @@ function PlaceDetails({ place }) {
   };
 
   const handleBack = () => {
-    navigate("/places");
+    navigate(-1);
   };
 
   const handleToggleFavorito = async (e) => {

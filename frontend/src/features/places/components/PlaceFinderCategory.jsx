@@ -40,7 +40,7 @@ function PlaceFinderCategory({ categories, loading, error, selectedCategory, onC
 
   return (
     <div className="place-finder__categories">
-      {categories.map((category) => (
+      {categories.slice().reverse().map((category) => (
         <Category
           key={category.id_categoria}
           category={category}

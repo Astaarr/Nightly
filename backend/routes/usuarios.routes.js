@@ -6,6 +6,7 @@ import {
   uploadAvatar,
 } from "../controllers/usuarios.controller.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
+import { handleUploadError } from "../middlewares/uploadErrorHandler.js";
 
 const router = Router();
 
@@ -16,6 +17,6 @@ router.put("/cambiar-password", verifyToken, cambiarPassword);
 router.put("/perfil", verifyToken, actualizarPerfil);
 
 // Subir o actualizar avatar
-router.post("/avatar", verifyToken, uploadAvatar, subirAvatar);
+router.post("/avatar", verifyToken, uploadAvatar, handleUploadError, subirAvatar);
 
 export default router;

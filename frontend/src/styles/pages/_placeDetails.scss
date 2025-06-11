@@ -135,6 +135,17 @@
     gap: 2em;
   }
 
+  &__address {
+    &--link {
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        color: $color-secondary;
+      }
+    }
+  }
+
   &__actions {
     position: absolute;
     top: 2rem;

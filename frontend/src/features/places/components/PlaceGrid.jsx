@@ -28,10 +28,10 @@ function Grid({ children, itemsPerPage = 12 }) {
         scrollToTop();
     };
 
-    // Effect para resetear la página actual cuando cambien los children
+    // Effect para resetear la página actual cuando cambie el número de elementos
     useEffect(() => {
         setCurrentPage(1);
-    }, [children]);
+    }, [childrenArray.length]);
 
     return (
         <div className="events-container">
