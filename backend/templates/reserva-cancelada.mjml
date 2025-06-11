@@ -1,39 +1,53 @@
 <mjml>
   <mj-head>
     <mj-title>Reserva cancelada</mj-title>
-    <mj-preview>Tu reserva para {{evento}} ha sido cancelada</mj-preview>
+    <mj-preview>Tu reserva para {{evento}} ha sido cancelada ❌</mj-preview>
+    <mj-style>
+      .footer-link { color: #999999; text-decoration: none; font-size: 12px; }
+    </mj-style>
   </mj-head>
 
-  <mj-body background-color="#ffffff" font-family="Helvetica, Arial, sans-serif">
-    <mj-section>
+  <mj-body background-color="#f4f4f4" font-family="Helvetica, Arial, sans-serif">
+    <mj-section background-color="#ffffff" padding="20px">
       <mj-column>
-        <mj-image src="{{imagen_evento}}" alt="Imagen del evento" width="600px" />
+        <mj-text font-size="24px" font-weight="bold" color="#333333">
+          ❌ Reserva cancelada: {{evento}}
+        </mj-text>
+        <mj-divider border-color="#eeeeee" />
+        <mj-text font-size="16px" color="#555555">
+          Hola <strong>{{name}}</strong>,<br/>
+          Te informamos que tu reserva para el evento <strong>{{evento}}</strong> ha sido cancelada.
+        </mj-text>
+
+        <mj-table font-size="14px" color="#555555" cellpadding="5">
+          <tr><td><strong>📅 Fecha:</strong></td><td>{{fecha}}</td></tr>
+          <tr><td><strong>📍 Lugar:</strong></td><td>{{lugar}}, {{ciudad}}</td></tr>
+        </mj-table>
+
+        <mj-text font-size="16px" color="#555555" padding-top="10px">
+          Si realizaste un pago, será reembolsado en los próximos días.
+        </mj-text>
+
+        <mj-divider border-color="#eeeeee" padding-top="20px" />
+        <mj-text font-size="12px" color="#999999">
+          Sentimos las molestias. Para más información, contáctanos desde tu perfil en la plataforma.
+        </mj-text>
       </mj-column>
     </mj-section>
 
-    <mj-section>
+    <mj-section background-color="#ffffff" padding="20px">
       <mj-column>
-        <mj-text font-size="20px" font-weight="bold">
-          ❌ Reserva cancelada: {{evento}}
+        <mj-text font-size="14px" color="#999999">
+          ¿Preguntas? Visita nuestro <a href="https://nightly.it.com" class="footer-link">sitio web</a> o contáctanos directamente.
         </mj-text>
+      </mj-column>
+    </mj-section>
 
-        <mj-text font-size="16px">
-          Hola {{name}},<br/>
-          Lamentamos informarte que tu reserva para el evento <strong>{{evento}}</strong> ha sido cancelada.
-        </mj-text>
-
-        <mj-text font-size="14px" color="#555">
-          <strong>Fecha del evento:</strong> {{fecha}}<br />
-          <strong>Lugar:</strong> {{lugar}} - {{ciudad}}<br />
-        </mj-text>
-
-        <mj-text font-size="16px">
-          Si has realizado un pago, será reembolsado en los próximos días.
-        </mj-text>
-
-        <mj-divider border-color="#cccccc" />
-        <mj-text font-size="13px" color="#999">
-          Sentimos las molestias. Para más información, contáctanos a través de nuestra plataforma.
+    <mj-section background-color="#ffffff">
+      <mj-column>
+        <mj-text font-size="12px" color="#cccccc">
+          Nightly · Tu guía a planes inolvidables<br/>
+          © 2025 Nightly, todos los derechos reservados.
         </mj-text>
       </mj-column>
     </mj-section>

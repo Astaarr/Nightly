@@ -65,7 +65,6 @@ export const sendReservaEmail = async ({ to, name, evento }) => {
       .replaceAll('{{direccion}}', evento.direccion || '')
       .replaceAll('{{lugar}}', evento.nombre_lugar || '')
       .replaceAll('{{ciudad}}', evento.ciudad || '')
-      .replaceAll('{{imagen_evento}}', `${process.env.BASE_URL}/images/eventos/${evento.imagen_evento}` || 'https://via.placeholder.com/600x300?text=Sin+imagen')
       .replaceAll('{{qr}}', qrUrl);
 
     const { html } = mjml(mjmlTemplate);
@@ -97,7 +96,6 @@ export const sendReservaCanceladaEmail = async ({ to, name, evento }) => {
       .replaceAll('{{fecha}}', new Date(evento.fecha_evento).toLocaleString('es-ES'))
       .replaceAll('{{ciudad}}', evento.ciudad || '')
       .replaceAll('{{lugar}}', evento.nombre_lugar || '')
-      .replaceAll('{{imagen_evento}}', `${process.env.BASE_URL}/images/eventos/${evento.imagen_evento}` || 'https://via.placeholder.com/600x300?text=Sin+imagen')
 
     const { html } = mjml(mjmlTemplate);
 
