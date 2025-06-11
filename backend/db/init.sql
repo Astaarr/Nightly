@@ -15,11 +15,11 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 INSERT IGNORE INTO usuarios (nombre, email, password_hash, fecha_nacimiento, avatar_url)
 VALUES 
-('Marta Fernández', 'marta.fernandez@gmail.com', '$2y$10$2zkZk8G9cb0r5ALmQuwXdeMZCUc3MeQxWeP6/qgSRhHhxR3KllgWq', '1992-07-11', 'avatars/marta.png'), -- contraseña: Marta123
-('Andrés López', 'andres.lopez@hotmail.com', '$2y$10$3NlqPex6RZ3bThUDJ2Zo0u5f32bEkbdzNTSLrVv9N0aCLmXjsKhKm', '1987-02-28', 'avatars/andres.png'), -- contraseña: Andres456
-('Claudia Romero', 'claudia.romero@yahoo.com', '$2y$10$F6iPUV3VEr.jEv1hUBH37u4aLDBw.Z.K9OpR8AIjpt5tcYj7b9R6W', '1999-11-30', 'avatars/claudia.png'), -- contraseña: Claudia789
-('Yohana Manteca', 'yohanamanteca@gmail.com', '$2y$10$fJc1qGldoOz0YrJxvjqNleMcKZjKPK2.zAIEMqu4iV5Sdd9Mj2OGC', '2005-03-06', 'avatars/yohana.png'), -- contraseña: Yohana1234
-('Adrián Arcones', 'adrianarconesgomez@gmail.com', '$2y$10$FZo9ZjcbD.0vBiRUz86DfuI9oQobMoC9LjZ6Tuw4jPg3Vr2ypKPHe', '2005-03-18', 'avatars/adrian.png'); -- contraseña: Adri0987
+('Marta Fernández', 'marta.fernandez@gmail.com', '$2a$12$vcXYAj5Wy/tt/mouKa.c4eQ6SZX6ejm6zsUTvpd2Wad3/c493kwIu', '1992-07-11', 'avatars/marta.png'), -- contraseña: Marta123
+('Andrés López', 'andres.lopez@hotmail.com', '$2a$12$SNx4tRnBODaG/lY0SdIDj.EOPrUfv8DTEPcb2FzO/SdDhgrn1IoMy', '1987-02-28', 'avatars/andres.png'), -- contraseña: Andres456
+('Claudia Romero', 'claudia.romero@yahoo.com', '$2a$12$7oYjXgo6cpzz9z9TkbiPmO3QqpHarQE/URwKwaJ8E.kKN6kSoAFbW', '1999-11-30', 'avatars/claudia.png'), -- contraseña: Claudia789
+('Yohana Manteca', 'yohanamanteca@gmail.com', '$2a$12$kN7TZlH5rGQXvGJWigp6j.SOm6hohssZEC4Sr5xRUSStkS2lBbvWy', '2005-03-06', 'avatars/yohana.png'), -- contraseña: yohana1234
+('Adrián Arcones', 'adrianarconesgomez@gmail.com', '$2a$12$cIHIwxV/ZI75k37EDiF7Sev5GhaKjQlsHT2QHYRHze7pFSko4FJ8y', '2005-03-18', 'avatars/adrian.png'); -- contraseña: Adri0987
 
 -- Crear la tabla 'categorias' si no existe
 CREATE TABLE IF NOT EXISTS categorias (
