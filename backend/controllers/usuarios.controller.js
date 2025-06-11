@@ -3,6 +3,7 @@ import { db } from '../db/connection.js';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { sendPasswordChangedEmail } from '../utils/mailer.js';
 
 // Cambiar contraseña
 export const cambiarPassword = async (req, res) => {
@@ -28,6 +29,20 @@ export const cambiarPassword = async (req, res) => {
       id,
     ]);
 
+    // Obtener datos del usuario para el correo
+    const [[usuario]] = await db.query(
+      'SELECT nombre, email FROM usuarios WHERE id = ?',
+      [id]
+    );
+
+    // Enviar correo de confirmación (no bloqueante)
+    sendPasswordChangedEmail({
+      to: usuario.email,
+      name: usuario.nombre
+    }).catch(err =>
+      console.error("❌ Error al enviar correo de cambio de contraseña:", err)
+    );
+
     res.json({ message: 'Contraseña actualizada correctamente' });
   } catch (error) {
     console.error('Error al cambiar contraseña:', error);
@@ -35,7 +50,7 @@ export const cambiarPassword = async (req, res) => {
   }
 };
 
-// Actualizar nombre y email del perfil
+// Actualizar nombre del perfil
 export const actualizarPerfil = async (req, res) => {
   const { id } = req.user;
   const { nombre } = req.body;
@@ -52,7 +67,6 @@ export const actualizarPerfil = async (req, res) => {
     res.status(500).json({ message: 'Error al actualizar datos del usuario' });
   }
 };
-
 
 // Configuración de almacenamiento de Multer
 const storage = multer.diskStorage({

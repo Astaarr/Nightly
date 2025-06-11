@@ -1,5 +1,7 @@
 import { db } from "../db/connection.js";
 import { sendReservaEmail } from '../utils/mailer.js';
+import { sendReservaCanceladaEmail } from '../utils/mailer.js';
+
 
 export const obtenerReservasUsuario = async (req, res) => {
   const { id } = req.user;
@@ -73,7 +75,7 @@ export const crearReserva = async (req, res) => {
         nombre_evento: evento[0].nombre_evento,
         fecha_evento: evento[0].fecha_evento,
         precio_entrada: evento[0].precio_entrada,
-        imagen_evento: evento[0].imagen_evento,
+        imagen_evento: `https://nightly.it.com/images/eventos/${evento[0].imagen_evento}`,
         direccion: evento[0].direccion,
         nombre_lugar: evento[0].nombre_lugar,
         ciudad: evento[0].ciudad
@@ -110,6 +112,35 @@ export const eliminarReserva = async (req, res) => {
       });
     }
 
+    const [evento] = await db.query(
+      `SELECT 
+         e.nombre_evento, e.fecha_evento, e.imagen_evento,
+         l.nombre AS nombre_lugar, l.ciudad
+       FROM eventos e
+       JOIN lugares l ON e.id_lugar = l.id_lugar
+       WHERE e.id_evento = ?`,
+      [id_evento]
+    );
+
+    if (evento.length > 0) {
+      const datosCorreo = {
+        to: reserva[0].email_reserva,
+        name: reserva[0].usuario_reserva,
+        evento: {
+          nombre_evento: evento[0].nombre_evento,
+          fecha_evento: evento[0].fecha_evento,
+          imagen_evento: `https://nightly.it.com/images/eventos/${evento[0].imagen_evento}`,
+          nombre_lugar: evento[0].nombre_lugar,
+          ciudad: evento[0].ciudad,
+        },
+      };      
+
+      // Enviar el correo de cancelación (sin bloquear la respuesta)
+      sendReservaCanceladaEmail(datosCorreo).catch(err =>
+        console.error("❌ Error al enviar correo de cancelación:", err)
+      );
+    }
+
     await db.query(
       "DELETE FROM reservas_eventos WHERE id_usuario = ? AND id_evento = ?",
       [id, id_evento]
@@ -121,3 +152,4 @@ export const eliminarReserva = async (req, res) => {
     res.status(500).json({ message: "Error al eliminar la reserva" });
   }
 };
+
