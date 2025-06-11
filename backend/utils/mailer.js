@@ -97,7 +97,7 @@ export const sendReservaCanceladaEmail = async ({ to, name, evento }) => {
       .replaceAll('{{fecha}}', new Date(evento.fecha_evento).toLocaleString('es-ES'))
       .replaceAll('{{ciudad}}', evento.ciudad || '')
       .replaceAll('{{lugar}}', evento.nombre_lugar || '')
-      .replaceAll('{{imagen_evento}}', `${process.env.BASE_URL}/images/eventos/${evento.imagen_evento}` || 'https://via.placeholder.com/600x300?text=Sin+imagen');
+      .replaceAll('{{imagen_evento}}', `${process.env.BASE_URL}/images/eventos/${evento.imagen_evento}` || 'https://via.placeholder.com/600x300?text=Sin+imagen')
 
     const { html } = mjml(mjmlTemplate);
 

@@ -75,7 +75,7 @@ export const crearReserva = async (req, res) => {
         nombre_evento: evento[0].nombre_evento,
         fecha_evento: evento[0].fecha_evento,
         precio_entrada: evento[0].precio_entrada,
-        imagen_evento: `https://nightly.it.com/images/eventos/${evento[0].imagen_evento}`,
+        imagen_evento: evento[0].imagen_evento,
         direccion: evento[0].direccion,
         nombre_lugar: evento[0].nombre_lugar,
         ciudad: evento[0].ciudad
